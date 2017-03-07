@@ -8,7 +8,6 @@ Album::Album()
 
 Album::~Album()
 {
-	//
 }
 
 void Album::clear()
@@ -100,9 +99,9 @@ const istream & operator >> (istream & is, Album & album)
 	getline(is,name);
 	album.setName(name);
 	is >> amountSongs;
+	is.get();
 	for (int i=0;i<amountSongs && is >> song;++i)
 		album.addSong(song);
-
 	return is;
 }
 

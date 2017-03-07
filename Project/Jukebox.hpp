@@ -4,6 +4,8 @@
 #include "Album.hpp"
 #include "Menu.hpp"
 #include "Queue.hpp"
+#include <random>
+#include <time.h>
 
 using namespace std;
 
@@ -28,8 +30,11 @@ class Jukebox
 		void addAlbum();
 		void deleteAlbum();
 		void Sort(Sorts sortBy);
-		int printSongList();
+		const int printSongList() const;
+		const int getAmountSongs() const;
+
 		void playList();
+		void createRandomList();
 
 		void print(Sorts sortBy,bool simple=false);
 		void printAll(bool simple=false)const;

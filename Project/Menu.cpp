@@ -56,7 +56,7 @@ int Menu::getMenuChoice()
 
 void Menu::toggle(int i)
 {
-	menues[++i].toggle();
+	menues[--i].toggle();
 }
 
 
