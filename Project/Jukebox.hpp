@@ -43,7 +43,7 @@ class Jukebox
 
 		const Song getSong(int i) const;
 
-		unsigned int search (string & albumName) const;
+		unsigned int search (const string & albumName) const;
 
 		//Queue
 

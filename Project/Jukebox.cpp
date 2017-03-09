@@ -41,7 +41,7 @@ Jukebox::Jukebox() // Default initializer
 
 Jukebox::~Jukebox()
 {
-	//
+	//don't need deconstruct as all types in all subclasses don't need one
 }
 
 //------------------------------------------------------------------------------
@@ -52,11 +52,11 @@ void printSure(bool ALL=true)
 {
 	string what="THIS";
 	if (ALL)
-		what="ALL curent";
+		what="ALL current";
 	cout << "***********Warning!************" << endl;
 	cout << "   Enter integer for action" << endl;
 	cout << "Are you sure you want to delete." << endl;
-	cout << "     ALL current albums?" << endl;
+	cout << "     "+what+" albums?" << endl;
 	cout << "1: Yes" << endl;
 	cout << "0: Back to Menu" << endl;
 	cout << "*******************************" << endl;
@@ -86,12 +86,11 @@ bool sure(bool all=true)
 }
 
 //------------------------------------------------------------------------------
-// run function contains Main menuswitch.
+// run function contains Main menu switch.
 //------------------------------------------------------------------------------
 
 void Jukebox::run()
 {
-bool again=true;
 	do
 	{
 		switch (mainMenu.getMenuChoice())
@@ -112,11 +111,11 @@ bool again=true;
 				play();
 				break;
 			case 6:
-				again=false;
-			default:
+				return;	//exiting here
+			default:	//don't need default, as getMenuChoice() takes care of unwanted values.
 				break;
 		}
-	}while(again);
+	}while(true);
 }
 
 //------------------------------------------------------------------------------
@@ -125,7 +124,6 @@ bool again=true;
 
 void Jukebox::file()
 {
-	bool again=true;
 	do
 	{
 		switch(fileMenu.getMenuChoice())
@@ -143,13 +141,12 @@ void Jukebox::file()
 			save();
 			break;
 		case 3:
-			again=false;
-			break;
+			return;
 		default:
 			printPrompt("Something's wrong... must fix");
 		}
 
-	}while(again);
+	}while(true);
 }
 
 //------------------------------------------------------------------------------
@@ -196,7 +193,15 @@ void Jukebox::addAlbum()
 {
 	string albumName,songTitle,artist;
 
-	getLine(albumName,"Enter name of album: ");
+	bool found=false;
+	do
+	{
+		getLine(albumName,"Enter name of album: ");
+		found=search(albumName)!=albums.size();
+		if(found)
+			printPrompt("Album named "+ albumName+" already exists in list!");
+	}while(found);
+
 	uint amountSongs=getInt("Enter amount of songs in album: ");
 	Album album;
 	album.setName(albumName);
@@ -205,7 +210,7 @@ void Jukebox::addAlbum()
 
 	for (uint i=0;i<amountSongs;++i)
 	{
-		getLine(songTitle,"Name of song : "+toString(i));
+		getLine(songTitle,"Name of song : "+toString(i+1));
 		getLine(artist,"Name of artist");
 		int songLength=getInt("Length of song (seconds): ");
 		tmpSong.setTitle(songTitle);
@@ -266,14 +271,14 @@ void Jukebox::print()
 			print(BYTIME,true);
 			break;
 		case 6:
-			return;
+			return;	 // exiting in case 5
 	}
 	systemPause ();
-	}while(1);
+	}while(true);
 }
 
 //------------------------------------------------------------------------------
-// Prints single album that mathes albumName
+// Prints single album that matches albumName
 //------------------------------------------------------------------------------
 
 void Jukebox::searchPrint(bool simplePrint) const
@@ -306,7 +311,6 @@ void Jukebox::print(Sorts sortBy,bool simple)
 
 void Jukebox::play()
 {
-	bool again=true;
 	do
 	{
 		switch (playMenu.getMenuChoice())
@@ -322,11 +326,11 @@ void Jukebox::play()
 				playMenu.toggle(3); //disabling playList when list is empty
 				break;
 			case 4:
-				return;
+				return;				// exit condition
 		}
 		if (!queue.isEmpty())
 			playMenu.toggle(3); //enabling play choice when queue not empty
-	}while(again==true);
+	}while(true);
 }
 
 //------------------------------------------------------------------------------
@@ -345,10 +349,10 @@ void Jukebox::createPlayList()
 	while ((a = s.find(',')) && a!=string::npos)
 		s.replace(a,1," ");
 	istringstream S(s);
-	vector <string> unindentified;
+	vector <string> unidentified;
 	while(S >> songNr)
 	{
-		choices.push_back(songNr);	//Just testing wether all input is valid
+		choices.push_back(songNr);	//Just testing whether all input is valid
 		S.clear();
 	}
 	printPrompt("Songs added: ","info!",false,false);
@@ -362,7 +366,7 @@ void Jukebox::createPlayList()
 			song.print();
 		}
 		else
-			unindentified.push_back(toString (songNr));
+			unidentified.push_back(toString (songNr));
 	}
 	return;
 }
@@ -387,7 +391,7 @@ void Jukebox::createRandomList()
 }
 
 //------------------------------------------------------------------------------
-// Play list. uses queueu play memeberfunction
+// Play list. uses queue play memeberfunction
 //------------------------------------------------------------------------------
 
 void Jukebox::playList()
@@ -423,7 +427,7 @@ const Song Jukebox::getSong(int i) const
 		for (auto s: a.getSongs())
 			if(++n==i)
 				return s;
-	return Song(); //returning empty song if coice is invalid.
+	return Song(); //returning empty song if choice is invalid.
 }
 
 //------------------------------------------------------------------------------
@@ -476,12 +480,12 @@ void Jukebox::Sort(Sorts sortBy)
 // Searches for album using album name as search string
 //-----------------------------------------------------------------------------
 
-unsigned int Jukebox::search (string & albumName) const
+unsigned int Jukebox::search (const string & albumName) const
 {
 	auto it = find_if(albums.begin(),albums.end(),
-		[albumName](const Album & a)
+		[&albumName](const Album & a)
 		{
-			return toCase(a.getName()).find(toCase(albumName))!=string::npos;
+			return toCase(a.getName())==toCase(albumName);
 		});
 	if(it == albums.end())
 		return albums.size();

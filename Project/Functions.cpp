@@ -39,7 +39,7 @@ int getInt(string prompt) // overloaded for convenience (use in switch)
 //------------------------------------------------------------------------------
 char toCase(char to_case, bool toLowercase=true)  // takes/returns char
 {
-	if (toLowercase==true)
+	if (toLowercase)
 	{
 		if (to_case<='Z' && to_case>='A')
 			to_case+=32;                            // 32 is difference between cases.
@@ -54,7 +54,7 @@ string toCase (string to_Case,bool toLowercase)		// does not affect input string
 {	// Takes/returns string. uses overloaded functinon for individual chars
 	for (unsigned int n = 0; n < to_Case.size(); n += 1)
 		to_Case[n] = toCase(to_Case[n],toLowercase);
-
+	edgeTrim(to_Case);
 	return to_Case;
 }
 
