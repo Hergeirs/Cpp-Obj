@@ -390,7 +390,7 @@ vector <string> Jukebox::createPlayList(vector <int> & choices)
 	vector <string> notSongs;				// for error message
 	for (auto c :choices)
 	{
-		if(c<getAmountSongs() && c>0)
+		if(c<=getAmountSongs() && c>0)
 			queue.push_back(getSong(c));
 		else
 			notSongs.push_back(toString(c));
@@ -466,6 +466,7 @@ void Jukebox::playList()
 const int Jukebox::printSongList() const
 {
 	int i=0;
+	cout << setw(3) << left << "Nr" << setw(50) << "Title" << setw(15) << "Artist" << setw(15) << right << "Length[hh:mm:ss]" << " | " << endl;
 	for (auto a:albums)
 		for (auto s:a.getSongs())
 			s.print(++i);

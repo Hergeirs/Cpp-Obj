@@ -28,15 +28,17 @@ const Time & Song::getTime() const
 
 void Song::print(int i,bool simple) const
 {
+	int width = 15;
 	const string delim=" | ";
-	centerText(toString(i)+" "+title+delim+artist+delim+getTime().getFormatTime(),' ','|',1,90);
+	if (i!=0)
+		cout << setw(3) << left << i;
+	cout << setw(50) << title << setw(width) << artist << setw(width) << right << time.getFormatTime() << delim << endl;
 }
 
 void Song::setTitle(string pTitle)
 {
 	title=pTitle;
 }
-
 
 void Song::setArtist(string pArtist)
 {
