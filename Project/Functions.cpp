@@ -21,9 +21,7 @@ void getInt(int & i, string prompt)
 		}
 		// clear everything until newline is encountered
 		while(cin.get()!='\n')
-		{
 			cin.clear();
-		}
 }
 
 int getInt(string prompt) // overloaded for convenience (use in switch)
