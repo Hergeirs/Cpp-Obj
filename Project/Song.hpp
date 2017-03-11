@@ -18,7 +18,7 @@ class Song
 	const string & getArtist() const;
 	const Time & getTime() const;
 
-	void print(int i=0) const;
+	void print(int i=0,bool simple=false) const;
 
 	void setTitle(string pTitle);
 	void setArtist(string pArtist);

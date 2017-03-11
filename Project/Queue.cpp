@@ -11,9 +11,8 @@ Queue::Queue():queueSize(5)
 }
 
 //------------------------------------------------------------------------------
-// Destructor. Since adress of queue array changes i can't use 'delete[]'
+// Destructor. Since address of queue array changes i can't use 'delete[]'
 //------------------------------------------------------------------------------
-
 
 Queue::~Queue()
 {
@@ -22,18 +21,10 @@ Queue::~Queue()
 	queue=NULL;
 }
 
-// Song Queue::pop()
-// {
-// 	if(last<0)
-// 		return Song();
-// 	Song returnA= *queue;
-// 	Song * temp=queue;
-// 	++queue;
-	//delete temp;
-// 	temp=NULL;
-// 	--last;
-// 	return returnA;
-// }
+//------------------------------------------------------------------------------
+// I chose not to delete the first element, but overwrite it. All memory will be
+// deAllocated in the destructor anyway and array doesn't shrink at any time.
+//------------------------------------------------------------------------------
 
 Song Queue::pop()
 {
@@ -45,6 +36,10 @@ Song Queue::pop()
 	return returnA;
 }
 
+//------------------------------------------------------------------------------
+// Moves all entries down to start at index 0. Sets last index accordingly
+//------------------------------------------------------------------------------
+
 void Queue::moveDown()
 {
 	for(int i=0;i+first<=last;++i)
@@ -53,10 +48,12 @@ void Queue::moveDown()
 	first=0;
 }
 
+//------------------------------------------------------------------------------
+// when size reaches maximum it expands by 5
+//------------------------------------------------------------------------------
 
-void Queue::expand(const unsigned int step)
+void Queue::expand()
 {
-	cout << "expanding"<< endl;
 	queueSize+=5;
 	Song * tmp = queue;
 	queue = new Song[queueSize];
@@ -64,6 +61,10 @@ void Queue::expand(const unsigned int step)
 		queue[i]=tmp[i];
 	delete[] tmp;
 }
+
+//------------------------------------------------------------------------------
+// Chose to use syntax push_back. As the function adds song to the back.
+//------------------------------------------------------------------------------
 
 void Queue::push_back(Song song)
 {
@@ -73,24 +74,34 @@ void Queue::push_back(Song song)
 	queue[++last]=song;
 }
 
+//------------------------------------------------------------------------------
+// get amount of elements in queue
+//------------------------------------------------------------------------------
+
 const unsigned int Queue::size() const
 {
 	return last+1;
 }
+
+//------------------------------------------------------------------------------
+// Returns true if queue is empty
+//------------------------------------------------------------------------------
 
 bool Queue::isEmpty()
 {
 	return last==-1;
 }
 
+//------------------------------------------------------------------------------
+// Pop's all entries of list one at the time and "plays them" to terminal output
+//------------------------------------------------------------------------------
+
 void Queue::play()
 {
-
 	unsigned int i=0;
-
 	while(last!=-1)
 	{
-		pop().print(++i);
-		//this_thread::sleep_for(chrono::seconds(5)); // cross platform c++11
+		pop().print(++i);	// returns first element and deletes it
+		//this_thread::sleep_for(chrono::seconds(5)); // cross platform c++11 for singe threaded software
 	}
 }

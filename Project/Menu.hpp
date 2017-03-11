@@ -8,7 +8,7 @@
 class Menu
 {
 private:
-	vector <MenuItem> menues;
+	vector <MenuItem> menus;
 	string menuTitle;
 
 
@@ -23,7 +23,9 @@ public:
 	void addItem(string menuText,bool enabled);
 	void printMenuItems();
 	int getMenuChoice();
-	void toggle(int i);
+
+	void disable(size_t i);
+	void enable(size_t i);
 	void enableAll();
 };
 

@@ -23,7 +23,7 @@ private:
 	int first, last, queueSize;
 
 	void moveDown();			// move all down.
-	void expand(const unsigned int step=5);
+	void expand();
 
 public:
 

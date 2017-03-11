@@ -22,6 +22,7 @@ class Jukebox
 		Menu mainMenu,fileMenu,printMenu,playMenu;
 		Queue queue;
 		void createPlayList();
+		vector <string> createPlayList(vector <int> & choices);
 
 		void print();
 		void load();

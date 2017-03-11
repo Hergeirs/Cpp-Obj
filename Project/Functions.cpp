@@ -83,7 +83,7 @@ string & nameFormat(string & name)
 //------------------------------------------------------------------------------
 // Turns string into integer.... if not actually letters.
 //------------------------------------------------------------------------------
-int toInt(string & s)
+int toInt(string s)
 {
 	int i;
 	stringstream S(s);

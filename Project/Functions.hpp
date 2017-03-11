@@ -23,7 +23,7 @@ void getInt(int & i, string prompt="Enter integer: ");	// Function to get intege
 
 int getInt(string prompt="Enter Integer: ");								// Function overloaded to allow use in switch.
 
-int toInt(string & s);
+int toInt(string s);
 
 string toString (int to_b_string);
 

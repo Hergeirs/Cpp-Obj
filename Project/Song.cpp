@@ -2,7 +2,8 @@
 
 Song::Song()
 {
-	title="title";artist="artist";
+	title="title";
+	artist="artist";
 }
 
 Song::~Song()
@@ -25,15 +26,17 @@ const Time & Song::getTime() const
 	return time;
 }
 
-void Song::print(int i) const
+void Song::print(int i,bool simple) const
 {
-	centerText(toString(i)+" "+title);
+	const string delim=" | ";
+	centerText(toString(i)+" "+title+delim+artist+delim+getTime().getFormatTime(),' ','|',1,90);
 }
 
 void Song::setTitle(string pTitle)
 {
 	title=pTitle;
 }
+
 
 void Song::setArtist(string pArtist)
 {

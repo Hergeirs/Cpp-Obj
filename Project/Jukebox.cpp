@@ -286,11 +286,8 @@ void Jukebox::searchPrint(bool simplePrint) const
 	string searchFor;
 	getLine(searchFor,"Enter name of album to print: ");
 	unsigned int result = search(searchFor);
-	cout << result;
 	if (result!=albums.size())
-	{
 		albums[result].print();
-	}
 	else
 		printPrompt(searchFor+" was not found!");
 }
@@ -323,14 +320,82 @@ void Jukebox::play()
 				break;
 			case 3:
 				playList();
-				playMenu.toggle(3); //disabling playList when list is empty
+				playMenu.disable(3); //disabling playList when list is empty
 				break;
 			case 4:
 				return;				// exit condition
 		}
 		if (!queue.isEmpty())
-			playMenu.toggle(3); //enabling play choice when queue not empty
+			playMenu.enable(3); //enabling play choice when queue not empty
 	}while(true);
+}
+
+//------------------------------------------------------------------------------
+// remove everything that's not an integer from string.
+//------------------------------------------------------------------------------
+
+string removeNonInt(string & s)
+{
+	string unRecognized;
+	string newS="";
+	int i=-1;
+	while(++i<s.size())
+	{
+		if(isdigit(s[i]) || s[i]==' ')
+		{
+			newS.push_back(s[i]);
+		}
+		else
+			unRecognized.push_back(s[i]);
+	}
+		s=newS;
+	return unRecognized;
+}
+
+//------------------------------------------------------------------------------
+// replace a delim with another delim. In this case ',' with space
+//------------------------------------------------------------------------------
+
+void replaceDelim (string & s ,const char oldDelim = ',',const string newDelim=" ")
+{
+	int a = 0;
+	while ((a = s.find(oldDelim)) && a!=string::npos)
+		s.replace(a,1,newDelim);
+}
+
+//------------------------------------------------------------------------------
+// extract all integers from string with space as delim
+//------------------------------------------------------------------------------
+
+vector <int> getIntegers(string & s)	//no reference in case string must be reused
+{
+	int a;
+	vector <int> integers;
+	while((a = s.find(' ')) && !(s.empty())) // while s is not empty
+	{
+		integers.push_back(toInt(s.substr(0,a)));
+		if (a!=string::npos)	// delete found space as well.
+			++a;
+		s.erase(0,a);
+	}
+	return integers;
+}
+
+//------------------------------------------------------------------------------
+// Create playlist using vector of integers representing song-numbers.
+//------------------------------------------------------------------------------
+
+vector <string> Jukebox::createPlayList(vector <int> & choices)
+{
+	vector <string> notSongs;				// for error message
+	for (auto c :choices)
+	{
+		if(c<getAmountSongs() && c>0)
+			queue.push_back(getSong(c));
+		else
+			notSongs.push_back(toString(c));
+	}
+	return notSongs;
 }
 
 //------------------------------------------------------------------------------
@@ -339,36 +404,29 @@ void Jukebox::play()
 
 void Jukebox::createPlayList()
 {
+	string s, error;
 	printPrompt("Add song to playlist","Playlist",false,false);
-	int amountSongs = printSongList();
-	string s;
-	vector <int> choices;
-	int songNr;
-	size_t a;
-	getLine(s,"Enter song choices: ");
-	while ((a = s.find(',')) && a!=string::npos)
-		s.replace(a,1," ");
-	istringstream S(s);
-	vector <string> unidentified;
-	while(S >> songNr)
+	printSongList();
+	getLine(s,"Enter list of songs separated by comma:");
+	replaceDelim(s);						// replace all commas with spaces.
+	edgeTrim(s);							// remove excessive spaces.
+error = removeNonInt(s);					// removing wrong characters and return them
+	vector <int> choices=getIntegers(s);	//getting all integers in list.
+	vector <string> wrong = createPlayList(choices);
+
+	if(!error.empty() || !wrong.empty())
 	{
-		choices.push_back(songNr);	//Just testing whether all input is valid
-		S.clear();
-	}
-	printPrompt("Songs added: ","info!",false,false);
-	for (auto songNr:choices)
-	{
-		Song song;
-		if(songNr < amountSongs && songNr > 0)
+		if(!error.empty())
 		{
-			song=getSong(songNr);
-			queue.push_back(song);
-			song.print();
+			printPrompt("Unrecognized input's: ","error",false,true);
+			centerText("non integers: "+error,' ');
 		}
-		else
-			unidentified.push_back(toString (songNr));
+		if(!wrong.empty())
+		for (auto error :wrong)
+			centerText("Not valid choice: "+error,' ');
+		cout << endl;
 	}
-	return;
+		printPrompt(toString(queue.size())+" songs where added to queue","Songs added",true,false);
 }
 
 //------------------------------------------------------------------------------
@@ -383,9 +441,7 @@ void Jukebox::createRandomList()
 	uniform_int_distribution<int> distribution(1,getAmountSongs ());
 
 	for (int i=0;i<amount;++i)
-	{
 		queue.push_back(getSong( distribution(generator)));
-	}
 
 	printPrompt(toString(amount)+" Songs added to playlist.");
 }

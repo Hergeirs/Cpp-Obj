@@ -2,7 +2,7 @@
 
 Menu::Menu()
 {
-	menues = vector <MenuItem> ();
+	menus = vector <MenuItem> ();
 	//menuTitle=pMainTitle;
 }
 
@@ -18,7 +18,7 @@ const string & Menu::getMenuTitle() const
 
 MenuItem & Menu::getMenuItem(int index)
 {
-	return menues[index];
+	return menus[index];
 }
 
 void Menu:: setMenuTitle(string pMenuTitle)
@@ -29,14 +29,14 @@ void Menu:: setMenuTitle(string pMenuTitle)
 void Menu:: addItem(string menuText,bool enabled)
 {
 	MenuItem menuItem(menuText,enabled);
-	menues.push_back(menuItem);
+	menus.push_back(menuItem);
 }
 
 void Menu::printMenuItems()
 {
 int a=0;
 printPrompt(menuTitle,"Menu",false,false);
-	for (auto i: menues)
+	for (auto i: menus)
 			i.print(++a);
 }
 
@@ -45,7 +45,8 @@ int Menu::getMenuChoice()
 		int i;
 		cls();
 		printMenuItems();
-		while(((i=getInt("your Choice: ")) && (i<1)) || (i>int(menues.size()) || menues[i-1].getState()==false))
+		// while loop ensures i only get enabled and valid menu-choices from user
+		while(((i=getInt("your Choice: ")) && (i<1)) || (i>int(menus.size()) || menus[i-1].getState()==false))
 		{
 			printPrompt("Not valid choice!");
 			printMenuItems();
@@ -54,16 +55,20 @@ int Menu::getMenuChoice()
 	return i;
 }
 
-void Menu::toggle(int i)
+void Menu::enable(size_t i)
 {
-	menues[--i].toggle();
+	menus[--i].enable();
 }
 
+void Menu::disable(size_t i)
+{
+	menus[--i].disable();
+}
 
 void Menu::enableAll()
 {
-	for (uint i=0;i<menues.size();++i) // for some reason c++11 auto loop did not work here...
+	for (uint i=0;i<menus.size();++i) // for some reason c++11 auto loop did not work here...
 	{
-		menues[i].enable();
+		menus[i].enable();
 	}
 }
