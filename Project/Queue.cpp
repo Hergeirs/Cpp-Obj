@@ -18,7 +18,7 @@ Queue::~Queue()
 {
 	cout << "deleting Queue!" << endl;
 	delete[] queue;
-	queue=NULL;
+	queue = nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -98,10 +98,11 @@ bool Queue::isEmpty()
 
 void Queue::play()
 {
-	unsigned int i=0;
-	while(last!=-1)
+	if(last!=-1)
+		Song().print(0);
+	for(unsigned int i = 1;last!=-1;++i)
 	{
-		pop().print(++i);	// returns first element and deletes it
-		//this_thread::sleep_for(chrono::seconds(5)); // cross platform c++11 for singe threaded software
+		pop().print(i);	// returns first element and deletes it
+		this_thread::sleep_for(chrono::seconds(2)); // cross platform c++11 for singe threaded software
 	}
 }

@@ -37,7 +37,9 @@ void MenuItem::toggle()
 void MenuItem::print(int a) const
 {
 	if(enabled)
-		cout << a << ": " << setw(15) << left << menuText << endl;
+	{
+		centerText (menuText,' ', static_cast<char>(a+48),1,42);
+	}
 }
 
 void MenuItem::enable()

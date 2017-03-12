@@ -154,24 +154,29 @@ uint maxWidth = width+label.size()+3;
 		cls();
 	centerText(label,'*',' ',1,maxWidth);
 	centerText(prompt,' ','|',1,maxWidth);
-	centerText("*",'*',' ',0,maxWidth);
+	centerText("*",'*',' ',1,maxWidth);
 	if (pause)
 		systemPause();
+	cout << endl;
 }
 
 void centerText(string input, char fill, char edge, int padding,int width)
 {
-	cout.fill(fill);
+	cout << right << setfill(fill);
 
-	if (signed(input.size())+padding<width)
-		{
-			for(int a=0;a<padding;++a){input.push_back(' ');}	// right padding has priority
-			if (signed(input.size())+padding<width)
-				input.insert(0,padding,' ');
-		}
+	for (int tp=0 ;signed(input.size())<width && tp < padding; ++tp)
+	{
+		input.push_back(' '); // right padding has priority
+
+		if (input.size()+1 < width)
+			input.insert(0,1,' ');
+	}
 
 	unsigned int totalPadding = width-input.size();
-	cout << edge << setw((totalPadding/2)+input.size()) << input << setw(totalPadding-(totalPadding/2)) << edge << endl << setfill(' ');
+	cout << edge;
+	cout << setw((totalPadding/2)+input.size()) << input;
+	cout << setw(float(totalPadding-float(totalPadding/2))) << edge << endl;
+	cout << setfill(' ');
 }
 
 //------------------------------------------------------------------------------

@@ -15,6 +15,8 @@ const int & Time::getSeconds() const{return seconds;}
 
 const std::string Time::getFormatTime() const
 {
+	if (hours==0 && minutes == 0 && seconds == 0)
+		return "[hh:mm:ss]";
 	string time="";
 	if (hours!=0)
 	{
@@ -95,10 +97,10 @@ const bool Time::operator < (const Time & time) const
 
 const Time Time::operator = (const Time & time )
 {
-hours=time.getHours();
-minutes=time.getMinutes();
-seconds=time.getSeconds();
-return *this;
+	hours=time.getHours();
+	minutes=time.getMinutes();
+	seconds=time.getSeconds();
+	return *this;
 }
 
 const int Time::getTotalMinutes() const

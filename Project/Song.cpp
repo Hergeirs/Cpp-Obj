@@ -2,8 +2,8 @@
 
 Song::Song()
 {
-	title="title";
-	artist="artist";
+	title="Title";
+	artist="Artist";
 }
 
 Song::~Song()
@@ -30,9 +30,15 @@ void Song::print(int i,bool simple) const
 {
 	int width = 15;
 	const string delim=" | ";
-	if (i!=0)
-		cout << setw(3) << left << i;
-	cout << setw(50) << title << setw(width) << artist << setw(width) << right << time.getFormatTime() << delim << endl;
+	cout << left; // ensuring all songs start left-aligned
+	if (i==0)
+		cout << setw(3) << "Nr";
+	else
+		cout << setw(3) << i;
+	if (simple)
+		cout << setw(50) << title << setw(31) << delim << endl;
+	else
+		cout << setw(50) << title << setw(width) << artist << setw(width) << right << time.getFormatTime() << delim << endl;
 }
 
 void Song::setTitle(string pTitle)

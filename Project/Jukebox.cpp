@@ -45,18 +45,18 @@ Jukebox::~Jukebox()
 }
 
 //------------------------------------------------------------------------------
-// Function to Prompt user if he's sure.
+// Function to Prompt user if he's sure about deletion.
 //------------------------------------------------------------------------------
 
 void printSure(bool ALL=true)
 {
-	string what="THIS";
+	string what="THIS album?";
 	if (ALL)
-		what="ALL current";
+		what="ALL current albums?";
 	cout << "***********Warning!************" << endl;
 	cout << "   Enter integer for action" << endl;
 	cout << "Are you sure you want to delete." << endl;
-	cout << "     "+what+" albums?" << endl;
+	cout << "     "+what<< endl;
 	cout << "1: Yes" << endl;
 	cout << "0: Back to Menu" << endl;
 	cout << "*******************************" << endl;
@@ -64,12 +64,12 @@ void printSure(bool ALL=true)
 }
 
 //------------------------------------------------------------------------------
-// Function to to ask wether user's sure about deletion
+// Function to to ask whether user's sure about deletion
 //------------------------------------------------------------------------------
 
 bool sure(bool all=true)
 {
-	while (1)
+	while (true)
 	{
 		printSure(all);
 		switch (getInt())
@@ -235,7 +235,7 @@ void Jukebox::deleteAlbum()
 	{
 		printPrompt("Are you sure you want to delete: ");
 		albums[result].print();
-		if(sure(1))
+		if(sure(true))
 		{
 			albums.erase(albums.begin()+result);
 		}
@@ -336,10 +336,9 @@ void Jukebox::play()
 
 string removeNonInt(string & s)
 {
-	string unRecognized;
-	string newS="";
+	string newS, unRecognized;
 	int i=-1;
-	while(++i<s.size())
+	while(unsigned(++i)<s.size())
 	{
 		if(isdigit(s[i]) || s[i]==' ')
 		{
@@ -358,7 +357,7 @@ string removeNonInt(string & s)
 
 void replaceDelim (string & s ,const char oldDelim = ',',const string newDelim=" ")
 {
-	int a = 0;
+	size_t a = 0;
 	while ((a = s.find(oldDelim)) && a!=string::npos)
 		s.replace(a,1,newDelim);
 }
@@ -369,7 +368,7 @@ void replaceDelim (string & s ,const char oldDelim = ',',const string newDelim="
 
 vector <int> getIntegers(string & s)	//no reference in case string must be reused
 {
-	int a;
+	size_t a;
 	vector <int> integers;
 	while((a = s.find(' ')) && !(s.empty())) // while s is not empty
 	{
@@ -405,7 +404,7 @@ vector <string> Jukebox::createPlayList(vector <int> & choices)
 void Jukebox::createPlayList()
 {
 	string s, error;
-	printPrompt("Add song to playlist","Playlist",false,false);
+	printPrompt("Add song to playlist","Playlist",false,false,73);
 	printSongList();
 	getLine(s,"Enter list of songs separated by comma:");
 	replaceDelim(s);						// replace all commas with spaces.
@@ -465,8 +464,8 @@ void Jukebox::playList()
 
 const int Jukebox::printSongList() const
 {
+	Song().print(0);
 	int i=0;
-	cout << setw(3) << left << "Nr" << setw(50) << "Title" << setw(15) << "Artist" << setw(15) << right << "Length[hh:mm:ss]" << " | " << endl;
 	for (auto a:albums)
 		for (auto s:a.getSongs())
 			s.print(++i);

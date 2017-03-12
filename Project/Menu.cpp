@@ -35,9 +35,11 @@ void Menu:: addItem(string menuText,bool enabled)
 void Menu::printMenuItems()
 {
 int a=0;
-printPrompt(menuTitle,"Menu",false,false);
+printPrompt(menuTitle,"Menu",false,false,35);
 	for (auto i: menus)
-			i.print(++a);
+	{
+		i.print(++a);
+	}
 }
 
 int Menu::getMenuChoice()
@@ -45,13 +47,13 @@ int Menu::getMenuChoice()
 		int i;
 		cls();
 		printMenuItems();
-		// while loop ensures i only get enabled and valid menu-choices from user
+		// while loop ensures i only get enabled menus and valid menu-choices from user
 		while(((i=getInt("your Choice: ")) && (i<1)) || (i>int(menus.size()) || menus[i-1].getState()==false))
 		{
 			printPrompt("Not valid choice!");
 			printMenuItems();
 		}
-
+		cls();
 	return i;
 }
 
