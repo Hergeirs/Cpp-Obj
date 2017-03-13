@@ -35,10 +35,18 @@ void Menu:: addItem(string menuText,bool enabled)
 void Menu::printMenuItems()
 {
 int a=0;
-printPrompt(menuTitle,"Menu",false,false,35);
+size_t longest=0;
+for (auto t:menus)
+	if (longest < t.getMenuText().size())
+		longest = t.getMenuText().size();
+if (longest < menuTitle.size())
+	longest = menuTitle.size();
+longest+=4;
+
+printPrompt(menuTitle,"Menu",false,false,longest);
 	for (auto i: menus)
 	{
-		i.print(++a);
+		i.print(++a,longest);
 	}
 }
 

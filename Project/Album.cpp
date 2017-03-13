@@ -83,7 +83,7 @@ const bool Album::operator < (Album & other)
 
 const ostream & operator << (ostream & os,const Album & album)
 {
-	os << album.getName() << endl << album.getAmount();
+	os << album.getName() << endl << album.getAmount() << endl;
 	for (int i=0;i<album.getAmount();++i)
 	{
 		os << album.getSong(i);

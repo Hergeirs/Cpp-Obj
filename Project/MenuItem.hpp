@@ -14,7 +14,7 @@ class MenuItem
 	const string & getMenuText() const;
 	const bool getState() const;
 	void setMenuText(string & pMenuText);
-	void print(int b) const;
+	void print(int b,size_t width=42,size_t padding=0) const;
 
 	void toggle();
 	void enable();

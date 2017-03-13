@@ -9,11 +9,11 @@ Jukebox::Jukebox() // Default initializer
 {
 	//main menu
 	mainMenu.setMenuTitle("Main menu");
-	mainMenu.addItem("File...", true);
+	mainMenu.addItem("File", true);
 	mainMenu.addItem("Add an album", false);
 	mainMenu.addItem("Delete an album", false);
-	mainMenu.addItem("Print...",false);
-	mainMenu.addItem("Play...",false);
+	mainMenu.addItem("Print",false);
+	mainMenu.addItem("Play",false);
 	mainMenu.addItem("Exit",true);
 
 	//submenu file

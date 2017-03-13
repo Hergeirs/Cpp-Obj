@@ -34,11 +34,11 @@ void MenuItem::toggle()
 		enabled=false;
 }
 
-void MenuItem::print(int a) const
+void MenuItem::print(int a,size_t width, size_t padding) const
 {
 	if(enabled)
 	{
-		centerText (menuText,' ', static_cast<char>(a+48),1,42);
+		centerText (menuText,'_', static_cast<char>(a+48),1,width+7);
 	}
 }
 
