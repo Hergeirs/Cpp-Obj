@@ -65,7 +65,7 @@ void Song::print(int i,bool simple) const
 //------------------------------------------------------------------------------
 // function to set name of song.
 //------------------------------------------------------------------------------
-...
+
 void Song::setTitle(string pTitle)
 {
 	title=pTitle;
