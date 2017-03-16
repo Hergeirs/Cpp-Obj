@@ -14,11 +14,12 @@ class Time
 	public:
 	Time();
 	Time(int pHours, int pMinutes, int pSeconds):hours(pHours),minutes(pMinutes),seconds(pSeconds){}
+	Time(int getTotalSeconds);
 	~Time();
 	const int & getHours() const;
 	const int & getMinutes() const;
 	const int & getSeconds() const;
-	const int getTotalMinutes() const;
+	const int getTotalSeconds() const;
 
 	const string getFormatTime() const;
 

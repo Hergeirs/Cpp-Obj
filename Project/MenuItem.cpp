@@ -38,7 +38,7 @@ void MenuItem::print(int a,size_t width, size_t padding) const
 {
 	if(enabled)
 	{
-		centerText (menuText,'_', static_cast<char>(a+48),1,width+7);
+		centerMenuItem (menuText,'_','|',a,1,width);
 	}
 }
 

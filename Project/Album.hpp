@@ -11,26 +11,24 @@ class Album
 		vector <Song> songs;
 
 	public:
-		Album();
-		~Album();
-		void clear();
-		void print(bool simple = false) const;
-		const vector <Song> & getSongs() const;
-		const Song & getSong (int index) const;
-		const int getAmount() const;
-		const string & getName() const;
-		const int getTotalTime() const;
-		const string getFormatTime() const;
-		void setName(string pName);
-		void addSong(Song song);
+		Album();									//constructor.
+		~Album();									//destructor.
+		void clear();								//to clear songs from album.
+		void print(bool simple = false) const;		//print songs in album.
+		const vector <Song> & getSongs() const;		//gives vector with songs by reference.
+		const int getAmount() const;				//returns amount of songs in vector.
+		const string & getName() const;				//returns name of album.
+		const int getTotalTime() const;				//returns combined playing time of album (seconds).
+		const string getFormatTime() const;			//formats getFormatTime() output as string.
+		void setName(const string & pName);			//sets name of album using the inputted string.
+		void addSong(Song song);					//adds song to the vector.
 
 
 
-		//overloading operators
-		const bool operator < (Album & album);
-
+		//overloading comparison operator
+		const bool operator < (Album & album);		
 };
-
+// overloading if and ofstream for album objects.
 const ostream & operator << (ostream & os,const Album & album);
 const istream & operator >> (istream & is, Album & album);
 

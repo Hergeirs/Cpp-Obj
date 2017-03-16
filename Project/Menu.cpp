@@ -37,17 +37,19 @@ void Menu::printMenuItems()
 int a=0;
 size_t longest=0;
 for (auto t:menus)
-	if (longest < t.getMenuText().size())
+	if (t.getState() && longest < t.getMenuText().size())
 		longest = t.getMenuText().size();
-if (longest < menuTitle.size())
-	longest = menuTitle.size();
-longest+=4;
+longest = max(longest,menuTitle.size());
 
 printPrompt(menuTitle,"Menu",false,false,longest);
+cout << endl;
+centerText("",'_','.',0,longest);
+centerText("choices",'_','|',1,longest);	
+centerText("",' ','|',0,longest);	
 	for (auto i: menus)
-	{
 		i.print(++a,longest);
-	}
+centerText("",'_','|',0,longest);	
+
 }
 
 int Menu::getMenuChoice()

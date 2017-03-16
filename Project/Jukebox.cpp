@@ -71,7 +71,8 @@ bool sure(bool all=true)
 {
 	while (true)
 	{
-		printSure(all);
+		printPrompt("You will loose all current albums!","WARNING!",false,true,35);
+		printPrompt("0:Abort, 1:continue","are you sure?",false,false,35);
 		switch (getInt())
 		{
 		case 0:
@@ -341,9 +342,7 @@ string removeNonInt(string & s)
 	while(unsigned(++i)<s.size())
 	{
 		if(isdigit(s[i]) || s[i]==' ')
-		{
 			newS.push_back(s[i]);
-		}
 		else
 			unRecognized.push_back(s[i]);
 	}
@@ -404,12 +403,13 @@ vector <string> Jukebox::createPlayList(vector <int> & choices)
 void Jukebox::createPlayList()
 {
 	string s, error;
-	printPrompt("Add song to playlist","Playlist",false,false,73);
+	printPrompt("Add song to playlist","Playlist",false,false,80);
 	printSongList();
+
 	getLine(s,"Enter list of songs separated by comma:");
 	replaceDelim(s);						// replace all commas with spaces.
 	edgeTrim(s);							// remove excessive spaces.
-error = removeNonInt(s);					// removing wrong characters and return them
+	error = removeNonInt(s);				// removing wrong characters and return them
 	vector <int> choices=getIntegers(s);	//getting all integers in list.
 	vector <string> wrong = createPlayList(choices);
 
@@ -435,7 +435,7 @@ error = removeNonInt(s);					// removing wrong characters and return them
 void Jukebox::createRandomList()
 {
 	int amount;
-	getInt(amount,"Enter amount of songs to be added for album");
+	getInt(amount,"Enter amount of songs to be added to playlist: ");
 	default_random_engine generator((signed short int) time(0));
 	uniform_int_distribution<int> distribution(1,getAmountSongs ());
 
@@ -464,11 +464,13 @@ void Jukebox::playList()
 
 const int Jukebox::printSongList() const
 {
+	centerText("",'_','_',0,80);
 	Song().print(0);
 	int i=0;
 	for (auto a:albums)
 		for (auto s:a.getSongs())
 			s.print(++i);
+	centerText("",'_','_',0,80);
 	return i;
 }
 
@@ -487,7 +489,7 @@ const Song Jukebox::getSong(int i) const
 }
 
 //------------------------------------------------------------------------------
-// used to print list of songs of all albums. Takes option to print simple output
+// used to print list of albums and its' songs. Takes option to print simple output
 //------------------------------------------------------------------------------
 
 void Jukebox::printAll(bool simple) const

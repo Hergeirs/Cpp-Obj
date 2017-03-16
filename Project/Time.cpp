@@ -2,6 +2,11 @@
 
 Time::Time(){hours=0;minutes=0;seconds=0;}
 
+Time::Time(int totalSeconds)
+{
+	setTime(totalSeconds);
+}
+
 Time::~Time()
 {
 	//
@@ -21,15 +26,17 @@ const std::string Time::getFormatTime() const
 	if (hours!=0)
 	{
 		time+=toString(hours);
+		time+=TIMEDELIM;
 		if (minutes<10)
 			time+="0";
 	}
-	time+=TIMEDELIM;
 	if (minutes!=0)
+	{
 		time+=toString(minutes);
-	time+=TIMEDELIM;
-	if (seconds<10)
-			time+="0";
+		time+=TIMEDELIM;
+		if (seconds<10)
+				time+="0";
+	}
 	time+=toString(seconds);
 	return time;
 }
@@ -103,14 +110,14 @@ const Time Time::operator = (const Time & time )
 	return *this;
 }
 
-const int Time::getTotalMinutes() const
+const int Time::getTotalSeconds() const
 {
 	return 	(hours*60+minutes)*60+seconds;
 }
 
 const ostream & operator << (ostream & os,const Time & time)
 {
-	os << time.getTotalMinutes();
+	os << time.getTotalSeconds();
 	return os;
 }
 

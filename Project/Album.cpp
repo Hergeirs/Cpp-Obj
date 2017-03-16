@@ -1,4 +1,7 @@
 #include "Album.hpp"
+//------------------------------------------------------------------------------
+// Default constructor and destructor
+//------------------------------------------------------------------------------
 
 Album::Album()
 {
@@ -8,88 +11,133 @@ Album::Album()
 
 Album::~Album()
 {
+	//
 }
+
+//------------------------------------------------------------------------------
+// Function to clear list of songs
+//------------------------------------------------------------------------------
 
 void Album::clear()
 {
 	songs.clear();
 }
 
+//------------------------------------------------------------------------------
+// printing function takes bool to determine whether it should print all output
+//------------------------------------------------------------------------------
 void Album::print(bool simple) const
 {
-	int width=50;
-	printPrompt(name," Album name ",false,false);
+	int i=0;
+	printPrompt(name,"Album name",false,false,80);
+	centerText("",'_',' ',0,80);
+    cout << '|' << setw(70) << left << " Total playing time: " << setw(15) << right << getFormatTime() << " |" << endl;
+
 	if (!simple)
 	{
-		cout << setw(width) << left << "song title: " << setw(9) << right << "length" << endl;
+		Song().print(0,false);
 		for (auto s: songs)
 		{
-			cout << setw(width) << left << s.getTitle() << setw(9) << right << s.getTime().getFormatTime() << endl;
+			s.print(++i,false);
 		}
     }
-    cout << setw(width) << left << "Total playing time of "+name+":" << setw(9) << right << getFormatTime() << endl;
+	centerText("",'_','_',0,80);
     cout << endl;
 }
+
+//------------------------------------------------------------------------------
+// Function to get const song vector from album
+//------------------------------------------------------------------------------
 
 const vector <Song> & Album::getSongs() const
 {
 	return songs;
 }
 
-const Song & Album::getSong (int index) const
-{
-	return songs[index];
-}
-void Album::setName(string pName)
+//------------------------------------------------------------------------------
+// Set the name of album.
+//------------------------------------------------------------------------------
+
+void Album::setName(const string & pName)
 {
 	name=pName;
 }
+
+//------------------------------------------------------------------------------
+// add song to vector.
+//------------------------------------------------------------------------------
 
 void Album::addSong(Song song)
 {
 	songs.push_back(song);
 }
 
+//------------------------------------------------------------------------------
+// Get amount of songs in album. used to find total amount of songs. 
+//------------------------------------------------------------------------------
+
 const int Album::getAmount()const
 {
 	return songs.size();
 }
+
+//------------------------------------------------------------------------------
+// okkurt um funktiónina. Get the name of album. This is used for "<<" overload
+//------------------------------------------------------------------------------
 
 const string & Album::getName()const
 {
 	return name;
 }
 
+//------------------------------------------------------------------------------
+// Total time. Used to print.
+//------------------------------------------------------------------------------
+
 const int Album::getTotalTime() const
 {
 int totalTime=0;
 	for (auto s: songs)
-		totalTime+=s.getTime().getTotalMinutes();
+		totalTime+=s.getTime().getTotalSeconds();
 	return totalTime;
 }
 
+//------------------------------------------------------------------------------
+// get total time  of album formatted for printing as string.
+//------------------------------------------------------------------------------
+
 const string Album::getFormatTime() const
 {
-	Time totalTime;
-	for (auto s:songs)
-		totalTime=totalTime+s.getTime();
-	return totalTime.getFormatTime();
+	return Time(getTotalTime()).getFormatTime();
 }
+
+//------------------------------------------------------------------------------
+// operator overloadings
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// overloading for comparing albums using their total time.
+//------------------------------------------------------------------------------
 
 const bool Album::operator < (Album & other)
 {
 	return getTotalTime() < other.getTotalTime();
 }
 
+//------------------------------------------------------------------------------
+// overloading ofstream with operator '<<' for Album
+//------------------------------------------------------------------------------
+
 const ostream & operator << (ostream & os,const Album & album)
 {
 	os << album.getName() << endl << album.getAmount() << endl;
-	for (int i=0;i<album.getAmount();++i)
-	{
-		os << album.getSong(i);
-	}
+	for (auto s: album.getSongs())
+		os << s;
 	return os;
 }
+
+//------------------------------------------------------------------------------
+// overloading ifstream with operator '>>' for album
+//------------------------------------------------------------------------------
 
 const istream & operator >> (istream & is, Album & album)
 {
@@ -104,4 +152,3 @@ const istream & operator >> (istream & is, Album & album)
 		album.addSong(song);
 	return is;
 }
-

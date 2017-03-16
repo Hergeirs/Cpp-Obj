@@ -130,7 +130,7 @@ void getLine(string &s,string prompt)
 	while (cout << endl << prompt && getline(cin,s)) // input output loop.
 	{
 		edgeTrim(s); //stripping spaces in ends of string.
-		if (s=="") // making sure input won't be empty.
+		if (s.empty()) // making sure input won't be empty.
 		{
 			cout << endl << "Input can't be empty..." << endl;
 			continue;
@@ -144,27 +144,49 @@ void getLine(string &s,string prompt)
 // Function for printing warnings and prompts.
 //------------------------------------------------------------------------------
 
-void printPrompt(string prompt, string label, bool pause, bool clear,int width)
+void printPrompt(string prompt, string label, bool pause, bool clear,size_t width)
 {
-if (width==0)
-	width = prompt.size();
-
-uint maxWidth = width+label.size()+3;
+	if(width < max(prompt.size(),label.size()))
+		width = max(prompt.size(),label.size());
 	if(clear)
 		cls();
-	centerText(label,'*',' ',1,maxWidth);
-	centerText(prompt,' ','|',1,maxWidth);
-	centerText("*",'*',' ',1,maxWidth);
+	centerText("",'_','_',0,width);
+	centerText(label,'_','|',1,width);
+	centerText(prompt,' ','|',1,width);
+	centerText("",'_','|',0,width);
 	if (pause)
 		systemPause();
-	cout << endl;
 }
 
-void centerText(string input, char fill, char edge, int padding,int width)
+//------------------------------------------------------------------------------
+// Center menu choices with index at the sides
+//------------------------------------------------------------------------------
+
+void centerMenuItem(string input, char fill, char edge, int index, int padding,size_t width)
 {
 	cout << right << setfill(fill);
+	width+=7;
+	for (int tp=0 ;input.size()<width && tp < padding; ++tp)
+	{
+		input.push_back(' '); // right padding has priority
 
-	for (int tp=0 ;signed(input.size())<width && tp < padding; ++tp)
+		if (input.size()+1 < width)
+			input.insert(0,1,' ');
+	}
+
+	unsigned int totalPadding = width-input.size();
+	cout << edge << index;
+	cout << setw((totalPadding/2)+input.size()-1) << input;
+	cout << setw(float(totalPadding-float(totalPadding/2))-1) << index << edge << endl;
+	cout << setfill(' ');
+}
+
+
+void centerText(string input, char fill, char edge, int padding,size_t width)
+{
+	cout << right << setfill(fill);
+	width+=7;
+	for (int tp=0 ;input.size()<width && tp < padding; ++tp)
 	{
 		input.push_back(' '); // right padding has priority
 
