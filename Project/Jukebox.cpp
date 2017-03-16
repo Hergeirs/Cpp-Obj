@@ -45,25 +45,6 @@ Jukebox::~Jukebox()
 }
 
 //------------------------------------------------------------------------------
-// Function to Prompt user if he's sure about deletion.
-//------------------------------------------------------------------------------
-
-void printSure(bool ALL=true)
-{
-	string what="THIS album?";
-	if (ALL)
-		what="ALL current albums?";
-	cout << "***********Warning!************" << endl;
-	cout << "   Enter integer for action" << endl;
-	cout << "Are you sure you want to delete." << endl;
-	cout << "     "+what<< endl;
-	cout << "1: Yes" << endl;
-	cout << "0: Back to Menu" << endl;
-	cout << "*******************************" << endl;
-	cout << endl;
-}
-
-//------------------------------------------------------------------------------
 // Function to to ask whether user's sure about deletion
 //------------------------------------------------------------------------------
 
@@ -237,9 +218,7 @@ void Jukebox::deleteAlbum()
 		printPrompt("Are you sure you want to delete: ");
 		albums[result].print();
 		if(sure(true))
-		{
 			albums.erase(albums.begin()+result);
-		}
 	}
 	else
 		printPrompt(searchFor+" was not found!","Error",false,false);
@@ -494,8 +473,11 @@ const Song Jukebox::getSong(int i) const
 
 void Jukebox::printAll(bool simple) const
 {
-	for (auto a:albums)
+	for_each(albums.begin(),albums.end(), //the mandatory for_each usage.
+	[simple](const Album & a)
+	{
 		a.print(simple);
+	});	
 }
 
 //------------------------------------------------------------------------------
@@ -505,7 +487,7 @@ void Jukebox::printAll(bool simple) const
 
 const int Jukebox::getAmountSongs() const
 {
-int amountSongs=0;
+	int amountSongs=0;
 	for (auto album:albums)
 		amountSongs+=album.getAmount();
 	return amountSongs;
@@ -527,10 +509,8 @@ void Jukebox::Sort(Sorts sortBy)
 				});
 			break;
 		case BYTIME:
-			sort(albums.begin(),albums.end());
+			sort(albums.begin(),albums.end()); //using default '<' overloading
 			break;
-		default:
-			printPrompt("No such sort");
 	}
 }
 

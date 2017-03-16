@@ -1,30 +1,31 @@
 #include "Menu.hpp"
 
+//------------------------------------------------------------------------------
+// Default constructor initializes menus as empty vector with MenuItem dataType
+//------------------------------------------------------------------------------
+
 Menu::Menu()
 {
 	menus = vector <MenuItem> ();
-	//menuTitle=pMainTitle;
 }
 
 Menu::~Menu()
 {
-	//
+	// nothing to do here...
 }
 
-const string & Menu::getMenuTitle() const
-{
-	return menuTitle;
-}
-
-MenuItem & Menu::getMenuItem(int index)
-{
-	return menus[index];
-}
+//------------------------------------------------------------------------------
+// setMenuTitle used for setting name
+//------------------------------------------------------------------------------
 
 void Menu:: setMenuTitle(string pMenuTitle)
 {
 	menuTitle=pMenuTitle;
 }
+
+//------------------------------------------------------------------------------
+// adds menuItem to menu list takes bool to set enabled state.
+//------------------------------------------------------------------------------
 
 void Menu:: addItem(string menuText,bool enabled)
 {
@@ -32,25 +33,33 @@ void Menu:: addItem(string menuText,bool enabled)
 	menus.push_back(menuItem);
 }
 
+//------------------------------------------------------------------------------
+// Prints all enabled menuitems in menu.
+//------------------------------------------------------------------------------
+
 void Menu::printMenuItems()
 {
-int a=0;
-size_t longest=0;
-for (auto t:menus)
-	if (t.getState() && longest < t.getMenuText().size())
-		longest = t.getMenuText().size();
-longest = max(longest,menuTitle.size());
+	int a=0;
+	size_t longest=0;
+	for (auto t:menus)
+		if (t.getState() && longest < t.getMenuText().size())
+			longest = t.getMenuText().size();
+	longest = max(longest,menuTitle.size());
 
-printPrompt(menuTitle,"Menu",false,false,longest);
-cout << endl;
-centerText("",'_','.',0,longest);
-centerText("choices",'_','|',1,longest);	
-centerText("",' ','|',0,longest);	
+	printPrompt(menuTitle,"Menu",false,false,longest);
+	cout << endl;
+	centerText("",'_','.',0,longest);
+	centerText("choices",'_','|',1,longest);	
+	centerText("",' ','|',0,longest);	
 	for (auto i: menus)
 		i.print(++a,longest);
-centerText("",'_','|',0,longest);	
+	centerText("",'_','|',0,longest);	
 
 }
+
+//------------------------------------------------------------------------------
+// Function to choice from user. Restricts choices to enabled menuitems
+//------------------------------------------------------------------------------
 
 int Menu::getMenuChoice()
 {
@@ -67,20 +76,30 @@ int Menu::getMenuChoice()
 	return i;
 }
 
+//------------------------------------------------------------------------------
+// enables menuchoice nr i
+//------------------------------------------------------------------------------
+
 void Menu::enable(size_t i)
 {
 	menus[--i].enable();
 }
+
+//------------------------------------------------------------------------------
+// disables menuchoice nr i
+//------------------------------------------------------------------------------
 
 void Menu::disable(size_t i)
 {
 	menus[--i].disable();
 }
 
+//------------------------------------------------------------------------------
+// enables all menuitems
+//------------------------------------------------------------------------------
+
 void Menu::enableAll()
 {
-	for (uint i=0;i<menus.size();++i) // for some reason c++11 auto loop did not work here...
-	{
-		menus[i].enable();
-	}
+	for (auto & i: menus)
+		i.enable();
 }

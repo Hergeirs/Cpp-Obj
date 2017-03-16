@@ -16,7 +16,6 @@ public:
 	Menu();
 	~Menu();
 
-	const string & getMenuTitle() const;
 	MenuItem & getMenuItem (int index);
 	void setMenuTitle(string pMenuTitle);
 

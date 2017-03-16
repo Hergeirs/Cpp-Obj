@@ -63,7 +63,7 @@ void Song::print(int i,bool simple) const
 }
 
 //------------------------------------------------------------------------------
-// function to set name of song.
+// memberfunction to set name of song.
 //------------------------------------------------------------------------------
 
 void Song::setTitle(string pTitle)
@@ -71,20 +71,31 @@ void Song::setTitle(string pTitle)
 	title=pTitle;
 }
 
+//------------------------------------------------------------------------------
+// memberfunction to set name of artist. used by non member/friend functions.
+//------------------------------------------------------------------------------
+
 void Song::setArtist(string pArtist)
 {
 	artist=pArtist;
 }
 
+//------------------------------------------------------------------------------
+// set time. used by non member functions. ifstream and jukebox functions
+//------------------------------------------------------------------------------
+
 void Song::setTime(Time & pTime)
 {
 	time=pTime;
 }
-
-void Song::setTime(int minutes)
+void Song::setTime(int seconds)
 {
-	time.setTime(minutes);
+	time.setTime(seconds);
 }
+
+//------------------------------------------------------------------------------
+// in/out file overloadings for song objects
+//------------------------------------------------------------------------------
 
 const ostream & operator << (ostream & os,const  Song & song)
 {

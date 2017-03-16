@@ -1,22 +1,63 @@
 #include "Time.hpp"
 
-Time::Time(){hours=0;minutes=0;seconds=0;}
+//------------------------------------------------------------------------------
+// default time constructor.
+//------------------------------------------------------------------------------
+
+Time::Time()
+{
+	hours=0;
+	minutes=0;
+	seconds=0;
+}
+
+//------------------------------------------------------------------------------
+// implicit constructor takes totalSeconds
+//------------------------------------------------------------------------------
 
 Time::Time(int totalSeconds)
 {
 	setTime(totalSeconds);
 }
 
+
 Time::~Time()
 {
-	//
+	//Just good form to include.
 }
 
-const int & Time::getHours() const{return hours;}
+//------------------------------------------------------------------------------
+// Apropriate get-functions
+//------------------------------------------------------------------------------
 
-const int & Time::getMinutes() const{return minutes;}
+const int & Time::getHours() const
+{
+	return hours;
+}
 
-const int & Time::getSeconds() const{return seconds;}
+const int & Time::getMinutes() const
+{
+	return minutes;
+}
+
+const int & Time::getSeconds() const
+{
+	return seconds;
+}
+
+
+//------------------------------------------------------------------------------
+// returns the total time in seconds. used for non-member/friend functions.
+//------------------------------------------------------------------------------
+
+const int Time::getTotalSeconds() const
+{
+	return 	(hours*60+minutes)*60+seconds;
+}
+
+//------------------------------------------------------------------------------
+// gives a string with the time formatted as requested.
+//------------------------------------------------------------------------------
 
 const std::string Time::getFormatTime() const
 {
@@ -41,6 +82,29 @@ const std::string Time::getFormatTime() const
 	return time;
 }
 
+//------------------------------------------------------------------------------
+// Apropriate set functions
+//------------------------------------------------------------------------------
+
+void Time::setHours(int pHours)
+{
+	hours=pHours;
+}
+
+void Time::setMinutes(int pMinutes)
+{
+	minutes=pMinutes;
+}
+
+void Time::setSeconds(int pSeconds)
+{
+	seconds=pSeconds;
+}
+
+//------------------------------------------------------------------------------
+// Set time using total seconds
+//------------------------------------------------------------------------------
+
 void Time::setTime(int tSeconds)
 {
 	hours=tSeconds/(60*60);
@@ -48,11 +112,14 @@ void Time::setTime(int tSeconds)
 	seconds=tSeconds-minutes*60-hours*60*60;
 }
 
-void Time::setHours(int pHours){hours=pHours;}
 
-void Time::setMinutes(int pMinutes){minutes=pMinutes;}
+//------------------------------------------------------------------------------
+// operator overloadings
+//------------------------------------------------------------------------------
 
-void Time::setSeconds(int pSeconds){seconds=pSeconds;}
+//------------------------------------------------------------------------------
+// overloading addition of two time object
+//------------------------------------------------------------------------------
 
 Time Time::operator + (Time time) const
 {
@@ -74,6 +141,10 @@ Time Time::operator + (Time time) const
 	return result;
 }
 
+//------------------------------------------------------------------------------
+// overloading of equality operator between two time objects
+//------------------------------------------------------------------------------
+
 const bool Time::operator == (const Time & time) const
 {
 	if	(hours==time.hours)
@@ -82,6 +153,10 @@ const bool Time::operator == (const Time & time) const
 				return true;
 	return false;
 }
+
+//------------------------------------------------------------------------------
+// overloading less than ("<") compare operator between two time objects
+//------------------------------------------------------------------------------
 
 const bool Time::operator < (const Time & time) const
 {
@@ -102,6 +177,10 @@ const bool Time::operator < (const Time & time) const
 	return false;
 }
 
+//------------------------------------------------------------------------------
+// overloading assignment operator to assign a time object from another one
+//------------------------------------------------------------------------------
+
 const Time Time::operator = (const Time & time )
 {
 	hours=time.getHours();
@@ -110,16 +189,23 @@ const Time Time::operator = (const Time & time )
 	return *this;
 }
 
-const int Time::getTotalSeconds() const
-{
-	return 	(hours*60+minutes)*60+seconds;
-}
+//------------------------------------------------------------------------------
+// Non memberfunction overloadings:
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Ostream overloading for Time object.
+//------------------------------------------------------------------------------
 
 const ostream & operator << (ostream & os,const Time & time)
 {
 	os << time.getTotalSeconds();
 	return os;
 }
+
+//------------------------------------------------------------------------------
+// istream overloading for Time object.
+//------------------------------------------------------------------------------
 
 const istream & operator >> (istream & is,Time & time)
 {
