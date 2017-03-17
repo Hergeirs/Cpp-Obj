@@ -47,7 +47,6 @@ void Menu::printMenuItems()
 	longest = max(longest,menuTitle.size());
 
 	printPrompt(menuTitle,"Menu",false,false,longest);
-	cout << endl;
 	centerText("",'_','.',0,longest);
 	centerText("choices",'_','|',1,longest);	
 	centerText("",' ','|',0,longest);	
@@ -63,16 +62,17 @@ void Menu::printMenuItems()
 
 int Menu::getMenuChoice()
 {
-		int i;
+	int i;
+	cls();
+	printMenuItems();
+	// while loop ensures i only get enabled menus and valid menu-choices from user
+	while(((i=getInt("your Choice: ")) && (i<1)) || (i>int(menus.size()) || menus[i-1].getState()==false))
+	{
+		printPrompt("Not valid choice!");
 		cls();
 		printMenuItems();
-		// while loop ensures i only get enabled menus and valid menu-choices from user
-		while(((i=getInt("your Choice: ")) && (i<1)) || (i>int(menus.size()) || menus[i-1].getState()==false))
-		{
-			printPrompt("Not valid choice!");
-			printMenuItems();
-		}
-		cls();
+	}
+	cls();
 	return i;
 }
 

@@ -19,6 +19,8 @@ enum Sorts
 class Jukebox
 {
 	private:
+		const string FILENAME="Jukebox";
+
 		vector <Album> albums;						//Jukebox needs albums
 		Menu mainMenu,fileMenu,printMenu,playMenu; // constructing menus.
 		
@@ -30,7 +32,7 @@ class Jukebox
 		//choice 1
 		void load();
 		//choice 2
-		void save(string fileName="Juketest")const;	
+		void save()const;	
 		
 		// Main menu-choices 1 and 2
 		void addAlbum();
@@ -58,8 +60,6 @@ class Jukebox
 		vector <string> createPlayList(vector <int> & choices);
 		void Sort(Sorts sortBy);
 
-
-
 		// function to print all songs in jukebox in a list with corresponding index
 		const int printSongList() const;
 		// Function to get amount of song's total in jukebox
@@ -70,7 +70,8 @@ class Jukebox
 		// Function to search for given albumName. Returns index of album if found. 
 		// else it returns unvalid index (size()) of array.
 		unsigned int search (const string & albumName) const;
-
+		
+		vector <Song> makeSongs(size_t amountSongs);
 
 	// All necessary public functions.
 	public:

@@ -12,6 +12,7 @@ class Album
 
 	public:
 		Album();									//constructor.
+		Album(string & albumName, vector <Song> pSongs);
 		~Album();									//destructor.
 		void clear();								//to clear songs from album.
 		void print(bool simple = false) const;		//print songs in album.
@@ -21,8 +22,8 @@ class Album
 		const int getTotalTime() const;				//returns combined playing time of album (seconds).
 		const string getFormatTime() const;			//formats getFormatTime() output as string.
 		void setName(const string & pName);			//sets name of album using the inputted string.
-		void addSong(Song song);					//adds song to the vector.
-
+		void addSongs(vector <Song> & addSongs);		//adds song to the vector.
+		void addSong(Song song);
 
 
 		//overloading comparison operator

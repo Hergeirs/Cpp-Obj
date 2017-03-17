@@ -98,11 +98,14 @@ bool Queue::isEmpty()
 
 void Queue::play()
 {
-	if(last!=-1)
-		Song().print(0);
+	printPrompt("...Playing...","Playlist",false,true,80);
+	Song().print(0);
 	for(unsigned int i = 1;last!=-1;++i)
 	{
 		pop().print(i);	// returns first element and deletes it
 		this_thread::sleep_for(chrono::seconds(2)); // cross platform c++11 for singe threaded software
 	}
+	centerText("",'_','|',0,80);
+	systemPause("Playlist reached end. Press enter to continue...");
+
 }

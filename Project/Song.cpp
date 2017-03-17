@@ -9,6 +9,10 @@ Song::Song()
 	title="Title";
 	artist="Artist";
 }
+Song::Song(string & pTitle,string & pArtist, size_t totalSeconds):title(pTitle),artist(pArtist)
+{
+	time=Time(totalSeconds);
+}
 //Destructor... not needed just good form to include
 Song::~Song()
 {

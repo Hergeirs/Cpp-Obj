@@ -9,6 +9,8 @@ Album::Album()
 	name="not found";
 }
 
+Album::Album(string & albumName, vector <Song> pSongs):name(albumName),songs(pSongs){}
+
 Album::~Album()
 {
 	//
@@ -29,19 +31,19 @@ void Album::clear()
 void Album::print(bool simple) const
 {
 	int i=0;
-	printPrompt(name,"Album name",false,false,80);
-	centerText("",'_',' ',0,80);
-    cout << '|' << setw(70) << left << " Total playing time: " << setw(15) << right << getFormatTime() << " |" << endl;
+	printPrompt("Total time: "+getFormatTime(),name,false,false,80);
+
+   // cout << '|' << setw(70) << left << " Total playing time: " << setw(15) << right << getFormatTime() << " |" << endl;
 
 	if (!simple)
 	{
+		centerText("",'_',' ',0,80);
 		Song().print(0,false);
-		for (auto s: songs)
-		{
+		for (auto & s: songs)
 			s.print(++i,false);
-		}
-    }
-	centerText("",'_','_',0,80);
+		centerText("",'_','|',0,80);
+	}
+	
     cout << endl;
 }
 
@@ -61,6 +63,15 @@ const vector <Song> & Album::getSongs() const
 void Album::setName(const string & pName)
 {
 	name=pName;
+}
+
+//------------------------------------------------------------------------------
+// add songs to vector.
+//------------------------------------------------------------------------------
+
+void Album::addSongs(vector <Song> & addSongs)
+{
+	songs=addSongs;
 }
 
 //------------------------------------------------------------------------------

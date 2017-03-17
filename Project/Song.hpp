@@ -13,6 +13,7 @@ class Song
 
 	public:
 	Song();
+	Song(string & pTitle,string & pArtist, size_t totalSeconds);
 	~Song();
 	const string & getTitle() const;
 	const string & getArtist() const;

@@ -32,15 +32,15 @@ Jukebox::Jukebox() // Default initializer
 
 	//submenu play
 	playMenu.setMenuTitle("Play menu");
-	playMenu.addItem("Create a play list from songs",true);
-	playMenu.addItem("Create a random list",true);
-	playMenu.addItem("Play list",false);
+	playMenu.addItem("Add songs to playlist",true);
+	playMenu.addItem("Add amount of random songs to playlist",true);
+	playMenu.addItem("Play playlist",false);
 	playMenu.addItem("Back to main menu",true);
 }
 
 Jukebox::~Jukebox()
 {
-	//don't need deconstruct as all types in all subclasses don't need one
+	//don't need deconstruct as all types in all variables don't need one here.
 }
 
 //------------------------------------------------------------------------------
@@ -49,9 +49,12 @@ Jukebox::~Jukebox()
 
 bool sure(bool all=true)
 {
+	string which=" this album";
+	if	(all)
+		which=" all current albums";
 	while (true)
 	{
-		printPrompt("You will loose all current albums!","WARNING!",false,true,35);
+		printPrompt("You will loose"+which+"!","WARNING!",false,true,35);
 		printPrompt("0:Abort, 1:continue","are you sure?",false,false,35);
 		switch (getInt())
 		{
@@ -139,7 +142,7 @@ void Jukebox::load()
 	albums.clear(); 				//Need to clear out albums already in list.
 	Album album;
 	int amountAlbums=0;
-	ifstream is("Juketest");
+	ifstream is(FILENAME);
 	if(is.is_open())
 		while (is >> album)
 		{
@@ -155,9 +158,9 @@ void Jukebox::load()
 // Saves to same file we loaded from
 //------------------------------------------------------------------------------
 
-void Jukebox::save(string fileName) const
+void Jukebox::save() const
 {
-	ofstream os("Juketest");
+	ofstream os(FILENAME);
 	int amountAlbums=0;
 	if(os.is_open())
 		for (auto a: albums)
@@ -166,13 +169,30 @@ void Jukebox::save(string fileName) const
 	printPrompt(to_string(amountAlbums)+" Albums where saved.");
 }
 
+vector <Song> Jukebox::makeSongs(size_t amountSongs)
+{
+	printPrompt("So far");
+	vector <Song> songs;
+	string songTitle,artist;
+	printPrompt(to_string(amountSongs));
+	for (size_t i=0;i<amountSongs && cout << "less than i" << endl;++i && cout << "Maybe mistake?" << endl)
+	{
+		printPrompt("In loop");
+		getLine(songTitle,"Name of song "+to_string(i+1)+": ");
+		getLine(artist,"Name of artist");
+		songs.push_back(Song(songTitle,artist,getInt("Length of song (seconds): ")));
+		printPrompt("Song added");
+	}
+	return songs;
+}
+
 //------------------------------------------------------------------------------
 // Add an album to vector using keyboard input.
 //------------------------------------------------------------------------------
 
 void Jukebox::addAlbum()
 {
-	string albumName,songTitle,artist;
+	string albumName;
 
 	bool found=false;
 	do
@@ -180,27 +200,15 @@ void Jukebox::addAlbum()
 		getLine(albumName,"Enter name of album: ");
 		found=search(albumName)!=albums.size();
 		if(found)
-			printPrompt("Album named "+ albumName+" already exists in list!");
+			printPrompt("Album named "+albumName+" already exists in list!");
 	}while(found);
-
-	uint amountSongs=getInt("Enter amount of songs in album: ");
-	Album album;
-	album.setName(albumName);
-	Song tmpSong;
-
-
-	for (uint i=0;i<amountSongs;++i)
-	{
-		getLine(songTitle,"Name of song : "+to_string(i+1));
-		getLine(artist,"Name of artist");
-		int songLength=getInt("Length of song (seconds): ");
-		tmpSong.setTitle(songTitle);
-		tmpSong.setArtist(artist);
-		tmpSong.setTime(songLength);
-		album.addSong(tmpSong);
-		printPrompt("Song added");
-	}
-	albums.push_back(album);
+	uint amountSongs;
+	while((amountSongs=getInt("Enter amount of songs in album: ")) && amountSongs<1){};
+	Album newAlbum(albumName,makeSongs(amountSongs));
+	albums.push_back(newAlbum);
+	printprompt("Album added!","info!",false);
+	newAlbum.print();
+	systemPause();
 }
 
 //------------------------------------------------------------------------------
@@ -282,6 +290,19 @@ void Jukebox::print(Sorts sortBy,bool simple)
 }
 
 //------------------------------------------------------------------------------
+// used to print list of albums and their songs. Takes option to print simple output
+//------------------------------------------------------------------------------
+
+void Jukebox::printAll(bool simple) const
+{
+	for_each(albums.begin(),albums.end(), //the mandatory for_each usage.
+	[simple](const Album & a)
+	{
+		a.print(simple);
+	});	
+}
+
+//------------------------------------------------------------------------------
 // submenu switch play
 //------------------------------------------------------------------------------
 
@@ -306,6 +327,7 @@ void Jukebox::play()
 		}
 		if (!queue.isEmpty())
 			playMenu.enable(3); //enabling play choice when queue not empty
+		
 	}while(true);
 }
 
@@ -383,8 +405,8 @@ void Jukebox::createPlayList()
 	string s, error;
 	printPrompt("Add song to playlist","Playlist",false,false,80);
 	printSongList();
-
-	getLine(s,"Enter list of songs separated by comma:");
+	cout << "NB:all Non integers will be ignored!" << endl;
+	getLine(s,"Enter list of songs by entering their number's separated by comma: ");
 	replaceDelim(s);						// replace all commas with spaces.
 	edgeTrim(s);							// remove excessive spaces.
 	error = removeNonInt(s);				// removing wrong characters and return them
@@ -395,15 +417,14 @@ void Jukebox::createPlayList()
 	{
 		if(!error.empty())
 		{
-			printPrompt("Unrecognized input's: ","error",false,true);
-			centerText("non integers: "+error,' ');
+			printPrompt("Unrecognized inputs: ","error",false,true,80);
+			centerText("non integers: "+error,' ','|',0,80);
 		}
 		if(!wrong.empty())
 		for (auto error :wrong)
-			centerText("Not valid choice: "+error,' ');
-		cout << endl;
+			centerText("Not valid choice: "+error,' ','|',1,80);
 	}
-		printPrompt(to_string(queue.size())+" songs where added to queue","Songs added",true,false);
+		printPrompt(to_string(queue.size())+" songs where added to queue","Songs added",true,false,80);
 }
 
 //------------------------------------------------------------------------------
@@ -412,7 +433,7 @@ void Jukebox::createPlayList()
 
 void Jukebox::createRandomList()
 {
-	int amount;
+	int amount; // Chose to use random generator. Not copy and shuffle vector.
 	getInt(amount,"Enter amount of songs to be added to playlist: ");
 	default_random_engine generator((signed short int) time(0));
 	uniform_int_distribution<int> distribution(1,getAmountSongs ());
@@ -430,7 +451,6 @@ void Jukebox::createRandomList()
 void Jukebox::playList()
 {
 	queue.play();
-	systemPause("Playlist reached end...");
 }
 
 //------------------------------------------------------------------------------
@@ -445,8 +465,8 @@ const int Jukebox::printSongList() const
 	centerText("",'_','_',0,80);
 	Song().print(0);
 	int i=0;
-	for (auto a:albums)
-		for (auto s:a.getSongs())
+	for (auto & a:albums)
+		for (auto & s:a.getSongs())
 			s.print(++i);
 	centerText("",'_','_',0,80);
 	return i;
@@ -459,25 +479,14 @@ const int Jukebox::printSongList() const
 const Song Jukebox::getSong(int i) const
 {
 	int n=0;
-	for (auto a:albums)
-		for (auto s: a.getSongs())
+	for (auto & a:albums)
+		for (auto & s:a.getSongs())
 			if(++n==i)
 				return s;
 	return Song(); //returning empty song if choice is invalid.
 }
 
-//------------------------------------------------------------------------------
-// used to print list of albums and its' songs. Takes option to print simple output
-//------------------------------------------------------------------------------
 
-void Jukebox::printAll(bool simple) const
-{
-	for_each(albums.begin(),albums.end(), //the mandatory for_each usage.
-	[simple](const Album & a)
-	{
-		a.print(simple);
-	});	
-}
 
 //------------------------------------------------------------------------------
 // returns total amount of songs in jukebox. Used for random creation of list
