@@ -54,7 +54,7 @@ bool sure(bool all=true)
 		which=" all current albums";
 	while (true)
 	{
-		printPrompt("You will loose"+which+"!","WARNING!",false,true,35);
+		printPrompt("You will loose"+which+"!","WARNING!",false,false,35);
 		printPrompt("0:Abort, 1:continue","are you sure?",false,false,35);
 		switch (getInt())
 		{
@@ -179,7 +179,7 @@ vector <Song> Jukebox::makeSongs(size_t amountSongs)
 	{
 		printPrompt("In loop");
 		getLine(songTitle,"Name of song "+to_string(i+1)+": ");
-		getLine(artist,"Name of artist");
+		getLine(artist,"Name of artist: ");
 		songs.push_back(Song(songTitle,artist,getInt("Length of song (seconds): ")));
 		printPrompt("Song added");
 	}
@@ -206,7 +206,8 @@ void Jukebox::addAlbum()
 	while((amountSongs=getInt("Enter amount of songs in album: ")) && amountSongs<1){};
 	Album newAlbum(albumName,makeSongs(amountSongs));
 	albums.push_back(newAlbum);
-	printprompt("Album added!","info!",false);
+	printPrompt("Album added!","info!",false,true,80);
+	cout << endl;
 	newAlbum.print();
 	systemPause();
 }
@@ -222,9 +223,9 @@ void Jukebox::deleteAlbum()
 	unsigned int result = search(searchFor);
 	if (result!=albums.size())
 	{
-		printPrompt("Are you sure you want to delete: ");
+		
 		albums[result].print();
-		if(sure(true))
+		if(sure(false))
 			albums.erase(albums.begin()+result);
 	}
 	else
@@ -276,7 +277,7 @@ void Jukebox::searchPrint(bool simplePrint) const
 	if (result!=albums.size())
 		albums[result].print();
 	else
-		printPrompt(searchFor+" was not found!");
+		printPrompt(searchFor+" was not found!","info!",false);
 }
 
 //------------------------------------------------------------------------------

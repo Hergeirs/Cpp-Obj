@@ -37,7 +37,7 @@ void Album::print(bool simple) const
 
 	if (!simple)
 	{
-		centerText("",'_',' ',0,80);
+		centerText("songs",'_',' ',1,80);
 		Song().print(0,false);
 		for (auto & s: songs)
 			s.print(++i,false);
