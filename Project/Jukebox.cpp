@@ -171,13 +171,11 @@ void Jukebox::save() const
 
 vector <Song> Jukebox::makeSongs(size_t amountSongs)
 {
-	printPrompt("So far");
 	vector <Song> songs;
 	string songTitle,artist;
 	printPrompt(to_string(amountSongs));
-	for (size_t i=0;i<amountSongs && cout << "less than i" << endl;++i && cout << "Maybe mistake?" << endl)
+	for (size_t i=0;i<amountSongs;++i)
 	{
-		printPrompt("In loop");
 		getLine(songTitle,"Name of song "+to_string(i+1)+": ");
 		getLine(artist,"Name of artist: ");
 		songs.push_back(Song(songTitle,artist,getInt("Length of song (seconds): ")));
