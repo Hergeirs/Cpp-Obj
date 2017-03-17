@@ -35,6 +35,7 @@ int getInt(string prompt) // overloaded for convenience (use in switch)
 //------------------------------------------------------------------------------
 // Function to change the case of string using ascii char values overloaded
 //------------------------------------------------------------------------------
+
 char toCase(char to_case, bool toLowercase=true)  // takes/returns char
 {
 	if (toLowercase)
@@ -62,44 +63,6 @@ void toCase (string & to_Case, bool tolowercase)
 	{
 		to_Case[i]=toCase(to_Case[i]);
 	}
-}
-
-//------------------------------------------------------------------------------
-// Function to format names.
-//------------------------------------------------------------------------------
-string & nameFormat(string & name)
-{
-	edgeTrim(name);
-	toCase(name);											// making all lowercase
-	name[0] = toCase(name[0],0);                          	// making first char capital
-	for (unsigned int i = 2; i < name.size(); i += 1)   	// making every char after a space capital
-		if (name[i-1]==' ')
-			name [i] = toCase(name[i],0);
-	return name;
-}
-
-//------------------------------------------------------------------------------
-// Turns string into integer.... if not actually letters.
-//------------------------------------------------------------------------------
-int toInt(string s)
-{
-	int i;
-	stringstream S(s);
-	S>>i;
-
-	return i;
-}
-//------------------------------------------------------------------------------
-// Function to make integer into string.
-//------------------------------------------------------------------------------
-
-string toString (int to_b_string)
-{
-	string stringie;
-	stringstream s;
-	s << to_b_string;
-	s >> stringie;
-	return stringie;
 }
 
 //------------------------------------------------------------------------------
@@ -159,7 +122,7 @@ void printPrompt(string prompt, string label, bool pause, bool clear,size_t widt
 }
 
 //------------------------------------------------------------------------------
-// Center menu choices with index at the sides
+// Center menu choices with index at the sides(almost the same as centerText below)
 //------------------------------------------------------------------------------
 
 void centerMenuItem(string input, char fill, char edge, int index, int padding,size_t width)
@@ -203,6 +166,7 @@ void centerText(string input, char fill, char edge, int padding,size_t width)
 
 //------------------------------------------------------------------------------
 // Emulate system("Pause") from windows. * have to press enter to continue though.
+// cross-platform even !
 //------------------------------------------------------------------------------
 
 void systemPause(string prompt)
@@ -212,11 +176,11 @@ void systemPause(string prompt)
 }
 
 //------------------------------------------------------------------------------
-// Clear screen by spewing many endl.
+// Clear screen by spewing amount of endl.
 //------------------------------------------------------------------------------
 
-void cls(uint newlines)
+void cls(uint amountNewlines)
 {
-	for (unsigned int i = 0; i < newlines; ++i)
+	for (unsigned int i = 0; i < amountNewlines; ++i)
 		cout << endl;
 }

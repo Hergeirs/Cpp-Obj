@@ -1,5 +1,4 @@
 #include "Jukebox.hpp"
-#include <algorithm>
 
 //------------------------------------------------------------------------------
 // Default constructor
@@ -148,7 +147,7 @@ void Jukebox::load()
 			album.clear(); //empty album for refill.
 			++amountAlbums;
 		}
-	printPrompt(toString(amountAlbums)+" Albums where loaded.");
+	printPrompt(to_string(amountAlbums)+" Albums where loaded.");
 	is.close();
 }
 
@@ -164,7 +163,7 @@ void Jukebox::save(string fileName) const
 		for (auto a: albums)
 			os << a && ++amountAlbums;
 	os.close();
-	printPrompt(toString(amountAlbums)+" Albums where saved.");
+	printPrompt(to_string(amountAlbums)+" Albums where saved.");
 }
 
 //------------------------------------------------------------------------------
@@ -192,7 +191,7 @@ void Jukebox::addAlbum()
 
 	for (uint i=0;i<amountSongs;++i)
 	{
-		getLine(songTitle,"Name of song : "+toString(i+1));
+		getLine(songTitle,"Name of song : "+to_string(i+1));
 		getLine(artist,"Name of artist");
 		int songLength=getInt("Length of song (seconds): ");
 		tmpSong.setTitle(songTitle);
@@ -251,7 +250,7 @@ void Jukebox::print()
 			print(BYTIME,true);
 			break;
 		case 6:
-			return;	 // exiting in case 5
+			return;	 // exiting
 	}
 	systemPause ();
 	}while(true);
@@ -350,7 +349,7 @@ vector <int> getIntegers(string & s)	//no reference in case string must be reuse
 	vector <int> integers;
 	while((a = s.find(' ')) && !(s.empty())) // while s is not empty
 	{
-		integers.push_back(toInt(s.substr(0,a)));
+		integers.push_back(stoi(s.substr(0,a)));
 		if (a!=string::npos)	// delete found space as well.
 			++a;
 		s.erase(0,a);
@@ -370,7 +369,7 @@ vector <string> Jukebox::createPlayList(vector <int> & choices)
 		if(c<=getAmountSongs() && c>0)
 			queue.push_back(getSong(c));
 		else
-			notSongs.push_back(toString(c));
+			notSongs.push_back(to_string(c));
 	}
 	return notSongs;
 }
@@ -404,7 +403,7 @@ void Jukebox::createPlayList()
 			centerText("Not valid choice: "+error,' ');
 		cout << endl;
 	}
-		printPrompt(toString(queue.size())+" songs where added to queue","Songs added",true,false);
+		printPrompt(to_string(queue.size())+" songs where added to queue","Songs added",true,false);
 }
 
 //------------------------------------------------------------------------------
@@ -421,7 +420,7 @@ void Jukebox::createRandomList()
 	for (int i=0;i<amount;++i)
 		queue.push_back(getSong( distribution(generator)));
 
-	printPrompt(toString(amount)+" Songs added to playlist.");
+	printPrompt(to_string(amount)+" Songs added to playlist.");
 }
 
 //------------------------------------------------------------------------------
@@ -435,7 +434,7 @@ void Jukebox::playList()
 }
 
 //------------------------------------------------------------------------------
-// Utility functions. (functions used by main functions.
+// Utility functions. (functions used by main functions)
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 // Function to print list of all songs to chose from. With choice number.
@@ -516,12 +515,12 @@ void Jukebox::Sort(Sorts sortBy)
 
 //------------------------------------------------------------------------------
 // Searches for album using album name as search string
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 unsigned int Jukebox::search (const string & albumName) const
 {
 	auto it = find_if(albums.begin(),albums.end(),
-		[&albumName](const Album & a)
+		[&albumName](const Album & a)	// capturing albumname into lambda function.
 		{
 			return toCase(a.getName())==toCase(albumName);
 		});

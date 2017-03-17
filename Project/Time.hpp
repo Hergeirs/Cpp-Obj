@@ -2,6 +2,8 @@
 #define TIME
 
 #include "Functions.hpp"
+#include <fstream> // write/read from files
+
 
 class Time
 {

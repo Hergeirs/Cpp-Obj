@@ -66,19 +66,19 @@ const std::string Time::getFormatTime() const
 	string time="";
 	if (hours!=0)
 	{
-		time+=toString(hours);
+		time+=to_string(hours);
 		time+=TIMEDELIM;
 		if (minutes<10)
 			time+="0";
 	}
 	if (minutes!=0)
 	{
-		time+=toString(minutes);
+		time+=to_string(minutes);
 		time+=TIMEDELIM;
 		if (seconds<10)
 				time+="0";
 	}
-	time+=toString(seconds);
+	time+=to_string(seconds);
 	return time;
 }
 
@@ -211,7 +211,7 @@ const istream & operator >> (istream & is,Time & time)
 {
 	string minutes;
 	getline(is,minutes);
-	int totalMinutes=toInt(minutes);
+	int totalMinutes=stoi(minutes);
 	time.setTime(totalMinutes);
 	return is;
 }

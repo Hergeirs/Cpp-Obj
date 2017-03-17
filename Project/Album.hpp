@@ -2,7 +2,7 @@
 #define ALBUM
 
 #include "Song.hpp"
-#include <iostream>
+#include <vector> // vector
 
 class Album
 {

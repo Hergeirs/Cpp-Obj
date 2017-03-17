@@ -7,8 +7,8 @@
 #define VECTORCLASS
 #include "Song.hpp"
 
-#include <chrono> // used for waiting a few seconds before continuing.
-#include <thread>
+#include <chrono> 	// used for waiting a few seconds before continuing.
+#include <thread>	// used for threadmanipulation
 
 //------------------------------------------------------------------------------
 // Queue class
