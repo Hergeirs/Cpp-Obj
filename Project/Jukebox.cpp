@@ -218,7 +218,7 @@ void Jukebox::deleteAlbum()
 {
 	string searchFor;
 	getLine(searchFor,"Enter name of album to delete: ");
-	unsigned int result = search(searchFor);
+	uint result = search(searchFor);
 	if (result!=albums.size())
 	{
 		
@@ -271,7 +271,7 @@ void Jukebox::searchPrint(bool simplePrint) const
 {
 	string searchFor;
 	getLine(searchFor,"Enter name of album to print: ");
-	unsigned int result = search(searchFor);
+	uint result = search(searchFor);
 	if (result!=albums.size())
 		albums[result].print();
 	else
@@ -525,7 +525,7 @@ void Jukebox::Sort(Sorts sortBy)
 // Searches for album using album name as search string
 //------------------------------------------------------------------------------
 
-unsigned int Jukebox::search (const string & albumName) const
+uint Jukebox::search (const string & albumName) const
 {
 	auto it = find_if(albums.begin(),albums.end(),
 		[&albumName](const Album & a)	// capturing albumname into lambda function.

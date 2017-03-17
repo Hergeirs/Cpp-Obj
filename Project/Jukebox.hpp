@@ -69,7 +69,7 @@ class Jukebox
 
 		// Function to search for given albumName. Returns index of album if found. 
 		// else it returns unvalid index (size()) of array.
-		unsigned int search (const string & albumName) const;
+		uint search (const string & albumName) const;
 		
 		vector <Song> makeSongs(size_t amountSongs);
 

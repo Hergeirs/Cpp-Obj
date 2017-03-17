@@ -36,7 +36,7 @@ public:
 
 	bool isEmpty();
 
-	const unsigned int size () const;
+	const uint size () const;
 };
 
 

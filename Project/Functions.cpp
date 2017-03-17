@@ -51,7 +51,7 @@ char toCase(char to_case, bool toLowercase=true)  // takes/returns char
 
 string toCase (string to_Case,bool toLowercase)		// does not affect input string.
 {	// Takes/returns string. uses overloaded functinon for individual chars
-	for (unsigned int n = 0; n < to_Case.size(); n += 1)
+	for (uint n = 0; n < to_Case.size(); n += 1)
 		to_Case[n] = toCase(to_Case[n],toLowercase);
 	edgeTrim(to_Case);
 	return to_Case;
@@ -59,7 +59,7 @@ string toCase (string to_Case,bool toLowercase)		// does not affect input string
 
 void toCase (string & to_Case, bool tolowercase)
 {
-	for (unsigned int i = 0; i < to_Case.size(); ++i)
+	for (uint i = 0; i < to_Case.size(); ++i)
 	{
 		to_Case[i]=toCase(to_Case[i]);
 	}
@@ -73,11 +73,11 @@ void edgeTrim(string &s)
 {
 	if (!s.empty())
 	{
-		for (unsigned int i = 0; s[i]==' '; ++i) // removing frontal spaces
+		for (uint i = 0; s[i]==' '; ++i) // removing frontal spaces
 		{
 			s.erase(i);
 		}
-		for (unsigned int i = s.size()-1; s[i]==' '; --i) //removing trailing spaces
+		for (uint i = s.size()-1; s[i]==' '; --i) //removing trailing spaces
 		{
 			s.erase(i);
 		}
@@ -133,7 +133,7 @@ void centerText(string input, char fill, char edge, int padding,size_t width)
 			input.insert(0,1,' ');
 	}
 
-	unsigned int totalPadding = width-input.size();
+	uint totalPadding = width-input.size();
 	cout << edge;
 	cout << setw((totalPadding/2)+input.size()) << input;
 	cout << setw(float(totalPadding-float(totalPadding/2))) << edge << endl;
@@ -157,6 +157,6 @@ void systemPause(string prompt)
 
 void cls(uint amountNewlines)
 {
-	for (unsigned int i = 0; i < amountNewlines; ++i)
+	for (uint i = 0; i < amountNewlines; ++i)
 		cout << endl;
 }

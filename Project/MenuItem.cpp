@@ -16,7 +16,7 @@ void centerMenuItem(string input, char fill, char edge, int index, int padding,s
 			input.insert(0,1,' ');
 	}
 
-	unsigned int totalPadding = width-input.size();
+	uint totalPadding = width-input.size();
 	cout << edge << index;
 	cout << setw((totalPadding/2)+input.size()-1) << input;
 	cout << setw(float(totalPadding-float(totalPadding/2))-1) << index << edge << endl;
