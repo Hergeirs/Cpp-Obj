@@ -21,7 +21,7 @@ Queue::Queue(int size)
 //------------------------------------------------------------------------------
 //   Precondition: queue must not be full.
 //   Postcondition: integer will be added to back of queue.
-void Queue::enqueue(Type elem)
+void Queue::enqueue(const Type elem)
 {		
 	if (!full()) //if queue is not full
 	{
@@ -65,7 +65,7 @@ void Queue::dequeue(Type &elem)
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: returns amount of elements in queue.
-int Queue::length() const
+const int Queue::length() const
 {
 	return nElem;
 }
@@ -106,7 +106,7 @@ bool Queue::full() const
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: returns true if queue is full. Otherwise returns false.
-bool Queue::full() const
+const bool Queue::full() const
 {
 	return (nElem == maxElem);
 }
@@ -116,7 +116,7 @@ bool Queue::full() const
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: returns true if queue is empty. Otherwise returns false.
-bool Queue::empty() const
+const bool Queue::empty() const
 {
 	return (nElem==0);
 }
@@ -126,7 +126,7 @@ bool Queue::empty() const
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: returns max capacity of current queue.
-int Queue::capacity() const
+const int Queue::capacity() const
 {
 	return maxElem;
 }

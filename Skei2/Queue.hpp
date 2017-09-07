@@ -17,21 +17,18 @@ class Queue
 		int maxElem;
 	public:
 		Queue(int size = QSIZE);
-
-		void enqueue(Type elem);
-
-		void dequeue(Type &elem);
+	
+		void enqueue(const Type elem);  //queues integer
+		void dequeue(Type &elem);		//de-queues integer
 		
-		int length() const;
+		const int length() const;		//returns length of queue
+		const bool full() const;		//returns wether queue is full
+		const bool empty() const;		//returns wether queue is empty
+		const int capacity() const;		//returns size of array
 
-		bool full() const;
-		
-		bool empty() const;
+		void print() const;				//prints queue
 
-		int capacity() const;
-
-		void print() const;
-
+		//debug methods
 		void printStatus() const;
 		void printStraight() const;
 

@@ -8,12 +8,13 @@
 TestApp::TestApp(size_t pSize):size(pSize)
 {
 	menu.setMenuTitle("TestApp");
-	menu.addItem("Create queue",true);
+	menu.addItem("Create new queue",true);
 	menu.addItem("Add to queue",false);
 	menu.addItem("Take from queue",false);
 	menu.addItem("Check if queue is empty",false);
 	menu.addItem("Check if queue is full",false);
 	menu.addItem("Show number of elements contained in queue",false);
+	menu.addItem("Show maximum capacity of current queue",false);
 	menu.addItem("Show queue",false);
 	menu.addItem("Quit",true);
 }
@@ -28,7 +29,7 @@ void TestApp::createQueue()
 {
 	int size;
 	getInt(size,"enter queue size: ");
-	std::unique_ptr <Queue> temp;
+	std::unique_ptr <Queue> temp(new Queue(size));
 	queue = std::move(temp);
 }
 
@@ -108,8 +109,8 @@ void TestApp::empty() const
 	if (!queue->empty())
 	{
 		s="not ";
-		printPrompt("Queue is "+s+"empty","empty");
 	}
+	printPrompt("Queue is "+s+"empty","empty");
 }
 
 //------------------------------------------------------------------------------
@@ -123,8 +124,8 @@ void TestApp::full() const
 	if (!queue->full())
 	{
 		s="not ";
-		printPrompt("Queue is "+s+"full","full");
 	}
+	printPrompt("Queue is "+s+"full","full");
 }
 
 //------------------------------------------------------------------------------
@@ -153,7 +154,7 @@ void TestApp::capacity() const
 //------------------------------------------------------------------------------
 //   Precondition: menuobtion must exist
 //   Postcondition: calls function from menu with integer.
-void TestApp::doMenuOption(int option)
+void TestApp::doMenuOption(const int option)
 {
 	switch(option)
 	{
