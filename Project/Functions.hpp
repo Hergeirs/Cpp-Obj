@@ -22,8 +22,10 @@ void edgeTrim(string &s);								// Function to remove unnessesary whitespace.
 
 // Functions to take user input.
 void getLine(string &s,string prompt);					// Function to ensure input string not empty.
-void getInt(int & i, string prompt="Enter integer: ");	// Function to get integer from user (Not allowing empty input).
+
 int getInt(string prompt="Enter Integer: ");			// Function overloaded to allow use in switch.
+
+void getInt(int & i, string prompt="Enter integer: ");	// Function to get integer from user (Not allowing empty input).
 
 // Formatted output-functions
 void printPrompt(string prompt, string label="info!", bool pause=true, bool clear=true,size_t=0);

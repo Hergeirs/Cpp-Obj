@@ -3,12 +3,15 @@
 //------------------------------------------------------------------------------
 // Default constructor initializes menus as empty vector with MenuItem dataType
 //------------------------------------------------------------------------------
-
+//   Precondition: -
+//   Postcondition: empty Menu object is created
 Menu::Menu()
 {
 	menus = vector <MenuItem> ();
 }
 
+//   Precondition:  Menu object must exist.
+//   Postcondition:  Menu object is deleted from memory.
 Menu::~Menu()
 {
 	// nothing to do here...
@@ -17,7 +20,8 @@ Menu::~Menu()
 //------------------------------------------------------------------------------
 // setMenuTitle used for setting name
 //------------------------------------------------------------------------------
-
+//   Precondition: -
+//   Postcondition:  menu title set.
 void Menu:: setMenuTitle(string pMenuTitle)
 {
 	menuTitle=pMenuTitle;
@@ -26,7 +30,8 @@ void Menu:: setMenuTitle(string pMenuTitle)
 //------------------------------------------------------------------------------
 // adds menuItem to menu list takes bool to set enabled state.
 //------------------------------------------------------------------------------
-
+//   Precondition:  -
+//   Postcondition:  menu option i is created.
 void Menu:: addItem(string menuText,bool enabled)
 {
 	MenuItem menuItem(menuText,enabled);
@@ -36,7 +41,8 @@ void Menu:: addItem(string menuText,bool enabled)
 //------------------------------------------------------------------------------
 // Prints all enabled menuitems in menu.
 //------------------------------------------------------------------------------
-
+//   Precondition:  -.
+//   Postcondition:  prints all menuItem titles in a fasionable manner.
 void Menu::printMenuItems()
 {
 	int a=0;
@@ -59,7 +65,8 @@ void Menu::printMenuItems()
 //------------------------------------------------------------------------------
 // Function to choice from user. Restricts choices to enabled menuitems
 //------------------------------------------------------------------------------
-
+//   Precondition:  i is valid integer choice for enabled menuItem.
+//   Postcondition:  menu option i is returned.
 int Menu::getMenuChoice()
 {
 	int i;
@@ -79,7 +86,8 @@ int Menu::getMenuChoice()
 //------------------------------------------------------------------------------
 // enables menuchoice nr i
 //------------------------------------------------------------------------------
-
+//   Precondition:  i <= menuItems.size() -- just enter menu option number.
+//   Postcondition:  menu option i is enabled.
 void Menu::enable(size_t i)
 {
 	menus[--i].enable();
@@ -88,7 +96,8 @@ void Menu::enable(size_t i)
 //------------------------------------------------------------------------------
 // disables menuchoice nr i
 //------------------------------------------------------------------------------
-
+//   Precondition:  i <= menuItems.size() -- just enter menu option number.
+//   Postcondition:  menu option i is disabled.
 void Menu::disable(size_t i)
 {
 	menus[--i].disable();
@@ -97,7 +106,8 @@ void Menu::disable(size_t i)
 //------------------------------------------------------------------------------
 // enables all menuitems
 //------------------------------------------------------------------------------
-
+//   Precondition:  i <= menuItems.size()
+//   Postcondition:  All menuoptions are visible.
 void Menu::enableAll()
 {
 	for (auto & i: menus)

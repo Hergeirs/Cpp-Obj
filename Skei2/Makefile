@@ -1,5 +1,8 @@
-projectdir=~/Projects/Cpp-Obj/Project
-FILES=main.cpp TestApp.cpp ${projectdir}/Functions.cpp ${projectdir}/Menu.cpp ${projectdir}/MenuItem.cpp
+FILES=main.cpp Queue.cpp TestApp.cpp Functions.cpp Menu.cpp MenuItem.cpp
 FLAGS=-std=c++11 -Wall -pedantic
+OUTFILE=main
+
 all:
-	g++ ${FILES} -o main ${FLAGS}
+	g++ ${FILES} -o ${OUTFILE} ${FLAGS}
+run:
+	./${OUTFILE}
