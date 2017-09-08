@@ -19,7 +19,6 @@ TestApp::TestApp(size_t pSize):size(pSize)
 	menu.addItem("Quit",true);
 }
 
-
 //------------------------------------------------------------------------------
 // Function to create dynamic Queue object with user specified size.
 //------------------------------------------------------------------------------
@@ -29,6 +28,7 @@ void TestApp::createQueue()
 {
 	int size;
 	getInt(size,"enter queue size: ");
+
 	std::unique_ptr <Queue> temp(new Queue(size));
 	queue = std::move(temp);
 }
@@ -44,8 +44,7 @@ void TestApp::run()
 	bool quit=false;
 	while(quit==false)
 	{
-		doMenuOption(menu.getMenuChoice());
-		queue->printStatus();
+		quit=doMenuOption(menu.getMenuChoice());
 	}
 }
 
@@ -154,7 +153,7 @@ void TestApp::capacity() const
 //------------------------------------------------------------------------------
 //   Precondition: menuobtion must exist
 //   Postcondition: calls function from menu with integer.
-void TestApp::doMenuOption(const int option)
+bool TestApp::doMenuOption(const int option)
 {
 	switch(option)
 	{
@@ -184,6 +183,7 @@ void TestApp::doMenuOption(const int option)
 			printQueue();
 			break;
 		case 9:
-			exit(0);
+			return true;
 	}
+	return false;
 }

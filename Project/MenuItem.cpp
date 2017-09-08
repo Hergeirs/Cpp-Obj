@@ -34,11 +34,11 @@ MenuItem::MenuItem(string & pMenuText,bool pEnabled)
 	enabled=pEnabled;
 }
 
-MenuItem::~MenuItem()
+/*MenuItem::~MenuItem()
 {
 	//
 }
-
+*/
 //------------------------------------------------------------------------------
 // Returns Menuitem label as string
 //------------------------------------------------------------------------------

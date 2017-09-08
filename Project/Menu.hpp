@@ -15,7 +15,7 @@ private:
 
 public:
 	Menu();
-	~Menu();
+	//~Menu();
 
 	MenuItem & getMenuItem (int index);
 	void setMenuTitle(string pMenuTitle);

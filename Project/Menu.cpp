@@ -12,10 +12,10 @@ Menu::Menu()
 
 //   Precondition:  Menu object must exist.
 //   Postcondition:  Menu object is deleted from memory.
-Menu::~Menu()
+/*Menu::~Menu()
 {
 	// nothing to do here...
-}
+}*/
 
 //------------------------------------------------------------------------------
 // setMenuTitle used for setting name

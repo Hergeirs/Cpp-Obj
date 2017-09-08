@@ -11,13 +11,13 @@ class Queue
 {
 	private:
 		std::unique_ptr<int[]> smartPtr;
+		
 		int head;
 		int tail;
 		int nElem;
 		int maxElem;
 	public:
 		Queue(int size = QSIZE);
-	
 		void enqueue(const Type elem);  //queues integer
 		void dequeue(Type &elem);		//de-queues integer
 		

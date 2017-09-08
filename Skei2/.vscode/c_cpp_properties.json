@@ -13,7 +13,8 @@
                 "path": [
                     "/home/hergeir/Projects/Cpp-Obj/Project",
                     "/usr/include",
-                    "/usr/local/include"
+                    "/usr/local/include",
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -29,17 +30,18 @@
                 "/usr/lib/clang/4.0.1/include",
                 "/usr/include",
                 "~/Projects/Cpp-Obj/Project"
-
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
+                    "/home/hergeir/Projects/Cpp-Obj/Project",
                     "/usr/include/c++/7.1.1",
                     "/usr/include/c++/7.1.1/x86_64-pc-linux-gnu",
                     "/usr/local/include",
                     "/usr/lib/clang/4.0.1/include",
-                    "/usr/include"
+                    "/usr/include",
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
@@ -58,11 +60,13 @@
             "intelliSenseMode": "msvc-x64",
             "browse": {
                 "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*"
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             }
         }
-    ]
+    ],
+    "version": 2
 }

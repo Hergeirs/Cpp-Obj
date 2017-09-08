@@ -25,14 +25,7 @@ void Queue::enqueue(const Type elem)
 {		
 	if (!full()) //if queue is not full
 	{
-		if((tail+1)<maxElem) // if 'circulation' isn't needed
-		{	
-			++tail;
-		}
-		else	//'circulation' occurs
-		{
-			tail=0;
-		}
+		tail = (tail+1)%maxElem;
 		smartPtr[tail]=elem;	//inserting element in back of queue.
 		++nElem;				//incrementing number of elements.
 	}
@@ -48,7 +41,7 @@ void Queue::dequeue(Type &elem)
 	if(!empty())
 	{
 		elem=smartPtr[head];
-		if ((head+1)<maxElem && std::cout << "hello!" << std::endl)
+		if ((head+1)<maxElem)
 		{
 			++head;
 		}

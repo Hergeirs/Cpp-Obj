@@ -14,7 +14,7 @@ private:
 // Main menu
     Menu menu;
 
-    void doMenuOption(const int option); //contains switch to call menuoptions
+    bool doMenuOption(const int option); //contains switch to call menuoptions
 
 // Menu-options
 	void createQueue(); 		//creates dynamic queue object
