@@ -15,7 +15,6 @@ TestApp::TestApp(size_t pSize):size(pSize)
 	menu.addItem("Check if queue is full",false);
 	menu.addItem("Show number of elements contained in queue",false);
 	menu.addItem("Show maximum capacity of current queue",false);
-	menu.addItem("Show queue",false);
 	menu.addItem("Quit",true);
 }
 
@@ -27,7 +26,10 @@ TestApp::TestApp(size_t pSize):size(pSize)
 void TestApp::createQueue()
 {
 	int size;
-	getInt(size,"enter queue size: ");
+	do
+	{
+		getInt(size,"enter queue size (must be more than 1): ");
+	} while (size<1); 	//a size under 1 is illegal and doesn't make sense (defensive programming)
 
 	std::unique_ptr <Queue> temp(new Queue(size));
 	queue = std::move(temp);
@@ -46,16 +48,6 @@ void TestApp::run()
 	{
 		quit=doMenuOption(menu.getMenuChoice());
 	}
-}
-
-//------------------------------------------------------------------------------
-// Function to peek at current queue.
-//------------------------------------------------------------------------------
-//   Precondition: -
-//   Postcondition: prints queue on screen.
-void TestApp::printQueue() const
-{
-	queue->print();
 }
 
 //------------------------------------------------------------------------------
@@ -180,9 +172,6 @@ bool TestApp::doMenuOption(const int option)
 			capacity();
 			break;
 		case 8:
-			printQueue();
-			break;
-		case 9:
 			return true;
 	}
 	return false;

@@ -1,16 +1,15 @@
 #include "Queue.hpp"
 #include "Functions.hpp"
-
+#include<initializer_list>
 
 //------------------------------------------------------------------------------
 // Default constructor. Using quickassign for array so I won't need temp unique_ptr.
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: Queue object with user specified capacity will be created.
-Queue::Queue(int size)
-:smartPtr(new int[size])
+Queue::Queue(size_t size)
+:queue(new int[size]),maxElem(size)
 {
-	maxElem=size;
 	head=0;	 // first element in array.
 	tail=-1; // starting with -1 removes a special case in enqueue.
 	nElem=0; // nElem keeps track of amount of integers in array.
@@ -26,7 +25,7 @@ void Queue::enqueue(const Type elem)
 	if (!full()) //if queue is not full
 	{
 		tail = (tail+1)%maxElem;
-		smartPtr[tail]=elem;	//inserting element in back of queue.
+		queue[tail]=elem;	//inserting element in back of queue.
 		++nElem;				//incrementing number of elements.
 	}
 }
@@ -40,7 +39,7 @@ void Queue::dequeue(Type &elem)
 {
 	if(!empty())
 	{
-		elem=smartPtr[head];
+		elem=queue[head];
 		if ((head+1)<maxElem)
 		{
 			++head;
@@ -62,37 +61,6 @@ const int Queue::length() const
 {
 	return nElem;
 }
-
-/*
-int Queue::length() const
-{
-	int len;
-	if(head > tail)
-	{
-		len = (maxElem-1)-(head-tail);
-	}
-	else
-	{
-		len = tail-head+1;
-	}
-	return len;
-}
-*/
-/*
-bool Queue::full() const
-{
-	bool full;
-	if(std::cout << "hello" << std::endl && head > tail && std::cout << "hello" << std::endl)
-	{
-		full = (head-tail==1);
-	}
-	else
-	{
-		full = (tail-head+1==maxElem);
-	}
-	return full;
-}
-*/
 
 //------------------------------------------------------------------------------
 // Function to check wether queue is full.
@@ -122,81 +90,4 @@ const bool Queue::empty() const
 const int Queue::capacity() const
 {
 	return maxElem;
-}
-
-//------------------------------------------------------------------------------
-// Only used for stats "debugging"
-//------------------------------------------------------------------------------
-//   Precondition: -
-//   Postcondition: prints good stats.
-void Queue::printStatus() const
-{
-	printStraight();
-	for(int i=0; i<head; ++i)
-	{
-		std::cout << "  ";
-	}
-	std::cout << "H" << std::endl;
-	for(int i=0; i<tail; ++i)
-	{
-		std::cout << "  ";
-	}
-	std::cout << "T" << std:: endl;
-	std::cout << "head: " << head << std::endl;
-	std::cout << "tail: " << tail << std::endl;
-	std::cout << "nElem: " << nElem << std::endl;
-	std::cout << "maxElem: " << maxElem << std::endl;
-}
-
-//------------------------------------------------------------------------------
-// Function print elements in array exactly as they lie in it.
-//------------------------------------------------------------------------------
-//   Precondition: -
-//   Postcondition: prints elements in array order by index.
-void Queue::printStraight() const
-{
-	for (int i=0; i<maxElem;++i)
-	{
-		if ((i<head && i>tail) || (i<head && head<tail) || (i>tail && tail>head))
-		{
-			std::cout << "  ";
-		}
-		else
-		{
-			std::cout << smartPtr[i] << " ";
-		}
-	}
-	std::cout << std::endl;
-}
-
-//------------------------------------------------------------------------------
-// Function to get max capacity of current queue.
-//------------------------------------------------------------------------------
-//   Precondition: -
-//   Postcondition: prints on screen elements in queue in right order.
-void Queue::print() const
-{
-	if(!empty())
-	{
-		if(tail<head)
-		{
-			for(int i = head; i < maxElem; ++i)
-			{
-				std::cout << smartPtr[i] << " ";
-			}
-			for(int i = 0; i <= tail; ++i)
-			{
-				std::cout << smartPtr[i] << " ";
-			}
-		}
-		else
-		{
-			for(int i=head; i<=tail; ++i)
-			{
-				std::cout << smartPtr[i] << " ";
-			}
-		}
-		std::cout << std::endl;		
-	}
-	std::cout << std::endl;
 }
