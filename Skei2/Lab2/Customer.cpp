@@ -1,37 +1,47 @@
-#include "Customer.hpp"
-#include <fstream>
-#include <iostream>
+#include "Customer.hpp"	//	
+#include <fstream>		//	for file manipulation
+#include <algorithm> 	// 	for std::find_if()
 
-Customer::Customer(const unsigned int id, std::string pFirstName,std::string pLastName)
+Customer::Customer(const unsigned int id, std::string fName,std::string lName)
 :id(id)
 {
-	name = {pFirstName,pLastName};
+	firstName=fName;
+	lastName=lName;
 }
 
 Customer::~Customer()
 {
-	saveToFile() && std::cout << "what";
+	saveToFile(); //won't lose a save ever.
 }
 
 const bool Customer::createAccount(const unsigned int accountNo)
 {
-	std::cout << getAmountAccounts() << std::endl;
-	const unsigned int size = getAmountAccounts();
-	if(size!=maxAccounts)
+	if(accounts.size()!=maxAccounts)
 	{
-		std::unique_ptr<Account> temp(new Account(accountNo));
-		accounts[size-1] = std::move(temp);
+
+		accounts.push_back(std::unique_ptr<Account>(new Account(accountNo)));
 		return true;
 	}              
 	return false;
 }
 
+/*
+if i didn't want bool return from removeAccount function i'd have used this beauty:
+void Customer::removeAccount(const unsigned int accountNo)	
+	accounts.erase(std::remove_if(accounts.begin(),accounts.end(),
+	[& accountNo](const Account & a)
+	{
+		return a.getAccountNo == accountNo;
+	}));
+*/
+
+
 const bool Customer::removeAccount(const unsigned int accountNo)
 {   
 	auto found = findAccount(accountNo);
-	if (found != nullptr)
-	{
-		found->reset(nullptr);
+	if (accountFound(found))
+	{   
+		accounts.erase(found); // removes found and thereby calls delete on smartpointer
 		return true;
 	}
 	return false;
@@ -39,14 +49,10 @@ const bool Customer::removeAccount(const unsigned int accountNo)
 
 const bool Customer::deposit(const unsigned int accountNo,const double amount)
 {
-	std::cout << "Almost there " << std::endl;
 	auto found = findAccount(accountNo);
-	if(found != nullptr)
-	{
-		if((*found)->deposit(amount))
-		{
-			return true;
-		}
+	if(accountFound(found))
+	{ 
+		return ((*found)->deposit(amount));
 	}
 	return false;
 }
@@ -54,7 +60,7 @@ const bool Customer::deposit(const unsigned int accountNo,const double amount)
 const bool Customer::withdraw(const unsigned int accountNo,const double amount)
 {
 	auto found = findAccount(accountNo);
-	if(found != nullptr)
+	if(accountFound(found))
 	{
 		if((*found)->withdraw(amount))
 		{
@@ -64,9 +70,29 @@ const bool Customer::withdraw(const unsigned int accountNo,const double amount)
 	return false;
 }
 
-const Name & Customer::getName() const 
+const bool Customer::accountFound(std::vector<std::unique_ptr<Account>>::iterator & found) const
 {
-	return name;
+	return !(found==accounts.end()); 
+}
+
+
+
+const bool Customer::changeAccountCredit(const unsigned int accountNo, const double amount)
+{
+	auto found = findAccount(accountNo); 
+	if (accountFound(found))
+	{
+		return (*found)->setCredit(amount);
+	}
+	else
+	{
+		return false;
+	}
+}
+
+const std::string Customer::getName() const 
+{
+	return firstName+" "+lastName;;
 }
 
 const unsigned int & Customer::getId() const 
@@ -76,33 +102,15 @@ const unsigned int & Customer::getId() const
 
 const unsigned int Customer::getAmountAccounts() const
 {
-	unsigned int amount=0;
-	unsigned int count=0;
-	for (auto & i: accounts)
-	{
-		std::cout << count++ << std::endl;
-		if (i!=nullptr)
-		{
-			std::cout << count << std::endl;
-			++amount;
-		}
-	}
-	std::cout << amount << std::endl;
-	return amount;
+	return accounts.size();
 }
 
 const AccountInfo Customer::getAccountInfo(const unsigned int accountNo)
 {
 	auto found = findAccount(accountNo);
-	if(found!=nullptr)
+	if(accountFound(found))
 	{
-		AccountInfo a = 
-		{
-			(*found)->getBalance(),
-			(*found)->getCredit(),
-			(*found)->getUsableBalance()
-		};
-		return a;
+		return (*found)->getAccountInfo();
 	}
 	return {0,0,0};   
 }
@@ -122,7 +130,7 @@ const bool Customer::saveToFile() const
 	std::ofstream os(std::to_string(id)+".knt"); 
 	if(os.is_open())
 	{	
-		os << name.firstName << std::endl << name.lastName << std::endl;
+		os << firstName << std::endl << lastName << std::endl;
 		for (auto & i: accounts)
 		{
 			os << *i;
@@ -137,19 +145,17 @@ const bool Customer::loadFromFile()
 {
 	std::ifstream is(std::to_string(id)+".knt");
 	if(is.is_open())
-	{	
+	{
 		
-		getline(is,name.firstName);
-		getline(is,name.lastName); 
+		getline(is,firstName);
+		getline(is,lastName); 
 		Account account;
-		
-		size_t i=0;
+		// sorry about splitting the lines below. But it was simply to confusing otherwise
 		while (is >> account)
 		{
-			 accounts[i++].reset(new Account());
-			 *accounts[i]=account;
+			accounts.push_back(std::unique_ptr<Account>(new Account(account.getAccountNo(),account.getBalance(),account.getCredit())));
 		}
-		is.close();
+		is.close(); //closing stream
 		return true;
 	}
 	return false;
@@ -157,25 +163,22 @@ const bool Customer::loadFromFile()
 
 void Customer::setName(const std::string fName,const std::string lName)
 {
-	name.firstName = fName;
-	name.lastName = lName;
+	firstName = fName;
+	lastName = lName;
 }
 
-std::unique_ptr<Account> * const Customer::findAccount(const unsigned int accountNo)
+std::vector<std::unique_ptr<Account>>::iterator Customer::findAccount(const unsigned int accountNo)
 {
-	std::cout << "so far so good!" << std::endl;
-	for(auto & i: accounts)
-	{
-		if(i!=nullptr && std::cout << i->getAccountNo() && i->getAccountNo()==accountNo)
-		{
-			i->print();
-			return &i;
-		}
-	}
-	return nullptr;
-}
-
-const std::array<std::unique_ptr<Account>, 3>* Customer::getAllAccounts() const
+	std::vector<std::unique_ptr<Account>>::iterator found = std::find_if(accounts.begin(),accounts.end(),[&accountNo]
+	(const std::unique_ptr<Account> & a)
+	{ 
+		return ((a->getAccountNo())==accountNo);
+	});
+	return found;
+	
+} 
+ 
+const std::vector<std::unique_ptr<Account>> & Customer::getAllAccounts() const
 {
-	return &accounts;
+	return accounts; 
 }

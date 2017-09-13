@@ -4,3 +4,6 @@ OUTFILE=main
 
 all:
 	g++ ${FILES} -o ${OUTFILE} ${FLAGS};
+
+run:
+	/.${OUTFILE}

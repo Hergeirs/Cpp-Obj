@@ -1,30 +1,28 @@
 #include "Functions.hpp"
 
-typedef unsigned int uint;
-
 //------------------------------------------------------------------------------
 // Handy function for controlling input as integer. Primarily i want to avoid
-// eternal loops when cin buffer contains char and variable is int.
+// eternal loops when std::cin buffer contains char and variable is int.
 //------------------------------------------------------------------------------
 
-void getInt(int & i, string prompt)
+void getInt(int & i, std::string prompt)
 {
-		// while input isn't compatible with int and cout works.
-		while (cout << endl << prompt && !(cin >> i))
+		// while input isn't compatible with int and std::cout works.
+		while (std::cout << std::endl << prompt && !(std::cin >> i))
 		{
 			// clear everything until newline is encountered
-			while(cin.get()!='\n')
+			while(std::cin.get()!='\n')
 			{
-				cin.clear();
+				std::cin.clear();
 			}
-			cout << endl << "Invalid Input... try again" << endl;
+			std::cout << std::endl << "Invalid Input... try again" << std::endl;
 		}
 		// clear everything until newline is encountered
-		while(cin.get()!='\n')
-			cin.clear();
+		while(std::cin.get()!='\n')
+			std::cin.clear();
 }
 
-int getInt(string prompt) // overloaded for convenience (use in switch)
+int getInt(std::string prompt) // overloaded for convenience (use in switch)
 {
 	int i;
 	getInt(i,prompt);
@@ -33,7 +31,7 @@ int getInt(string prompt) // overloaded for convenience (use in switch)
 
 
 //------------------------------------------------------------------------------
-// Function to change the case of string using ascii char values overloaded
+// Function to change the case of std::string using ascii char values overloaded
 //------------------------------------------------------------------------------
 
 char toCase(char to_case, bool toLowercase=true)  // takes/returns char
@@ -49,15 +47,15 @@ char toCase(char to_case, bool toLowercase=true)  // takes/returns char
 	return to_case;
 }
 
-string toCase (string to_Case,bool toLowercase)		// does not affect input string.
-{	// Takes/returns string. uses overloaded functinon for individual chars
+std::string toCase (std::string to_Case,bool toLowercase)		// does not affect input std::string.
+{	// Takes/returns std::string. uses overloaded functinon for individual chars
 	for (uint n = 0; n < to_Case.size(); n += 1)
 		to_Case[n] = toCase(to_Case[n],toLowercase);
 	edgeTrim(to_Case);
 	return to_Case;
 }
 
-void toCase (string & to_Case, bool tolowercase)
+void toCase (std::string & to_Case, bool tolowercase)
 {
 	for (uint i = 0; i < to_Case.size(); ++i)
 	{
@@ -69,7 +67,7 @@ void toCase (string & to_Case, bool tolowercase)
 // Remove unnessesary spaces. trailing and beginning.
 //------------------------------------------------------------------------------
 
-void edgeTrim(string &s)
+void edgeTrim(std::string &s)
 {
 	if (!s.empty())
 	{
@@ -88,14 +86,14 @@ void edgeTrim(string &s)
 // an implementation of getline with check for empty input
 //------------------------------------------------------------------------------
 
-void getLine(string &s,string prompt)
+void getLine(std::string &s,std::string prompt)
 {
-	while (cout << endl << prompt && getline(cin,s)) // input output loop.
+	while (std::cout << std::endl << prompt && getline(std::cin,s)) // input output loop.
 	{
-		edgeTrim(s); //stripping spaces in ends of string.
+		edgeTrim(s); //stripping spaces in ends of std::string.
 		if (s.empty()) // making sure input won't be empty.
 		{
-			cout << endl << "Input can't be empty..." << endl;
+			std::cout << std::endl << "Input can't be empty..." << std::endl;
 			continue;
 		}
 		else
@@ -107,10 +105,10 @@ void getLine(string &s,string prompt)
 // Function for printing warnings and prompts.
 //------------------------------------------------------------------------------
 
-void printPrompt(string prompt, string label, bool pause, bool clear,size_t width)
+void printPrompt(std::string prompt, std::string label, bool pause, bool clear,size_t width)
 {
-	if(width < max(prompt.size(),label.size()))
-		width = max(prompt.size(),label.size());
+	if(width < std::max(prompt.size(),label.size()))
+		width = std::max(prompt.size(),label.size());
 	if(clear)
 		cls();
 	centerText("",'_','_',0,width);
@@ -121,23 +119,23 @@ void printPrompt(string prompt, string label, bool pause, bool clear,size_t widt
 		systemPause();
 }
 
-void centerText(string input, char fill, char edge, int padding,size_t width)
+void centerText(std::string input, char fill, char edge, int padding,size_t width)
 {
-	cout << right << setfill(fill);
+	std::cout << std::right << std::setfill(fill);
 	width+=7;
 	for (int tp=0 ;input.size()<width && tp < padding; ++tp)
 	{
-		input.push_back(' '); // right padding has priority
+		input.push_back(' '); // std::right padding has priority
 
 		if (input.size()+1 < width)
 			input.insert(0,1,' ');
 	}
 
 	uint totalPadding = width-input.size();
-	cout << edge;
-	cout << setw((totalPadding/2)+input.size()) << input;
-	cout << setw(float(totalPadding-float(totalPadding/2))) << edge << endl;
-	cout << setfill(' ');
+	std::cout << edge;
+	std::cout << std::setw((totalPadding/2)+input.size()) << input;
+	std::cout << std::setw(float(totalPadding-float(totalPadding/2))) << edge << std::endl;
+	std::cout << std::setfill(' ');
 }
 
 //------------------------------------------------------------------------------
@@ -145,18 +143,18 @@ void centerText(string input, char fill, char edge, int padding,size_t width)
 // cross-platform even !
 //------------------------------------------------------------------------------
 
-void systemPause(string prompt)
+void systemPause(std::string prompt)
 {
-	cout << endl << prompt;
-	cin.get();
+	std::cout << std::endl << prompt;
+	std::cin.get();
 }
 
 //------------------------------------------------------------------------------
-// Clear screen by spewing amount of endl.
+// Clear screen by spewing amount of std::endl.
 //------------------------------------------------------------------------------
 
 void cls(uint amountNewlines)
 {
 	for (uint i = 0; i < amountNewlines; ++i)
-		cout << endl;
+		std::cout << std::endl;
 }

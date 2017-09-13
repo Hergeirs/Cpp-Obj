@@ -9,8 +9,8 @@
 class Menu
 {
 private:
-	vector <MenuItem> menus;
-	string menuTitle;
+	std::vector <MenuItem> menus;
+	std::string menuTitle;
 
 
 public:
@@ -18,9 +18,9 @@ public:
 	//~Menu();
 
 	MenuItem & getMenuItem (int index);
-	void setMenuTitle(string pMenuTitle);
+	void setMenuTitle(std::string pMenuTitle);
 
-	void addItem(string menuText,bool enabled);
+	void addItem(std::string menuText,bool enabled);
 	void printMenuItems() const;
 	int getMenuChoice();
 

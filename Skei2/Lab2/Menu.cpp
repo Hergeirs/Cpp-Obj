@@ -1,13 +1,13 @@
 #include "Menu.hpp"
 
 //------------------------------------------------------------------------------
-// Default constructor initializes menus as empty vector with MenuItem dataType
+// Default constructor initializes menus as empty std::vector with MenuItem dataType
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition: empty Menu object is created
 Menu::Menu()
 {
-	menus = vector <MenuItem> ();
+	menus = std::vector <MenuItem> ();
 }
 
 //   Precondition:  Menu object must exist.
@@ -22,7 +22,7 @@ Menu::Menu()
 //------------------------------------------------------------------------------
 //   Precondition: -
 //   Postcondition:  menu title set.
-void Menu:: setMenuTitle(string pMenuTitle)
+void Menu:: setMenuTitle(std::string pMenuTitle)
 {
 	menuTitle=pMenuTitle;
 }
@@ -32,11 +32,13 @@ void Menu:: setMenuTitle(string pMenuTitle)
 //------------------------------------------------------------------------------
 //   Precondition:  -
 //   Postcondition:  menu option i is created.
-void Menu:: addItem(string menuText,bool enabled)
+void Menu:: addItem(std::string menuText,bool enabled)
 {
 	MenuItem menuItem(menuText,enabled);
 	menus.push_back(menuItem);
 }
+
+
 
 //------------------------------------------------------------------------------
 // Prints all enabled menuitems in menu.
@@ -50,15 +52,16 @@ void Menu::printMenuItems() const
 	for (auto t:menus)
 		if (t.getState() && longest < t.getMenuText().size())
 			longest = t.getMenuText().size();
-	longest = max(longest,menuTitle.size());
-
+	longest = std::max(longest,menuTitle.size());
+	
+	int padding = 0;
 	printPrompt(menuTitle,"Menu",false,false,longest);
-	centerText("",'_','.',0,longest);
+	centerText("",'_','.',padding,longest);
 	centerText("choices",'_','|',1,longest);	
-	centerText("",' ','|',0,longest);	
+	centerText("",' ','|',padding,longest);	
 	for (auto i: menus)
-		i.print(++a,longest);
-	centerText("",'_','|',0,longest);	
+		i.print(++a,longest,padding);
+	centerText("",'_','|',padding,longest);	
 
 }
 
@@ -112,4 +115,17 @@ void Menu::enableAll()
 {
 	for (auto & i: menus)
 		i.enable();
+}
+
+
+//------------------------------------------------------------------------------
+// enables all menuitems
+//------------------------------------------------------------------------------
+//   Precondition:  i <= menuItems.size()
+//   Postcondition:  All menuoptions are hidden.
+void Menu::disableAll()
+{
+	for (auto & i: menus)
+	i.disable();
+	menus[menus.size()-1].enable(); //quitting must always be possible
 }

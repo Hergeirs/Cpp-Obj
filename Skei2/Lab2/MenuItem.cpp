@@ -1,26 +1,43 @@
 #include "MenuItem.hpp"
 
+int amountNumbers(int i)
+{
+	if(i==0)
+	{
+		return 0;
+	}
+	return 1+amountNumbers(i/10);
+}
+
 //------------------------------------------------------------------------------
 // Center menu choices with index at the sides(almost the same as centerText below)
 //------------------------------------------------------------------------------
 
-void centerMenuItem(string input, char fill, char edge, int index, int padding,size_t width)
+void centerMenuItem(std::string input, char fill, char edge, int index, int padding,size_t width)
 {
-	cout << right << setfill(fill);
+	std::cout << std::right << std::setfill(fill);
 	width+=7;
 	for (int tp=0 ;input.size()<width && tp < padding; ++tp)
 	{
-		input.push_back(' '); // right padding has priority
+		input.push_back(' '); // std::right padding has priority
 
 		if (input.size()+1 < width)
 			input.insert(0,1,' ');
 	}
 
+	int leftPad,rightPad;
+	
+	rightPad=amountNumbers(index);
+	if (amountNumbers(index)%2!=0)
+		leftPad=rightPad;
+	else 
+		leftPad=rightPad-1;
+
 	uint totalPadding = width-input.size();
-	cout << edge << index;
-	cout << setw((totalPadding/2)+input.size()-1) << input;
-	cout << setw(float(totalPadding-float(totalPadding/2))-1) << index << edge << endl;
-	cout << setfill(' ');
+	std::cout << edge << index;
+	std::cout << std::setw((totalPadding/2)+input.size()-rightPad)<< input;
+	std::cout << std::setw(float(totalPadding-float(totalPadding/2))-leftPad) << index << edge << std::endl;
+	std::cout << std::setfill(' ');
 }
 
 
@@ -28,7 +45,7 @@ void centerMenuItem(string input, char fill, char edge, int index, int padding,s
 // Default constructor
 //------------------------------------------------------------------------------
 
-MenuItem::MenuItem(string & pMenuText,bool pEnabled)
+MenuItem::MenuItem(std::string & pMenuText,bool pEnabled)
 {
 	menuText=pMenuText;
 	enabled=pEnabled;
@@ -40,10 +57,10 @@ MenuItem::MenuItem(string & pMenuText,bool pEnabled)
 }
 */
 //------------------------------------------------------------------------------
-// Returns Menuitem label as string
+// Returns Menuitem label as std::string
 //------------------------------------------------------------------------------
 
-const string & MenuItem::getMenuText() const
+const std::string & MenuItem::getMenuText() const
 {
 	return menuText;
 }

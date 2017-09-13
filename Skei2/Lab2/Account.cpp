@@ -32,10 +32,18 @@ const bool Account::withdraw(const double amount)
 	}
 }
 
-void Account::changeCredit(const double amount)
+const bool Account::setCredit(const double newCredit)
 {
-	credit=amount;
+	if(newCredit+balance >= 0) // if usable amount still is good
+	{
+		return (credit=newCredit);
+	}
+	else
+	{
+		return false;
+	}	
 }
+
 
 const double & Account::getCredit() const
 {
@@ -57,15 +65,12 @@ const unsigned int & Account::getAccountNo() const
 	return accountNo;	
 }
 
-void Account::print() const
+const AccountInfo Account::getAccountInfo() const
 {
-	printPrompt("Balance: "+std::to_string(balance),std::to_string(accountNo));
+	return {accountNo,balance,credit,getUsableBalance()};
 }
 
-Account Account::operator= (const Account & b)
-{
-	return Account(b.accountNo,b.balance,b.credit);
-}
+
 
 /*************************************************************************
 	Overloaded operators for class friended them to surpass get functions.
@@ -77,10 +82,6 @@ std::ostream & operator << (std::ostream & a, const Account & b)
 }
 std::istream & operator >> (std::istream & a, Account & b)
 {
-	unsigned int accountNo;
-	double balance;
-	double credit;
-	a >> accountNo >> balance >> credit;
-	b=Account(accountNo,balance,credit);
+	a >> b.accountNo >> b.balance >> b.credit;
 	return a;
 } 

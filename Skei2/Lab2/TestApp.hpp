@@ -23,12 +23,17 @@ private:
     void manageCustomer();
     void changeCustomerName();
     void createAccount();
+    void changeAccountCredit();
     void deposit();
     void withdraw();
     void viewAccounts() const;
+    void viewAccount() const;
     void viewTotalAssets() const;
     void removeAccount();
     //quit
+
+    void printAccountInfo(const unsigned int accountNo) const;
+    void printAccountInfo(const AccountInfo info, const bool pause=false, const bool clear=true) const;
     
 };
 

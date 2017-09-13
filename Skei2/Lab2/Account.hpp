@@ -2,28 +2,34 @@
 #define ACCOUNTH
 
 #include <fstream>
-#include <string>
+
+struct AccountInfo
+{
+	unsigned int accountNo;
+	double balance;
+	double credit;
+	double available;
+};
 
 
 class Account
 {
 public:
-	const bool deposit(const double amount);
-	const bool withdraw(const double amount);
-	void changeCredit(const double amount);
-
-	const double & getCredit() const;         	//get current credit for account
-	const double & getBalance() const;        	//get current balance for account
-	const double getUsableBalance() const;  	//get balance + credit
-	const unsigned int & getAccountNo() const ; 		//get accountNo
-
 	//Constuctor. default values for balance and credit
 	Account(const unsigned int pAccountNo=0, const double pBalance=0, const double pCredit=0);
 	~Account();
-	Account operator= (const Account & b);
-	void print() const;
+	
+	const bool deposit(const double amount);
+	const bool withdraw(const double amount);
+	const bool setCredit(const double amount);
+	const double & getCredit() const;         	//get current credit for account
+	const double & getBalance() const;        	//get current balance for account
+	const double getUsableBalance() const;  	//get balance + credit
+	const unsigned int & getAccountNo() const;	//get accountNo
+	const AccountInfo getAccountInfo() const;	// get all info at once
+
 private:
-	const unsigned int accountNo;
+	unsigned int accountNo;
 	double balance;
 	double credit;
 	
