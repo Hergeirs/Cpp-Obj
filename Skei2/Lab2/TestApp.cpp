@@ -12,10 +12,7 @@ void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bo
 
 void TestApp::printAccountInfo(const unsigned int accountNo) const
 {		 
-	AccountInfo info = bank.getAccountInfo(accountNo);
-	printPrompt(std::to_string(info.balance),"Balance:",false,false);	
-	printPrompt(std::to_string(info.credit),"Credit:",false,false);
-	printPrompt(std::to_string(info.available),"Usable balance",true,false);
+	printAccountInfo(bank.getAccountInfo(accountNo));
 }
 
 TestApp::TestApp()
