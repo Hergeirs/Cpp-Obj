@@ -21,12 +21,17 @@ void edgeTrim(std::string &s);								// Function to remove unnessesary whitespa
 // Functions to take user input.
 void getLine(std::string &s,std::string prompt);					// Function to ensure input std::string not empty.
 
+unsigned int getUnsignedInt(std::string prompt); // get positive number
+
+double getDouble(std::string prompt="Enter a decimal number:");
+double getPositiveDouble(std::string prompt="Enter a positive decimal number");
+
 int getInt(std::string prompt="Enter Integer: ");			// Function overloaded to allow use in switch.
 
 void getInt(int & i, std::string prompt="Enter integer: ");	// Function to get integer from user (Not allowing empty input).
 
 // Formatted output-functions
-void printPrompt(std::string prompt, std::string label="info!", bool pause=true, bool clear=true,size_t=0);
+const bool printPrompt(std::string prompt, std::string label="info!", bool pause=true, bool clear=true,size_t=0);
 void centerText(std::string input, char fill='*', char edge=' ',int padding=1,size_t=75);
 
 // essentials

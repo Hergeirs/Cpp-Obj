@@ -11,6 +11,16 @@ Bank::~Bank()
 	//
 }
 
+const bool Bank::customerExists() const
+{
+	return currentCustomer!=nullptr;
+}
+
+const bool Bank::accountExists(const unsigned int accountNo) const
+{
+	return currentCustomer->accountExists(accountNo);
+}
+
 const AccountInfo Bank::getAccountInfo(const unsigned int accountNo) const
 {
 	return currentCustomer->getAccountInfo(accountNo);

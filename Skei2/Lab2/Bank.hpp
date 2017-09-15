@@ -8,6 +8,8 @@ class Bank
 public:
 	Bank();
 	~Bank();
+	const bool customerExists() const;
+	const bool accountExists(const unsigned int accountNo) const;
 	const AccountInfo getAccountInfo(const unsigned int accountNo) const;
 	const bool saveToFile() const;
 	const bool manageCustomer(const unsigned int id);

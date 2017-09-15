@@ -21,6 +21,8 @@ const bool Account::deposit(const double amount)
 
 const bool Account::withdraw(const double amount)
 {
+	return amount > getUsableBalance() ? false : (balance-=amount);
+	/*
 	if (amount > getUsableBalance())
 	{
 		return false;
@@ -30,10 +32,14 @@ const bool Account::withdraw(const double amount)
 		balance-=amount;
 		return true;
 	}
+	*/
 }
 
 const bool Account::setCredit(const double newCredit)
 {
+	return (newCredit+balance >= 0) ? (credit=newCredit) : false;
+	
+	/*
 	if(newCredit+balance >= 0) // if usable amount still is good
 	{
 		return (credit=newCredit);
@@ -41,7 +47,8 @@ const bool Account::setCredit(const double newCredit)
 	else
 	{
 		return false;
-	}	
+	}
+	*/	
 }
 
 
@@ -67,7 +74,7 @@ const unsigned int & Account::getAccountNo() const
 
 const AccountInfo Account::getAccountInfo() const
 {
-	return {accountNo,balance,credit,getUsableBalance()};
+	return AccountInfo(accountNo,balance,credit,getUsableBalance());
 }
 
 

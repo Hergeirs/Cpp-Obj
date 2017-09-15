@@ -14,13 +14,16 @@ Customer::~Customer()
 	saveToFile(); //won't lose a save ever.
 }
 
+
 const bool Customer::createAccount(const unsigned int accountNo)
 {
 	if(accounts.size()!=maxAccounts)
 	{
-
-		accounts.push_back(std::unique_ptr<Account>(new Account(accountNo)));
-		return true;
+		if (!accountFound(findAccount(accountNo)))
+		{	
+			accounts.push_back(std::unique_ptr<Account>(new Account(accountNo)));
+			return true;
+		}
 	}              
 	return false;
 }
@@ -70,16 +73,18 @@ const bool Customer::withdraw(const unsigned int accountNo,const double amount)
 	return false;
 }
 
-const bool Customer::accountFound(std::vector<std::unique_ptr<Account>>::iterator & found) const
+const bool Customer::accountFound(std::vector<std::unique_ptr<Account>>::iterator found) const
 {
 	return !(found==accounts.end()); 
 }
 
-
+ 
 
 const bool Customer::changeAccountCredit(const unsigned int accountNo, const double amount)
 {
 	auto found = findAccount(accountNo); 
+	return (accountFound(found)) ? (*found)->setCredit(amount) : false;
+	/*
 	if (accountFound(found))
 	{
 		return (*found)->setCredit(amount);
@@ -88,6 +93,7 @@ const bool Customer::changeAccountCredit(const unsigned int accountNo, const dou
 	{
 		return false;
 	}
+	*/
 }
 
 const std::string Customer::getName() const 
@@ -108,11 +114,15 @@ const unsigned int Customer::getAmountAccounts() const
 const AccountInfo Customer::getAccountInfo(const unsigned int accountNo)
 {
 	auto found = findAccount(accountNo);
+	return accountFound(found) ? (*found)->getAccountInfo() : AccountInfo();
+	
+	/*
 	if(accountFound(found))
 	{
 		return (*found)->getAccountInfo();
 	}
-	return {0,0,0};   
+	return {0,0,0}; 
+	*/  
 }
 
 const double Customer::getTotalAssets() const
@@ -120,7 +130,7 @@ const double Customer::getTotalAssets() const
 	double total=0;
 	for(auto & i: accounts)
 	{
-		total+=i->getUsableBalance();
+		total+=i->getBalance();
 	}
 	return total;
 }
@@ -145,8 +155,7 @@ const bool Customer::loadFromFile()
 {
 	std::ifstream is(std::to_string(id)+".knt");
 	if(is.is_open())
-	{
-		
+	{		
 		getline(is,firstName);
 		getline(is,lastName); 
 		Account account;
@@ -167,17 +176,22 @@ void Customer::setName(const std::string fName,const std::string lName)
 	lastName = lName;
 }
 
+const bool Customer::accountExists(const unsigned int accountNo)
+{
+	return (accountFound(findAccount(accountNo)));
+}
+
+//find account in the unique_ptr<accounts> vector and return iterator to it.
 std::vector<std::unique_ptr<Account>>::iterator Customer::findAccount(const unsigned int accountNo)
 {
-	std::vector<std::unique_ptr<Account>>::iterator found = std::find_if(accounts.begin(),accounts.end(),[&accountNo]
+	return std::find_if(accounts.begin(),accounts.end(),[&accountNo]
 	(const std::unique_ptr<Account> & a)
 	{ 
 		return ((a->getAccountNo())==accountNo);
 	});
-	return found;
-	
 } 
  
+ //Return const vector reference to accountss
 const std::vector<std::unique_ptr<Account>> & Customer::getAllAccounts() const
 {
 	return accounts; 

@@ -1,4 +1,5 @@
 #include "Functions.hpp"
+#include <iostream>
 
 //------------------------------------------------------------------------------
 // Handy function for controlling input as integer. Primarily i want to avoid
@@ -20,6 +21,46 @@ void getInt(int & i, std::string prompt)
 		// clear everything until newline is encountered
 		while(std::cin.get()!='\n')
 			std::cin.clear();
+}
+
+double getDouble(std::string prompt)
+{
+		double i;
+		// while input isn't compatible with int and std::cout works.
+		while (std::cout << std::endl << prompt && !(std::cin >> i))
+		{
+			// clear everything until newline is encountered
+			while(std::cin.get()!='\n')
+			{
+				std::cin.clear();
+			}
+			std::cout << std::endl << "Invalid Input... try again" << std::endl;
+		}
+		// clear everything until newline is encountered
+		while(std::cin.get()!='\n')
+			std::cin.clear();
+		return i;
+}
+
+double getPositiveDouble(std::string prompt)
+{
+	double amount;
+	do
+	{
+		amount=getDouble(prompt);
+	} while (amount < 0);
+	return amount;
+}
+
+
+unsigned int getUnsignedInt(std::string prompt)
+{
+	int integer;
+	do
+	{
+		getInt(integer,prompt);
+	} while (integer<0 && printPrompt("Invalid input... Only takes positive integers!"));
+	return integer;
 }
 
 int getInt(std::string prompt) // overloaded for convenience (use in switch)
@@ -105,8 +146,8 @@ void getLine(std::string &s,std::string prompt)
 // Function for printing warnings and prompts.
 //------------------------------------------------------------------------------
 
-void printPrompt(std::string prompt, std::string label, bool pause, bool clear,size_t width)
-{
+const bool printPrompt(std::string prompt, std::string label, bool pause, bool clear,size_t width)
+{ 
 	if(width < std::max(prompt.size(),label.size()))
 		width = std::max(prompt.size(),label.size());
 	if(clear)
@@ -117,6 +158,7 @@ void printPrompt(std::string prompt, std::string label, bool pause, bool clear,s
 	centerText("",'_','|',0,width);
 	if (pause)
 		systemPause();
+	return true;
 }
 
 void centerText(std::string input, char fill, char edge, int padding,size_t width)

@@ -1,19 +1,19 @@
 #include "TestApp.hpp"
+#include <iostream>
+#include <iomanip>
 
-void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bool clear) const
+// default constructor.
+
+const unsigned int TestApp::getAccountNo() const
 {
-	const size_t width=20;
-	printPrompt(std::to_string(info.accountNo),"AccountNo",false,clear,width);
-	printPrompt(std::to_string(info.balance),"Balance:",false,false,width);	
-	printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
-	printPrompt(std::to_string(info.available),"Usable balance",pause,false,width);
-	std::cout << std::endl;
-} 
-
-void TestApp::printAccountInfo(const unsigned int accountNo) const
-{		 
-	printAccountInfo(bank.getAccountInfo(accountNo));
+	unsigned int accountNo;
+	do
+	{
+		accountNo = getUnsignedInt("Enter account number: ");
+	} while (!bank.accountExists(accountNo) && printPrompt("account "+std::to_string(accountNo)+" does not exist")); // while account doesn't exist	
+	return accountNo;
 }
+
 
 TestApp::TestApp()
 {
@@ -34,14 +34,15 @@ TestApp::TestApp()
 
 TestApp::~TestApp()
 {
-	//
+	//I have nothing
 }
 
 void TestApp::run()
 {
-	while (doMenuChoice(menu.getMenuChoice())){}
+	while (doMenuChoice(menu.getMenuChoice())){} // will loop until doMenuChoice returns false
 }
 
+// call relevant functions.
 const bool TestApp::doMenuChoice(const int choice)
 {
 	switch (choice)
@@ -85,60 +86,50 @@ const bool TestApp::doMenuChoice(const int choice)
 		break;
 
 	}
-	if (bank.getAmountAccounts()>0)
+	if(bank.customerExists()) // customer must exist for menus to show.
 	{
-		menu.enableAll();
-	} 
-	else 
-	{
-		menu.disableAll();
-		for(int i=1; i<5; ++i)
-			menu.enable(i); //enabling relevant menus
-	}
+		if (bank.getAmountAccounts()>0)
+		{
+			menu.enableAll(); 
+		} 
+		else 
+		{
+			menu.disableAll(); // removes all menuItems except exit/quit.
+			for(int i=1; i<5; ++i)
+				menu.enable(i); //enabling relevant menus
+		}
+	}	
 	return true;
 }
 
 void TestApp::createCustomer()
 {
 	std::string fName,lName;
-	int unguardedId;
 	printPrompt("Enter information","create customer",false,false);
+	const unsigned int id = getUnsignedInt("Enter customer id: ");
 	getLine(fName,"First name: ");
 	getLine(lName,"Last name : ");
-	
-	do
-	{
-		getInt(unguardedId,"Enter personal id: ");
-	} while (unguardedId<0);
-
-	const size_t id=unguardedId;
 	if(bank.createCustomer(id,fName,lName))
 	{
-		printPrompt("Customer "+bank.getCurrentName()+" was created.","create customer");
+		printPrompt("Customer "+bank.getCurrentName()+" was created, with id:"+std::to_string(id),"create customer");
 	}
 	else
 	{
-		printPrompt("Customer "+bank.getCurrentName()+" already exists. Try manage customer.","error");
+		printPrompt("Customer with id:"+std::to_string(id)+" already exists... Try manage customer.","error");
 	}
 }
 
 void TestApp::manageCustomer()
 {
-	int unguardedId;
-
 	printPrompt("Enter information","Manage customer",false,false);
-	  do
-	{
-		getInt(unguardedId,"Enter personal id: ");
-	} while (unguardedId<0);
-	const size_t id=unguardedId;
+	unsigned int id = getUnsignedInt("Enter personal id: ");
 	if(bank.manageCustomer(id))
 	{
 		printPrompt(bank.getCurrentName()+" was loaded.");
 	}
 	else
 	{
-		printPrompt("No one with id exist in database\n did you mean to create user?");
+		printPrompt("No one with id exist in database. did you mean to create user?");
 	}
 }
 
@@ -147,40 +138,64 @@ void TestApp::changeCustomerName()
 	std::string fName, lName;
 	getLine(fName,"Enter Firstname: ");
 	getLine(lName,"Enter Lastname : ");
-	bank.changeCurrentName(fName,lName);
+	bank.changeCurrentName(fName,lName); // don't need bool here. should always work...
 	printPrompt("name has been updated to: "+bank.getCurrentName());
 }
 
 void TestApp::createAccount()
 {
-	int accountNo;
-	getInt(accountNo,"Please enter account No: ");
-	bank.createAccount(accountNo);
+	unsigned int accountNo = getUnsignedInt("Please enter account No: ");
+	if (!bank.createAccount(accountNo))
+	{
+		printPrompt("user already has used accountNo "+std::to_string(accountNo)+" or reached his maximum of 3 accounts");
+	}
 }
 
+void TestApp::changeAccountCredit()
+{
+	
+	printPrompt("Current Info: ","Change credit",false,false);
+	const unsigned int accountNo = getAccountNo();
+	printAccountInfo(accountNo); 
+	double newCredit = getUnsignedInt("Enter new credit for account: ");
+	while (!bank.changeAccountCredit(accountNo,newCredit))
+	{
+		printPrompt("credit can't be changed to "+std::to_string(newCredit)+" as it would give negative usable balance.");
+		newCredit=getUnsignedInt("Enter new credit for account: ");
+	}
+	printPrompt("account credit for account "+std::to_string(accountNo)+" changed to "+std::to_string(newCredit));	
+}
+
+
+/*
 void	TestApp::changeAccountCredit()
 {
 	std::string newCreditString;
-	int accountNo;
-	getInt(accountNo,"Enter account number: ");
+	unsigned int accountNo;
+	do
+	{
+		accountNo = getUnsignedInt("Enter account number: ");
+	} while (!accountExist(accountNo) && printPrompt("account "+std::to_string(accountNo)+" does not exist")); // while account doesn't exist
+	
 	printPrompt("Current Info: ","Change credit");
 	printAccountInfo(accountNo); 
-	getLine(newCreditString,"Enter new credit for account: "); 
+	unsigned int newCredit = getUnsignedInt("Enter new credit for account: ");
+	
+	while (!bank.changeAccountCredit(accountNo,newCredit))
+	{
+		printPrompt("credit can't be changed to "+std::to_string(newCredit)+" as it would give negative usable balance.");
+		newCredit=getUnsignedInt("Enter new credit for account: ");
+	}
+	printPrompt("account credit for account "+std::to_string(accountNo)+" changed to "+std::to_string(newCredit));	
 }
-
+*/
 
 void TestApp::deposit()
 {
-	int accountNo;
-	double amount;
-	std::string Amount;
+	const unsigned int accountNo = getAccountNo();
+	double amount = getPositiveDouble("Enter deposit amount: ");
 
-	getInt(accountNo,"Enter accountNo: ");
-	std::cout << "Enter deposit amount: ";
-	std::getline(std::cin,Amount);
-	amount=stof(Amount);
-
-	if(std::cout << "Almost there " << std::endl && bank.deposit(accountNo, amount))
+	if(bank.deposit(accountNo, amount))
 	{
 		printPrompt(std::to_string(amount) +" has been deposited into account "+std::to_string(accountNo),"Deposit");
 	}
@@ -192,13 +207,9 @@ void TestApp::deposit()
 
 void TestApp::withdraw()
 {
-	int accountNo;
-	double amount;
-	std::string Amount;
-	getInt(accountNo,"Enter accountNo: ");
-	std::cout << "Enter amount to withdraw: ";
-	std::getline(std::cin, Amount);
-	amount=stod(Amount);
+	
+	const unsigned int accountNo = getAccountNo();
+	double amount = getPositiveDouble("Enter withdraw amount");
 	if (bank.withdraw(accountNo, amount))
 	{
 		printPrompt(std::to_string(amount) +" was withdrawn from account "+std::to_string(accountNo),"Withdraw");
@@ -220,9 +231,7 @@ void TestApp::viewAccounts() const
 
 void TestApp::viewAccount() const
 {	
-	int accountNo;
-	getInt(accountNo,"Enter account number to view info");
-	printAccountInfo(accountNo);
+	printAccountInfo(getAccountNo());
 }
 
 void TestApp::viewTotalAssets() const
@@ -232,15 +241,30 @@ void TestApp::viewTotalAssets() const
 
 void TestApp::removeAccount()
 {   
-	std::string account;
-	getLine(account,"Enter account number to delete: ");
-	const unsigned int accountNo = stof(account);
+	const unsigned int accountNo = getAccountNo();
 	if (bank.removeAccount(accountNo))
 	{
-		printPrompt(account+" was deleted from customer.");
+		printPrompt(accountNo+" was deleted from customer.");
 	}
 	else
 	{
-		printPrompt(account+" does not exist/is not owned by"+bank.getCurrentName());
+		printPrompt(accountNo+" does not exist/is not owned by "+bank.getCurrentName());
 	}
+}
+
+
+
+void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bool clear) const
+{
+	const size_t width=20;
+	printPrompt(std::to_string(info.accountNo),"AccountNo",false,clear,width);
+	printPrompt(std::to_string(info.balance),"Balance:",false,false,width);	
+	printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
+	printPrompt(std::to_string(info.available),"Usable balance",pause,false,width);
+	std::cout << std::endl;
+} 
+
+void TestApp::printAccountInfo(const unsigned int accountNo) const
+{		 
+	printAccountInfo(bank.getAccountInfo(accountNo));
 }

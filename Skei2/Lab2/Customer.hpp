@@ -29,6 +29,7 @@ public:
 	const AccountInfo getAccountInfo(const unsigned int accountNo);
 	const double getTotalAssets() const;
 	void setName(const std::string fName,const std::string lName);
+	const bool accountExists(const unsigned int accountNo);
 private:
 	// compares iterator to vector.end() to see if result really is found	
 	const unsigned int id;
@@ -39,7 +40,7 @@ private:
 	std::vector<std::unique_ptr<Account>> accounts;
 
 	std::vector<std::unique_ptr<Account>>::iterator findAccount(const unsigned int accountNo);
-	const bool accountFound(std::vector<std::unique_ptr<Account>>::iterator & found) const;	
+	const bool accountFound(std::vector<std::unique_ptr<Account>>::iterator found) const;	
 };
 
 

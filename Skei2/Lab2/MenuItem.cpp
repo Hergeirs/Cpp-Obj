@@ -1,5 +1,8 @@
 #include "MenuItem.hpp"
 
+#include <iostream>
+#include <iomanip>
+
 int amountNumbers(int i)
 {
 	if(i==0)
