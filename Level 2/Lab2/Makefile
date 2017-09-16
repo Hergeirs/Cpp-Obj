@@ -6,4 +6,7 @@ all:
 	g++ ${FILES} -o ${OUTFILE} ${FLAGS};
 
 run:
-	/.${OUTFILE}
+	./${OUTFILE}
+	
+clean:
+	rm *.knt main
