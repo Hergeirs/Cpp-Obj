@@ -15,8 +15,7 @@ Account::~Account()
 
 const bool Account::deposit(const double amount)
 {
-	balance+=amount;
-	return true;
+	return amount<0 ? false : (balance+=amount); // only changes balance if amount is positive number
 }
 
 const bool Account::withdraw(const double amount)
@@ -37,7 +36,7 @@ const bool Account::withdraw(const double amount)
 
 const bool Account::setCredit(const double newCredit)
 {
-	return (newCredit+balance >= 0) ? (credit=newCredit) : false;
+	return newCredit+balance < 0 ? false : (credit=newCredit);
 	
 	/*
 	if(newCredit+balance >= 0) // if usable amount still is good

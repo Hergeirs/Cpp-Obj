@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
+// recursive function to return number of numbers in number.
 int amountNumbers(int i)
 {
 	if(i==0)

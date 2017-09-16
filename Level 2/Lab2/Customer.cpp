@@ -14,14 +14,14 @@ Customer::~Customer()
 	saveToFile(); //won't lose a save ever.
 }
 
-
+// create an account for customer
 const bool Customer::createAccount(const unsigned int accountNo)
 {
-	if(accounts.size()!=maxAccounts)
+	if(accounts.size()!=maxAccounts) // if max accounts aren't reached
 	{
-		if (!accountFound(findAccount(accountNo)))
+		if (!accountFound(findAccount(accountNo))) // if accountNo doesn't exits
 		{	
-			accounts.push_back(std::unique_ptr<Account>(new Account(accountNo)));
+			accounts.push_back(std::unique_ptr<Account>(new Account(accountNo))); // create account
 			return true;
 		}
 	}              
@@ -38,7 +38,7 @@ void Customer::removeAccount(const unsigned int accountNo)
 	}));
 */
 
-
+// remove account with accountNo from accounts vector
 const bool Customer::removeAccount(const unsigned int accountNo)
 {   
 	auto found = findAccount(accountNo);
@@ -50,6 +50,7 @@ const bool Customer::removeAccount(const unsigned int accountNo)
 	return false;
 }
 
+// only tries to deposits money if account is found. 
 const bool Customer::deposit(const unsigned int accountNo,const double amount)
 {
 	auto found = findAccount(accountNo);
@@ -170,12 +171,14 @@ const bool Customer::loadFromFile()
 	return false;
 }
 
+// Just set names...
 void Customer::setName(const std::string fName,const std::string lName)
 {
 	firstName = fName;
 	lastName = lName;
 }
 
+//returns true if accountNo is assosiated with any account in vector.
 const bool Customer::accountExists(const unsigned int accountNo)
 {
 	return (accountFound(findAccount(accountNo)));

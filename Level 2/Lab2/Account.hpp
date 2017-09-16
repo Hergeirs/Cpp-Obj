@@ -7,16 +7,18 @@
 //for easy output and display of accountInfo
 struct AccountInfo
 {
-	const unsigned int accountNo=0;
-	const double balance=0;
-	const double credit=0;
-	const double available=0;
+	const unsigned int accountNo;
+	const double balance;
+	const double credit;
+	const double available;
+	//default constructor
 	AccountInfo()
 	:accountNo(0),balance(0),credit(0),available(0){}
-	
+	//constructor
 	AccountInfo(const unsigned int pAccountNo,const double pBalance, const double pCredit, const double pAvailable)
 	:accountNo(pAccountNo),balance(pBalance),credit(pCredit),available(pAvailable){}
 };
+
 
 
 class Account

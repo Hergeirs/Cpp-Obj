@@ -3,43 +3,44 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceRoot}",
                 "/usr/include",
-                "/usr/local/include"
+                "/usr/local/include",
+                "${workspaceRoot}"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "/home/hergeir/Projects/Cpp-Obj/Project",
                     "/usr/include",
                     "/usr/local/include",
                     "${workspaceRoot}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
         },
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceRoot}",
-                "/usr/include/c++/7.1.1",
-                "/usr/include/c++/7.1.1/x86_64-pc-linux-gnu",
+                "/usr/include/c++/7.2.0",
+                "/usr/include/c++/7.2.0/x86_64-pc-linux-gnu",
                 "/usr/local/include",
-                "/usr/lib/clang/4.0.1/include",
+                "/usr/lib/clang/5.0.0/include",
                 "/usr/include",
-                "~/Projects/Cpp-Obj/Project"
+                "${workspaceRoot}"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "/home/hergeir/Projects/Cpp-Obj/Project",
-                    "/usr/include/c++/7.1.1",
-                    "/usr/include/c++/7.1.1/x86_64-pc-linux-gnu",
+                    "/usr/include/c++/7.2.0",
+                    "/usr/include/c++/7.2.0/x86_64-pc-linux-gnu",
                     "/usr/local/include",
-                    "/usr/lib/clang/4.0.1/include",
+                    "/usr/lib/clang/5.0.0/include",
                     "/usr/include",
                     "${workspaceRoot}"
                 ],
@@ -50,8 +51,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceRoot}",
-                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include"
+                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include",
+                "${workspaceRoot}"
             ],
             "defines": [
                 "_DEBUG",
@@ -68,5 +69,5 @@
             }
         }
     ],
-    "version": 2
+    "version": 3
 }

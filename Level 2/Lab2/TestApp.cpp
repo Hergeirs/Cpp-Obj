@@ -3,21 +3,10 @@
 #include <iomanip>
 
 // default constructor.
-
-const unsigned int TestApp::getAccountNo() const
-{
-	unsigned int accountNo;
-	do
-	{
-		accountNo = getUnsignedInt("Enter account number: ");
-	} while (!bank.accountExists(accountNo) && printPrompt("account "+std::to_string(accountNo)+" does not exist")); // while account doesn't exist	
-	return accountNo;
-}
-
-
 TestApp::TestApp()
 {
 	menu.setMenuTitle("Main menu");
+//menu Item
 	menu.addItem("Create and manage customer (auto saves current)",true);
 	menu.addItem("Manage existing customer (auto saves current)",true);
 	menu.addItem("Change customer name",false);
@@ -84,7 +73,6 @@ const bool TestApp::doMenuChoice(const int choice)
 		return false;
 	default:
 		break;
-
 	}
 	if(bank.customerExists()) // customer must exist for menus to show.
 	{
@@ -166,30 +154,6 @@ void TestApp::changeAccountCredit()
 	printPrompt("account credit for account "+std::to_string(accountNo)+" changed to "+std::to_string(newCredit));	
 }
 
-
-/*
-void	TestApp::changeAccountCredit()
-{
-	std::string newCreditString;
-	unsigned int accountNo;
-	do
-	{
-		accountNo = getUnsignedInt("Enter account number: ");
-	} while (!accountExist(accountNo) && printPrompt("account "+std::to_string(accountNo)+" does not exist")); // while account doesn't exist
-	
-	printPrompt("Current Info: ","Change credit");
-	printAccountInfo(accountNo); 
-	unsigned int newCredit = getUnsignedInt("Enter new credit for account: ");
-	
-	while (!bank.changeAccountCredit(accountNo,newCredit))
-	{
-		printPrompt("credit can't be changed to "+std::to_string(newCredit)+" as it would give negative usable balance.");
-		newCredit=getUnsignedInt("Enter new credit for account: ");
-	}
-	printPrompt("account credit for account "+std::to_string(accountNo)+" changed to "+std::to_string(newCredit));	
-}
-*/
-
 void TestApp::deposit()
 {
 	const unsigned int accountNo = getAccountNo();
@@ -244,16 +208,26 @@ void TestApp::removeAccount()
 	const unsigned int accountNo = getAccountNo();
 	if (bank.removeAccount(accountNo))
 	{
-		printPrompt(accountNo+" was deleted from customer.");
+		printPrompt(std::to_string(accountNo)+ " was deleted from customer.");
 	}
 	else
 	{
-		printPrompt(accountNo+" does not exist/is not owned by "+bank.getCurrentName());
+		printPrompt(std::to_string(accountNo)+" does not exist/is not owned by "+bank.getCurrentName());
 	}
 }
 
+// returns valid accountNumber from user input.
+const unsigned int TestApp::getAccountNo() const
+{
+	unsigned int accountNo;
+	do
+	{
+		accountNo = getUnsignedInt("Enter account number: ");
+	} while (!bank.accountExists(accountNo) && printPrompt("account "+std::to_string(accountNo)+" does not exist")); // while account doesn't exist	
+	return accountNo;
+}
 
-
+//prints relevant information from AccountInfo struct declared in Account.hpp
 void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bool clear) const
 {
 	const size_t width=20;
@@ -264,7 +238,9 @@ void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bo
 	std::cout << std::endl;
 } 
 
+// prints relevant information on account using getAccountInfo from bank.
 void TestApp::printAccountInfo(const unsigned int accountNo) const
 {		 
 	printAccountInfo(bank.getAccountInfo(accountNo));
 }
+
