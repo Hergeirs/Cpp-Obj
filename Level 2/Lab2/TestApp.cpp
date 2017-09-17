@@ -2,6 +2,12 @@
 #include <iostream>
 #include <iomanip>
 
+/**********************************************************************************
+		All functions in this class only exist to take user data and use pass them
+		through to the lower silent classes and showing errors therefrom.
+**********************************************************************************/
+
+
 // default constructor.
 TestApp::TestApp()
 {
@@ -31,7 +37,7 @@ void TestApp::run()
 	while (doMenuChoice(menu.getMenuChoice())){} // will loop until doMenuChoice returns false
 }
 
-// call relevant functions.
+// call relevant functions for menu choices.
 const bool TestApp::doMenuChoice(const int choice)
 {
 	switch (choice)
@@ -74,7 +80,7 @@ const bool TestApp::doMenuChoice(const int choice)
 	default:
 		break;
 	}
-	if(bank.customerExists()) // customer must exist for menus to show.
+	if(bank.customerExists()) // customer must exist for certain menus to show.
 	{
 		if (bank.getAmountAccounts()>0)
 		{
@@ -90,6 +96,7 @@ const bool TestApp::doMenuChoice(const int choice)
 	return true;
 }
 
+// takes user input to create user if id isn't already in use.
 void TestApp::createCustomer()
 {
 	std::string fName,lName;
@@ -106,6 +113,7 @@ void TestApp::createCustomer()
 		printPrompt("Customer with id:"+std::to_string(id)+" already exists... Try manage customer.","error");
 	}
 }
+
 
 void TestApp::manageCustomer()
 {

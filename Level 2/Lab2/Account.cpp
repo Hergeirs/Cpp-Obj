@@ -1,6 +1,7 @@
 #include "Account.hpp"
 #include "Functions.hpp"
 
+//Only constructor.
 Account::Account(const unsigned int pAccountNo, const double pBalance, const double pCredit)
 :accountNo(pAccountNo)
 {
@@ -19,8 +20,9 @@ const bool Account::deposit(const double amount)
 }
 
 const bool Account::withdraw(const double amount)
-{
-	return amount > getUsableBalance() ? false : (balance-=amount);
+{ 
+	// if amount less than zero or amount bigger than usable balance. withrawal is not possible
+	return amount <0 || amount > getUsableBalance() ? false : (balance-=amount);
 	/*
 	if (amount > getUsableBalance())
 	{
@@ -36,6 +38,7 @@ const bool Account::withdraw(const double amount)
 
 const bool Account::setCredit(const double newCredit)
 {
+	// If the new credit makes usablebalance negative It's not valid
 	return newCredit+balance < 0 ? false : (credit=newCredit);
 	
 	/*
@@ -49,6 +52,8 @@ const bool Account::setCredit(const double newCredit)
 	}
 	*/	
 }
+
+// regular get functions
 
 
 const double & Account::getCredit() const
