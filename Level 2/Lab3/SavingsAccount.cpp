@@ -10,7 +10,7 @@ SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balanc
 SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balance, const AccountType accountType, const unsigned int pWithdrawals, const unsigned int pMaxWithdrawals)
 :Account(accountNo,balance,accountType),maxWithdrawals(pMaxWithdrawals),withdrawals(pWithdrawals)
 {
-	interest = 0.02;
+	interest = 0.02;	//need to declare static variable in definition.
 }
 
 const bool SavingsAccount::withdraw(const double amount)
