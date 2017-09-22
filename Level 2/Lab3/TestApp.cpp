@@ -260,9 +260,10 @@ void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bo
 		printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
 		printPrompt(std::to_string(info.available),"Usable balance",pause,false,width);
 	}
-	if (info.interest != 0)	c+
+	else if (info.interest != 0)
+	{
 		printPrompt(std::to_string(info.interest),"Interest:",false,false,width);
-	
+	}
 	std::cout << std::endl;
 } 
 

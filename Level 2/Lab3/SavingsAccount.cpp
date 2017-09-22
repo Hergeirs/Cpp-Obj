@@ -1,21 +1,21 @@
 #include "SavingsAccount.hpp"
 
 SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balance, const unsigned int pWithdrawals)
-:Account(accountNo,balance,SAVINGS),maxWithdrawals(4),interest(0.02),withdrawals(pWithdrawals)
+:Account(accountNo,balance,SAVINGS),maxWithdrawals(4),withdrawals(pWithdrawals)
 {
-	//
+	interest = 0.02;
 }
 
 //PROTECTED initializer
 SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balance, const AccountType accountType, const unsigned int pWithdrawals, const unsigned int pMaxWithdrawals)
-:Account(accountNo,balance,accountType),maxWithdrawals(pMaxWithdrawals),interest(0.02),withdrawals(pWithdrawals)
+:Account(accountNo,balance,accountType),maxWithdrawals(pMaxWithdrawals),withdrawals(pWithdrawals)
 {
-	//
+	interest = 0.02;
 }
 
 const bool SavingsAccount::withdraw(const double amount)
 {
-	if (maxWithdrawals <= ++withdrawals || amount > balance)
+	if (maxWithdrawals < ++withdrawals || amount > balance)
 	{ 
 		return false;
 	}

@@ -19,7 +19,7 @@ struct AccountInfo
 	AccountInfo()
 	:accountNo(0),balance(0),credit(0),interest(0),available(0){}
 	//constructor
-	AccountInfo(const unsigned int pAccountNo,const std::string pAccountType,const double pBalance, const double pCredit, const double pInterest, const double pAvailable)
+	AccountInfo(const unsigned int pAccountNo,const std::string & pAccountType,const double pBalance, const double pCredit, const double pInterest, const double pAvailable)
 	:accountNo(pAccountNo),accountType(pAccountType),balance(pBalance),credit(pCredit),interest(pInterest),available(pAvailable){}
 };
 
@@ -51,7 +51,7 @@ public:
 	const AccountInfo getAccountInfo() const;			//get all info at once
 
 protected:
-	AccountType type;		// enum of accountType
+	const AccountType type;		// enum of accountType
 	unsigned int accountNo;
 	double balance;
 	virtual const unsigned int getWithdrawals() const;
@@ -61,10 +61,10 @@ protected:
 	
 
 	friend std::ostream & operator << (std::ostream & a, const Account & b);
-	friend std::istream & operator >> (std::istream & a, Account & b);
+	//friend std::istream & operator >> (std::istream & a, Account & b);
 };
 
 std::ostream & operator << (std::ostream & a, const Account & b);
-std::istream & operator >> (std::istream & a, Account & b);
+//std::istream & operator >> (std::istream & a, Account & b);
 
 #endif

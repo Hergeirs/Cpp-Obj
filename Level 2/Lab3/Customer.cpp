@@ -3,6 +3,7 @@
 #include <algorithm> 	// 	for std::find_if()
 #include "Functions.hpp"
 
+//constructor and destructor
 Customer::Customer(const unsigned int id, std::string fName,std::string lName)
 :id(id)
 {
@@ -44,16 +45,6 @@ const bool Customer::createAccount(const unsigned int accountNo, AccountType typ
 	return false;
 }
 
-/*
-if i didn't want bool return from removeAccount function i'd have used this beauty:
-void Customer::removeAccount(const unsigned int accountNo)	
-	accounts.erase(std::remove_if(accounts.begin(),accounts.end(),
-	[& accountNo](const Account & a)
-	{
-		return a.getAccountNo == accountNo;
-	}));
-*/
-
 // remove account with accountNo from accounts vector
 const bool Customer::removeAccount(const unsigned int accountNo)
 {   
@@ -66,9 +57,9 @@ const bool Customer::removeAccount(const unsigned int accountNo)
 	return false;
 }
 
-// only tries to deposit money if account is found. 
 const bool Customer::deposit(const unsigned int accountNo,const double amount)
 {
+	// only tries to deposit money if account is found. 
 	auto found = findAccount(accountNo);
 	if(accountFound(found))
 	{ 
@@ -90,28 +81,21 @@ const bool Customer::withdraw(const unsigned int accountNo,const double amount)
 	return false;
 }
 
-const bool Customer::accountFound(std::vector<std::unique_ptr<Account>>::iterator found) const
+//returns wether account is found
+const bool Customer::accountFound(std::vector<std::unique_ptr<Account>>::const_iterator found) const
 {
 	return !(found==accounts.end()); 
 }
-
- 
 
 const bool Customer::changeAccountCredit(const unsigned int accountNo, const double amount)
 {
 	auto found = findAccount(accountNo); 
 	return (accountFound(found)) ? (*found)->setCredit(amount) : false;
-	/*
-	if (accountFound(found))
-	{
-		return (*found)->setCredit(amount);
-	}
-	else
-	{
-		return false;
-	}
-	*/
 }
+
+/*
+						get functions for customer
+																		*/
 
 const std::string Customer::getName() const 
 {
@@ -123,12 +107,15 @@ const unsigned int & Customer::getId() const
 	return id;
 }
 
+
 const unsigned int Customer::getAmountAccounts() const
 {
 	return accounts.size();
 }
 
-
+/*
+						get functions for accounts
+																		*/
 const AccountInfo Customer::getAccountInfo(const unsigned int accountNo)
 { 
 	auto found = findAccount(accountNo);
@@ -147,6 +134,9 @@ const double Customer::getTotalAssets() const
 	return total;
 }
 
+/*
+						file manipulation
+																		*/
 const bool Customer::saveToFile() const
 {
 	std::ofstream os(std::to_string(id)+".knt"); 
@@ -185,28 +175,28 @@ const bool Customer::loadFromFile()
 	return false;
 }
 
-// Just set names...
-void Customer::setName(const std::string fName,const std::string lName)
-{
-	firstName = fName;
-	lastName = lName;
-}
-
 //returns true if accountNo is assosiated with any account in vector.
 const bool Customer::accountExists(const unsigned int accountNo)
 {
 	return (accountFound(findAccount(accountNo)));
 }
 
-//find account in the unique_ptr<accounts> vector and return iterator to it.
-std::vector<std::unique_ptr<Account>>::iterator Customer::findAccount(const unsigned int accountNo)
+// Just set names...
+void Customer::setName(const std::string & fName,const std::string & lName)
+{
+	firstName = fName;
+	lastName = lName;
+}
+
+//find account in the unique_ptr<accounts> vector and return iterator to it. 
+const std::vector<std::unique_ptr<Account>>::const_iterator Customer::findAccount(const unsigned int accountNo) const
 {
 	return std::find_if(accounts.begin(),accounts.end(),[&accountNo]
 	(const std::unique_ptr<Account> & a)
 	{ 
 		return ((a->getAccountNo())==accountNo);
 	});
-} 
+}
  
  //Return const vector reference to accountss
 const std::vector<std::unique_ptr<Account>> & Customer::getAllAccounts() const

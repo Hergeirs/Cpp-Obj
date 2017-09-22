@@ -95,6 +95,7 @@ const AccountType Account::getType() const
 	return type;
 }
 
+/*
 const bool Account::setType(const AccountType accountType)
 {
 	printPrompt("Setting type of account to"+std::to_string(accountType)+" | ");
@@ -102,7 +103,7 @@ const bool Account::setType(const AccountType accountType)
 	printPrompt(getTypeText());
 	return true;
 }
-
+*/
 /*************************************************************************
 	Overloaded operators for class friended them to surpass get functions.
 **************************************************************************/
@@ -112,13 +113,15 @@ std::ostream & operator << (std::ostream & a, const Account & b)
 
 	return a;
 }
+/*
 std::istream & operator >> (std::istream & a, Account & b)
 {
 	double credit;
 	int typ;
 	a >> typ >> b.accountNo >> b.balance >> credit;
-	AccountType typen = static_cast<AccountType>(typ);
+	AccountType typen = static_cast<AccountType>(typ); 
 	b.setType(typen);
 	b.setCredit(credit);
 	return a;
 } 
+*/
