@@ -160,13 +160,13 @@ const double SavingsAccount::getInterest() const
 	return interest;
 }
 
-//In \emph{LongTermSavingsAccount}.hpp
+//In LongTermSavingsAccount.hpp
 protected:
-virtual const double & getInterest() const override;
+virtual const double getInterest() const override;
 
-// In \emph{LongTermSavingsAccount}.cpp
+// In LongTermSavingsAccount.cpp
 double SavingsAccount::interest;
-const double & \emph{LongTermSavingsAccount}::getInterest() const
+const double LongTermSavingsAccount::getInterest() const
 {
 	return interest+0.02;
 }
@@ -174,13 +174,27 @@ const double & \emph{LongTermSavingsAccount}::getInterest() const
 
 I ended up with a \emph{LongTermSavingsAccount} class that in every sense (except variable value) always reported having 2\% higher interest rate than \emph{SavingsAccounts}.
 
+The advantages with this approach (that I know of)
+\begin{itemize}
+	\item only one interest variable (less vasted space).
+	\item Able to change interest of all accounts of specific type at once.
+	\item able to implement LongTermSavingsAccount always having 2\% higher interes than all SavingsAccounts 
+\end{itemize}
+Disadvantages:
+\begin{itemize}
+	\item all SavingsAccounts (and by extenstion the LongTermSavingsAccounts) can not have different interest rates.
+	\item not being able to make sure that if we change interest of a random SavingsAccount that LongTermSavingsAccount will follow.
+\end{itemize}
+
+Was I correct in my approach?
+
 \section{Building/Compiling}
 Just run \emph{make} in the Lab directory.
 To run the program run \emph{make run} in same directory.
 
 \section{Enviroment}
 I'm programming on an Arch linux 64-bit system. I've got the gcc compiler installed and compile using it's g++ alias which links necessary libraries automatically. To compile I use the recommended flags: "-std=c++11 -Wall -pedantic". The flags let me choose to use c++11 standard and give me useful compiling warnings and errors. 
-For editing of code i use VS code.
+For editing of code i currently use VS code with a makefile.
 
 \section{Backup}
 And if anything's missing you can find it on: \\
