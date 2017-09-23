@@ -5,10 +5,9 @@
 
 //constructor and destructor
 Customer::Customer(const unsigned int id, std::string fName,std::string lName)
-:id(id)
+:id(id),firstName(fName),lastName(lName)
 {
-	firstName=fName;
-	lastName=lName;
+	//
 }
 
 Customer::~Customer()
@@ -101,12 +100,6 @@ const std::string Customer::getName() const
 {
 	return firstName+" "+lastName;;
 }
-
-const unsigned int & Customer::getId() const 
-{
-	return id;
-}
-
 
 const unsigned int Customer::getAmountAccounts() const
 {

@@ -31,11 +31,6 @@ const bool Account::setCredit(const double newCredit)
 	return 0;
 }
 
-const bool Account::setInterest(const double amount)
-{
-	return 0;
-}
-
 // regular get functions
 
 
@@ -66,7 +61,7 @@ const unsigned int & Account::getAccountNo() const
 // this function will follow to the other classes and give correct values for all.
 const AccountInfo Account::getAccountInfo() const 
 {
-	return AccountInfo(accountNo,getTypeText(),balance,getCredit(),getInterest(),getUsableBalance());
+	return AccountInfo(accountNo,type,getTypeText(),balance,getCredit(),getInterest(),getUsableBalance());
 } 
 
 const unsigned int Account::getWithdrawals() const

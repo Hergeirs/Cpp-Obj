@@ -77,7 +77,7 @@ const bool Bank::manageCustomer(const unsigned int id)
 																			*/
 const bool Bank::createCustomer(const unsigned int id, std::string fName, std::string lName)
 {
-	if (!(fileExist(std::to_string(id)+".knt")))
+	if (!(fileExist(std::to_string(id)+".knt"))) 
 	{	
 		currentCustomer.reset(new Customer(id,fName,lName));
 		return true;

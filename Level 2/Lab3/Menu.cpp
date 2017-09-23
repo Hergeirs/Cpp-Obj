@@ -6,8 +6,9 @@
 //   Precondition: -
 //   Postcondition: empty Menu object is created
 Menu::Menu()
+:menus(std::vector <MenuItem> ())
 {
-	menus = std::vector <MenuItem> ();
+	//
 }
 
 //   Precondition:  Menu object must exist.

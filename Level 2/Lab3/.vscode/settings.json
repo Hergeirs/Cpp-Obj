@@ -41,6 +41,10 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "functional": "cpp",
+        "new": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp"
     }
 }

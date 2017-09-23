@@ -11,6 +11,7 @@ class TransactionAccount : public Account
 		virtual const bool withdraw(const double amount) override;
 		virtual const bool setCredit(const double newCredit) override;
 		virtual const double getUsableBalance() const override;
+		virtual const double getCredit() const override;		
 	private:
 		double credit;
 };

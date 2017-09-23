@@ -11,7 +11,6 @@ class SavingsAccount : public Account
         virtual const double getInterest() const override;
     
     protected:
-        virtual const bool setInterest(const double amount) override; //only within class
         virtual const unsigned int getWithdrawals() const override;
         static double interest;        
         const unsigned int maxWithdrawals;

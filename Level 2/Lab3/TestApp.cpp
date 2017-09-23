@@ -168,13 +168,17 @@ void TestApp::changeAccountCredit()
 {
 	
 	printPrompt("Current Info: ","Change credit",false,false);
-	const unsigned int accountNo = getAccountNo();
-	printAccountInfo(accountNo); 
-	double newCredit = getUnsignedInt("Enter new credit for account: ");
+	unsigned int accountNo = getAccountNo();
+	while (bank.getAccountInfo(accountNo).type!=TRANSACTION) //only transaction account has credit.
+	{
+		printPrompt("Please enter valid accountNo (allowed credit) to change credit on","error",false,false);
+		accountNo=getAccountNo();
+	}
+	double newCredit = getPositiveDouble("Enter new credit for account: ");
 	while (!bank.changeAccountCredit(accountNo,newCredit))
 	{
 		printPrompt("credit can't be changed to "+std::to_string(newCredit)+" as it would give negative usable balance.");
-		newCredit=getUnsignedInt("Enter new credit for account: ");
+		newCredit=getPositiveDouble("Enter new credit for account: ");
 	}
 	printPrompt("account credit for account "+std::to_string(accountNo)+" changed to "+std::to_string(newCredit));	
 }
@@ -260,25 +264,32 @@ void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bo
 	{
 		cls();
 	}
+	
 	const size_t width=20;		
 	printPrompt(info.accountType,"AccountType",false,false,width);
-
 	printPrompt(std::to_string(info.accountNo),"AccountNo",false,clear,width);
-	printPrompt(std::to_string(info.balance),"Balance:",false,false,width);	
-	if (info.credit != 0) // only print relevant info.
+	printPrompt(std::to_string(info.balance),"Balance:",false,false,width);
+	
+	switch(info.type)
 	{
-		printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
-		printPrompt(std::to_string(info.available),"Usable balance",false,false,width);
-	}
-	else if (info.interest != 0)
-	{
-		printPrompt(std::to_string(info.interest),"Interest:",false,false,width);
+		case NOTYPE:
+			printPrompt("ERROR WITH ACCOUNT TYPE... USING BASECLASS","ERROR");
+			break;
+		case TRANSACTION:
+			printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
+			printPrompt(std::to_string(info.available),"Usable balance",false,false,width);	
+			break;
+		case SAVINGS:	//will fall through to LONGTERMSAVINGS case.
+		case LONGTERMSAVINGS:
+			printPrompt(std::to_string(info.interest),"Interest:",false,false,width);
+			break;
 	}
 	if(pause)
 		systemPause();
 	if(clear)
 		cls();
 	std::cout << std::endl;
+	centerText("next account",'=','-',1,width);
 } 
 
 

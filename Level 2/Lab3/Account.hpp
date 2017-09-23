@@ -5,23 +5,6 @@
 #include <memory>
 #include <string>
 
-//for easy output and display of accountInfo
-
-struct AccountInfo
-{
-	const unsigned int accountNo;
-	const std::string accountType;
-	const double balance;
-	const double credit;
-	const double interest;
-	const double available;
-	//default constructor
-	AccountInfo()
-	:accountNo(0),balance(0),credit(0),interest(0),available(0){}
-	//constructor
-	AccountInfo(const unsigned int pAccountNo,const std::string & pAccountType,const double pBalance, const double pCredit, const double pInterest, const double pAvailable)
-	:accountNo(pAccountNo),accountType(pAccountType),balance(pBalance),credit(pCredit),interest(pInterest),available(pAvailable){}
-};
 
 //for account types	
 enum AccountType
@@ -30,6 +13,24 @@ enum AccountType
 	TRANSACTION ,
 	SAVINGS ,
 	LONGTERMSAVINGS
+};
+
+//for easy output and display of accountInfo
+struct AccountInfo
+{
+	const unsigned int accountNo;
+	const AccountType type;
+	const std::string accountType;
+	const double balance;
+	const double credit;
+	const double interest;
+	const double available;
+	//default constructor
+	AccountInfo()
+	:accountNo(0),type(NOTYPE),balance(0),credit(0),interest(0),available(0){}
+	//constructor
+	AccountInfo(const unsigned int & pAccountNo,const  AccountType & tType,const std::string & pAccountType,const double pBalance, const double pCredit, const double pInterest, const double pAvailable)
+	:accountNo(pAccountNo),type(tType),accountType(pAccountType),balance(pBalance),credit(pCredit),interest(pInterest),available(pAvailable){}
 };
 
 class Account
@@ -42,7 +43,6 @@ public:
 	const bool deposit(const double amount);
 	virtual const bool withdraw(const double amount);
 	virtual const bool setCredit(const double amount);
-	virtual const bool setInterest(const double amount);
 	virtual const double getInterest() const;
 	virtual const double getCredit() const;         	//get current credit for account
 	const double & getBalance() const;        			//get current balance for account

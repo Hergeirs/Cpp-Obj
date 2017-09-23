@@ -27,7 +27,6 @@ public:
 
 	//get functions for customer.
 	const std::string getName() const;
-	const unsigned int & getId() const;
 	
 	//get functions for accounts.
 	const unsigned int getAmountAccounts() const;

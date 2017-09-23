@@ -34,8 +34,3 @@ const double SavingsAccount::getInterest() const
 {
 	return interest;
 }
-
-const bool SavingsAccount::setInterest(const double amount)
-{
-	return (interest=amount);	
-}

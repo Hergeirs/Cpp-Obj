@@ -50,9 +50,9 @@ void centerMenuItem(std::string input, char fill, char edge, int index, int padd
 //------------------------------------------------------------------------------
 
 MenuItem::MenuItem(std::string & pMenuText,bool pEnabled)
+:menuText(pMenuText),enabled(pEnabled)
 {
-	menuText=pMenuText;
-	enabled=pEnabled;
+		//
 }
 
 /*MenuItem::~MenuItem()

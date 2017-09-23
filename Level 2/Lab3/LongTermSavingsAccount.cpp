@@ -7,6 +7,7 @@ LongTermSavingsAccount::LongTermSavingsAccount(const unsigned int accountNo, con
 {    
     //
 }
+
 // Function to make the interest in all practical senses 2% higher than savings account.
 const double LongTermSavingsAccount::getInterest() const
 {
