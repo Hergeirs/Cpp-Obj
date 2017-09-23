@@ -49,22 +49,20 @@ public:
 	virtual const double getUsableBalance() const;  	//get balance + credit
 	const unsigned int & getAccountNo() const;			//get accountNo
 	const AccountInfo getAccountInfo() const;			//get all info at once
+	const AccountType & getType() const;
+	virtual const unsigned int getWithdrawals() const;
+	
 
 protected:
 	const AccountType type;								// enum of accountType
 	unsigned int accountNo;
 	double balance;
-	virtual const unsigned int getWithdrawals() const;
 	const std::string getTypeText() const;
-	const AccountType getType() const;
 	const bool setType(const AccountType accountType); // make this protected for safety
 	
-
-	friend std::ostream & operator << (std::ostream & a, const Account & b);
-	//friend std::istream & operator >> (std::istream & a, Account & b);
 };
 
 std::ostream & operator << (std::ostream & a, const Account & b);
-//std::istream & operator >> (std::istream & a, Account & b);
+
 
 #endif

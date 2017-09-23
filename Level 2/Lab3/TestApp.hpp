@@ -36,8 +36,8 @@ private:
 
 // print account functions
     const unsigned int getAccountNo() const;
-    void printAccountInfo(const unsigned int accountNo) const;
-    void printAccountInfo(const AccountInfo info, const bool pause=false, const bool clear=true) const;
+    void printAccountInfo(const unsigned int accountNo, const bool pause=true, const bool clear=true) const;
+    void printAccountInfo(const AccountInfo info, const bool pause=true, const bool clear=true) const;
 };
 
 

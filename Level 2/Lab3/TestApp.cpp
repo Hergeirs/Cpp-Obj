@@ -148,7 +148,6 @@ void TestApp::changeCustomerName()
 
 void TestApp::createAccount()
 {
-	unsigned int accountNo = getUnsignedInt("Please enter account No: ");
 	int choice = createAccountMenu.getMenuChoice();	
 	if (choice > 3)
 	{
@@ -156,6 +155,8 @@ void TestApp::createAccount()
 	}
 	AccountType type = static_cast<AccountType>(choice);
 
+	unsigned int accountNo = getUnsignedInt("Please enter account No: ");
+	
 	if (!bank.createAccount(accountNo,type))
 	{
 		printPrompt("user already has used accountNo "+std::to_string(accountNo)+" or reached his maximum of 3 accounts");
@@ -255,27 +256,35 @@ const unsigned int TestApp::getAccountNo() const
 //prints relevant information from AccountInfo struct declared in Account.hpp
 void TestApp::printAccountInfo(const AccountInfo info,const bool pause, const bool clear) const
 {
+	if(clear)
+	{
+		cls();
+	}
 	const size_t width=20;		
-	printPrompt(info.accountType,"AccountType",false,clear,width);
+	printPrompt(info.accountType,"AccountType",false,false,width);
 
 	printPrompt(std::to_string(info.accountNo),"AccountNo",false,clear,width);
 	printPrompt(std::to_string(info.balance),"Balance:",false,false,width);	
 	if (info.credit != 0) // only print relevant info.
 	{
 		printPrompt(std::to_string(info.credit),"Credit:",false,false,width);
-		printPrompt(std::to_string(info.available),"Usable balance",pause,false,width);
+		printPrompt(std::to_string(info.available),"Usable balance",false,false,width);
 	}
 	else if (info.interest != 0)
 	{
 		printPrompt(std::to_string(info.interest),"Interest:",false,false,width);
 	}
+	if(pause)
+		systemPause();
+	if(clear)
+		cls();
 	std::cout << std::endl;
 } 
 
 
 // prints relevant information on account using getAccountInfo from bank.
-void TestApp::printAccountInfo(const unsigned int accountNo) const
+void TestApp::printAccountInfo(const unsigned int accountNo, const bool pause, const bool clear) const
 {		 
-	printAccountInfo(bank.getAccountInfo(accountNo));
+	printAccountInfo(bank.getAccountInfo(accountNo),pause,clear);
 }
 
