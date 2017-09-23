@@ -4,6 +4,11 @@ double SavingsAccount::interest;
 
 LongTermSavingsAccount::LongTermSavingsAccount(const unsigned int accountNo, const double amount, const unsigned int pWithdrawals)
 :SavingsAccount(accountNo,amount,LONGTERMSAVINGS,pWithdrawals,1)
+{    
+    //
+}
+// Function to make the interest in all practical senses 2% higher than savings account.
+const double LongTermSavingsAccount::getInterest() const
 {
-    interest+=0.02; // interest should be 2% over SavingsAccount
+    return interest+0.02;
 }

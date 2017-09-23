@@ -149,8 +149,13 @@ void TestApp::changeCustomerName()
 void TestApp::createAccount()
 {
 	unsigned int accountNo = getUnsignedInt("Please enter account No: ");
-	AccountType type = static_cast<AccountType>(createAccountMenu.getMenuChoice());
-	printPrompt(std::to_string(type));
+	int choice = createAccountMenu.getMenuChoice();	
+	if (choice > 3)
+	{
+		return;
+	}
+	AccountType type = static_cast<AccountType>(choice);
+
 	if (!bank.createAccount(accountNo,type))
 	{
 		printPrompt("user already has used accountNo "+std::to_string(accountNo)+" or reached his maximum of 3 accounts");

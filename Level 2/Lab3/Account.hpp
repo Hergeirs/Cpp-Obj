@@ -51,7 +51,7 @@ public:
 	const AccountInfo getAccountInfo() const;			//get all info at once
 
 protected:
-	const AccountType type;		// enum of accountType
+	const AccountType type;								// enum of accountType
 	unsigned int accountNo;
 	double balance;
 	virtual const unsigned int getWithdrawals() const;

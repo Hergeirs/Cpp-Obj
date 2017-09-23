@@ -3,14 +3,14 @@
 SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balance, const unsigned int pWithdrawals)
 :Account(accountNo,balance,SAVINGS),maxWithdrawals(4),withdrawals(pWithdrawals)
 {
-	interest = 0.02;
+	interest=0.02; //2%
 }
 
 //PROTECTED initializer
 SavingsAccount::SavingsAccount(const unsigned int accountNo, const double balance, const AccountType accountType, const unsigned int pWithdrawals, const unsigned int pMaxWithdrawals)
 :Account(accountNo,balance,accountType),maxWithdrawals(pMaxWithdrawals),withdrawals(pWithdrawals)
 {
-	interest = 0.02;	//need to declare static variable in definition.
+	interest=0.02; //2%
 }
 
 const bool SavingsAccount::withdraw(const double amount)

@@ -109,7 +109,7 @@ const bool Account::setType(const AccountType accountType)
 **************************************************************************/
 std::ostream & operator << (std::ostream & a, const Account & b)
 {
-	a << b.getAccountNo() << std::endl << b.getType() << std::endl << b.getBalance() << std::endl << b.getCredit() << std::endl << b.getWithdrawals();
+	a << b.getAccountNo() << std::endl << b.getType() << std::endl << b.getBalance() << std::endl << b.getCredit() << std::endl << b.getWithdrawals() << std::endl;
 
 	return a;
 }

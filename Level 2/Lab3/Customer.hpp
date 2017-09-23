@@ -1,7 +1,8 @@
 #ifndef CUSTOMERH
 #define CUSTOMERH
 
-#include "Accounts.hpp"
+#include "TransactionAccount.hpp"
+#include "LongTermSavingsAccount.hpp"
 #include <memory>		// for memory management: std::unique_ptr
 #include <vector>	
 #include <string>		

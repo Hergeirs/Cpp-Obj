@@ -13,8 +13,8 @@ class SavingsAccount : public Account
     protected:
         virtual const bool setInterest(const double amount) override; //only within class
         virtual const unsigned int getWithdrawals() const override;
+        static double interest;        
         const unsigned int maxWithdrawals;
-        static double interest;
         unsigned int withdrawals;
         SavingsAccount(const unsigned int accountNo, const double balance,const AccountType accountType, const unsigned int pWithdrawals, const unsigned int pMaxWithdrawals);
 };
