@@ -1,0 +1,113 @@
+\documentclass[11pt]{article}
+
+%Gummi|065|=)
+\title{\textbf{Lab rapport in C++ OOP}}
+\author{Hergeir Winther Lognberg \\
+Hewi1600}
+\date{}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{textcomp}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+	tabsize=4,    
+%   rulecolor=,
+	language=[GNU]C++,
+		basicstyle=\scriptsize,
+		upquote=true,
+		aboveskip={1.5\baselineskip},
+		columns=fixed,
+		showstringspaces=false,
+		extendedchars=false,
+		breaklines=true,
+		prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+		frame=single,
+		numbers=left,
+		showtabs=false,
+		showspaces=false,
+		showstringspaces=false,
+		identifierstyle=\ttfamily,
+		keywordstyle=\color[rgb]{0,0,1},
+		commentstyle=\color[rgb]{0.026,0.112,0.095},
+		stringstyle=\color[rgb]{0.627,0.126,0.941},
+		numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+	backgroundcolor=\color{lbcolor},
+	tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{purple},
+  stringstyle=\color{red}
+  }
+
+
+\begin{document}
+
+\maketitle
+
+\section{Preamble}
+
+Assignment was to create a Bank which operated the way the lab described.
+
+\section{The Code}
+\subsection{placement}
+I've decided to keep all files associated with the lab in the root of the project folder.
+\subsection{Template memberfunction definitions}
+Also relevant is it that I have actually defined all template class functions in a cpp file and instantialized with double there. So that the compiler actually would know which template to compile. (hope you know what i'm trying to say)
+
+\begin{lstlisting}
+	//bottom of DataFileReader.cpp
+	template class DataFileReader<double>; //instantiating template with type double
+\end{lstlisting}
+
+\subsection{namespace}
+I chose to remove
+\begin{lstlisting}
+using namespace std;
+\end{lstlisting}
+from all files it was previously used in. I find that this improves readability and clearly seperates std functions from self-made ones.
+
+
+Still I have not had the need (nor want) for a shared pointer. 
+
+\section{conslusion}
+I think this lab went well. And was alot easier than the previous ones (in a good way). Lots of new stuff learned but marginal amount of typing.
+
+
+\section{Question}
+Is it bad form to define the template member functions in the cpp files.
+
+Was I correct in my approach?
+
+\section{Building/Compiling}
+Just run \emph{make} in the Lab directory.
+To run the program run \emph{make run} in same directory.
+
+\section{Enviroment}
+I'm programming on an Arch linux 64-bit system. I've got the gcc compiler installed and compile using it's g++ alias which links necessary libraries automatically. To compile I use the recommended flags: "-std=c++11 -Wall -pedantic". The flags let me choose to use c++11 standard and give me useful compiling warnings and errors. 
+For editing of code i currently use VS code with a makefile.
+
+\section{Backup}
+And if anything's missing you can find it on: \\
+github: \url{https://github.com/Hergeirs/Cpp-Obj/tree/master/Level%202/Lab3} \\
+\href{https://github.com/Hergeirs/Cpp-Obj/tree/master/Level%202/Lab3}{Cpp-obj/Lab2}
+
+\flushright{\today}
+\end{document}
