@@ -4,8 +4,8 @@
 class DummyBaseClass
 {
 public:
-    DummyBaseClass(){};
-    //~DummyBaseClass();
+    DummyBaseClass()=default;
+    virtual ~DummyBaseClass(){};
     virtual void run(){}; //only public function of TestApp template function.
 private:
     

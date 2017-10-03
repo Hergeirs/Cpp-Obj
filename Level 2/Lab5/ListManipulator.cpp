@@ -1,16 +1,18 @@
 #include "ListManipulator.hpp"
+#include <fstream>
+#include <iterator>
 
 template<typename T>
 ListManipulator<T>::ListManipulator(std::list<T> *aList)
+:theList(aList)
 {
-	theList.reset(aList);
 }
 
 template<typename T>
 T ListManipulator<T>::randomGenerator()
 {
 	//making distriburion static, so they don't have to be reinitialized on every call
-	std::uniform_real_distribution<> random(1000,2000); 
+	static std::uniform_real_distribution<> random(1000,2000); 
 	//making engine static, so that the we don't get the same time value for seed and thereby same variable on every call.
 	static std::default_random_engine generator(static_cast<unsigned>(std::time(0)));
 	return random(generator);
@@ -89,7 +91,16 @@ std::list<T> ListManipulator<T>::getList() const
 {
 	return *theList;
 }
-
+/*
+template<typename T>
+void ListManipulator<T>::readFromFile()
+{
+	std::ifstream is("list.dat");
+	std::ifstream_iterator<> eos;
+	std::ifstream_iterator<> iit(is);
+	std::copy(iit,eos,std::back_inserter(*theList));
+}
+*/
 
 template class ListManipulator<double>;
 template class ListManipulator<int>;

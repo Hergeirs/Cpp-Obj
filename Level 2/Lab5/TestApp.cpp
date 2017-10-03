@@ -1,7 +1,9 @@
 #include "TestApp.hpp"
 #include <iostream>
 #include <iomanip>
-
+#include <fstream>
+#include <iterator>
+#include <algorithm>
 
 /**********************************************************************************
 		All functions in this class only exist to take user data and use pass them
@@ -15,8 +17,9 @@ TestApp<T>::TestApp()
 :theList(new ListManipulator<T>)
 {
 	std::cout << std::fixed;	// setting stream to print decimals (not scientific notation)
+	
 	menu.setMenuTitle("Main menu");
-//menu Item
+//menu Items
 	menu.addItem("Fill list with random numbers.",true);
 	menu.addItem("Summerize the values in the list.",false);
 	menu.addItem("average of numbers",false);
@@ -33,10 +36,11 @@ TestApp<T>::TestApp()
 }
 
 
+
 template<typename T>
 void TestApp<T>::run()
 {
-	while (doMenuChoice(menu.getMenuChoice())){} // will loop until doMenuChoice returns false
+	while (doMenuChoice(menu.getMenuChoice())){} // will loop until doMenuChoice returns false	
 }
 
 // call relevant functions for menu choices.
@@ -163,7 +167,13 @@ void TestApp<T>::clearList()
 	theList->clearList();
 	printPrompt("List is now cleared!");
 }
-
+/*
+template<typename T>
+void TestApp<T>::loadFromFile()
+{
+	theList->readFromFile();
+}
+*/
 template<typename T>
 void TestApp<T>::printNumbers() const
 {

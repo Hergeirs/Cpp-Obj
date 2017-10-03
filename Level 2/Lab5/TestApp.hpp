@@ -16,7 +16,8 @@ public:
 	virtual void run() override;
 private:
 	std::unique_ptr<ListManipulator<T>> theList;
-//menu-implementation
+	
+	//menu-implementation
 	Menu menu;
 	const bool doMenuChoice(const int choice);
 

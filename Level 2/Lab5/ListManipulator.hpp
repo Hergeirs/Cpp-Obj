@@ -14,7 +14,7 @@ class ListManipulator
 {
 public:
 	ListManipulator(std::list<T> *aList=new std::list<T>(20,0));
-	//~ListManipulator();
+	~ListManipulator(){};
 	void randomFill(); // fill List with amount of random values
 	T sumList() const;
 	T avgList() const;
