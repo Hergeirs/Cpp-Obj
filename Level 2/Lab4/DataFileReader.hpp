@@ -31,7 +31,7 @@ class DataFileReader
 	private:
 		// bool filesopen gets set to true after openFiles has been called without errors
 		bool filesOpen;
-
+		
 		// String with names of the data and error files
 		const std::string dataFileName;
 		const std::string errorFileName;
