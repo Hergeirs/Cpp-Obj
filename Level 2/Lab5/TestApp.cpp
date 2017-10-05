@@ -10,7 +10,6 @@
 		through to the lower silent classes and showing errors therefrom.
 **********************************************************************************/
 
-
 // default constructor.
 template<typename T>
 TestApp<T>::TestApp()
@@ -30,13 +29,19 @@ TestApp<T>::TestApp()
 	menu.addItem("sort.",false);
 	menu.addItem("clear list.",false);
 	menu.addItem("write to file",false);
-	menu.addItem("read from file.",false);
+	menu.addItem("read from file.",true);
 	menu.addItem("Print numbers",false);
 	menu.addItem("Quit",true);
 }
 
+template<typename T>
+TestApp<T>::~TestApp()
+{
+	std::cout << "destroyed" << std::endl;
+}
 
 
+//Funcion to keep menues running until exit
 template<typename T>
 void TestApp<T>::run()
 {
@@ -50,8 +55,8 @@ const bool TestApp<T>::doMenuChoice(const int choice)
 	switch (choice)
 	{
 	case 1:
-		fillList();
 		menu.enableAll();
+		fillList();
 		break;
 	case 2:
 		getSum();
@@ -78,10 +83,10 @@ const bool TestApp<T>::doMenuChoice(const int choice)
 		clearList();
 		break;
 	case 10:
-		//writeToFile();
+		writeToFile();
 		break;
 	case 11:
-		//loadFromFile();
+		loadFromFile();
 		break;
 	case 12:
 		printNumbers();
@@ -103,16 +108,14 @@ void TestApp<T>::fillList()
 template<typename T>
 void TestApp<T>::getSum() const
 {
-	T sum = theList->sumList();
-	std::cout << std::setw(12) << "sum: " << sum << std::endl;
+	printPrompt(std::to_string(theList->sumList()));
 }
 
 
 template<typename T>
 void TestApp<T>::getAvg() const
 {
-	T avg = theList->avgList();
-	std::cout << std::setw(12) << "avg: " << avg << std::endl;
+	printPrompt(std::to_string(theList->avgList()));
 }
 
 template<typename T>
@@ -167,13 +170,20 @@ void TestApp<T>::clearList()
 	theList->clearList();
 	printPrompt("List is now cleared!");
 }
-/*
+
 template<typename T>
 void TestApp<T>::loadFromFile()
 {
 	theList->readFromFile();
 }
-*/
+
+template<typename T>
+void TestApp<T>::writeToFile() const
+{
+	theList->saveToFile();
+}
+
+
 template<typename T>
 void TestApp<T>::printNumbers() const
 {

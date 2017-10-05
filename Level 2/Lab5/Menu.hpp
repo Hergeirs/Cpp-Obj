@@ -4,8 +4,6 @@
 #include "MenuItem.hpp"
 #include <vector>
 
-
-
 class Menu
 {
 private:

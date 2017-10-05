@@ -32,6 +32,7 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "functional": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "fstream": "cpp"
     }
 }

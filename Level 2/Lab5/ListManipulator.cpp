@@ -8,19 +8,21 @@ ListManipulator<T>::ListManipulator(std::list<T> *aList)
 {
 }
 
+//for use in the generate function
 template<typename T>
 T ListManipulator<T>::randomGenerator()
 {
 	//making distriburion static, so they don't have to be reinitialized on every call
-	static std::uniform_real_distribution<> random(1000,2000); 
+	static std::uniform_real_distribution<> distribute(1000,2000); 
 	//making engine static, so that the we don't get the same time value for seed and thereby same variable on every call.
-	static std::default_random_engine generator(static_cast<unsigned>(std::time(0)));
-	return random(generator);
+	static std::default_random_engine random(static_cast<unsigned>(std::time(0)));
+	return distribute(random);
 }
 
 template<typename T>
 void ListManipulator<T>::randomFill()
 {
+	//generating using member function above
 	std::generate(theList->begin(),theList->end(),randomGenerator);
 }
 
@@ -91,16 +93,37 @@ std::list<T> ListManipulator<T>::getList() const
 {
 	return *theList;
 }
-/*
+
+template<typename T>
+void ListManipulator<T>::saveToFile() const
+{
+	std::ofstream os("list.dat");
+	if(os)
+	{
+		os << typeid(T).name() << std::endl;
+		for (auto & i: *theList)
+		{
+			os << i << std::endl;
+		}
+	}
+	os.close();
+}
+
 template<typename T>
 void ListManipulator<T>::readFromFile()
 {
 	std::ifstream is("list.dat");
-	std::ifstream_iterator<> eos;
-	std::ifstream_iterator<> iit(is);
-	std::copy(iit,eos,std::back_inserter(*theList));
+	if(is)
+	{
+		clearList();
+		std::istream_iterator<T> eos;
+		std::istream_iterator<T> iit(is);
+		std::string devNull;	// emulating dev/null from linux
+		getline(is,devNull); // passing into temp string to move
+		std::copy(iit,eos,std::back_inserter(*theList));
+	}
+	is.close();
 }
-*/
 
 template class ListManipulator<double>;
 template class ListManipulator<int>;

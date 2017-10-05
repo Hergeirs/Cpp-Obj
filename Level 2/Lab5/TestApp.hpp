@@ -1,18 +1,18 @@
 #ifndef TESTAPPH
 #define TESTAPPH
 
-#include "DummyBaseClass.hpp"
+#include "IApp.hpp"
 
 #include "Menu.hpp"
 #include "ListManipulator.hpp"
 #include <memory>
 
 template<typename T>
-class TestApp : public DummyBaseClass
+class TestApp : public IApp
 {
 public:
 	TestApp();
-	//~TestApp();
+	~TestApp();
 	virtual void run() override;
 private:
 	std::unique_ptr<ListManipulator<T>> theList;

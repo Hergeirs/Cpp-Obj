@@ -1,4 +1,4 @@
-FILES= main.cpp TestApp.cpp ListManipulator.cpp Functions.cpp Menu.cpp MenuItem.cpp 
+FILES= main.cpp Interface.cpp TestApp.cpp ListManipulator.cpp Functions.cpp Menu.cpp MenuItem.cpp 
 FLAGS= -O0 -g -std=c++14 -Wall -pedantic
 OUTFILE=main
 
