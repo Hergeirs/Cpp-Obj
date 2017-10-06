@@ -16,7 +16,7 @@ TestApp<T>::TestApp()
 :theList(new ListManipulator<T>)
 {
 	std::cout << std::fixed;	// setting stream to print decimals (not scientific notation)
-	
+	std::cout << std::setprecision(2);	//only want two decimals printed
 	menu.setMenuTitle("Main menu");
 //menu Items
 	menu.addItem("Fill list with random numbers.",true);
@@ -31,13 +31,13 @@ TestApp<T>::TestApp()
 	menu.addItem("write to file",false);
 	menu.addItem("read from file.",true);
 	menu.addItem("Print numbers",false);
-	menu.addItem("Quit",true);
+	menu.addItem("Back",true);
 }
 
 template<typename T>
 TestApp<T>::~TestApp()
 {
-	std::cout << "destroyed" << std::endl;
+	//
 }
 
 
@@ -103,19 +103,20 @@ template<typename T>
 void TestApp<T>::fillList()
 {
 	theList->randomFill();
+	printPrompt("List is now full of random elments");
 } 
 
 template<typename T>
 void TestApp<T>::getSum() const
 {
-	printPrompt(std::to_string(theList->sumList()));
+	printPrompt(std::to_string(theList->sumList()),"sum");
 }
 
 
 template<typename T>
 void TestApp<T>::getAvg() const
 {
-	printPrompt(std::to_string(theList->avgList()));
+	printPrompt(std::to_string(theList->avgList()),"avg");
 }
 
 template<typename T>
@@ -168,31 +169,43 @@ template<typename T>
 void TestApp<T>::clearList()
 {
 	theList->clearList();
+	menu.enableAll();
 	printPrompt("List is now cleared!");
 }
 
 template<typename T>
-void TestApp<T>::loadFromFile()
+TestApp<T> &TestApp<T>::loadFromFile()
 {
-	theList->readFromFile();
+	try
+	{
+		theList->readFromFile();
+		menu.enableAll(); //enable all menuoption once list is loaded
+		printPrompt("elements from file loaded into list");
+	}
+	catch (std::runtime_error & error)
+	{
+		printPrompt("Elements in file are of wrong type","ERROR");
+	}
+	
+	return *this;
 }
 
 template<typename T>
 void TestApp<T>::writeToFile() const
 {
 	theList->saveToFile();
+	printPrompt("list has been saved to file");
 }
-
 
 template<typename T>
 void TestApp<T>::printNumbers() const
 {
+	size_t counter=0;
+	std::cout << "numbers in list:" << std::endl;
 	for (auto & i: theList->getList())
-		std::cout << std::setw(20) << std::right << i << std::endl;
+		std::cout << std::right << std::setw(3) << ++counter << std::right << std::setw(10) << i << std::endl;
 	systemPause();
-}
+}	
 
-
-template class TestApp<double>;
-template class TestApp<int>;
-
+template class TestApp<double>; //instantialating class template for compilation
+template class TestApp<int>;	//instantializing class template for compilation

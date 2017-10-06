@@ -1,11 +1,13 @@
 #include "ListManipulator.hpp"
 #include <fstream>
 #include <iterator>
+#include <iomanip>
 
 template<typename T>
 ListManipulator<T>::ListManipulator(std::list<T> *aList)
 :theList(aList)
 {
+	//
 }
 
 //for use in the generate function
@@ -22,6 +24,10 @@ T ListManipulator<T>::randomGenerator()
 template<typename T>
 void ListManipulator<T>::randomFill()
 {
+	if(theList->size()!=20)
+	{
+		theList.reset(new std::list<T>(20,0));
+	}
 	//generating using member function above
 	std::generate(theList->begin(),theList->end(),randomGenerator);
 }
@@ -61,11 +67,9 @@ void ListManipulator<T>::swapPlaces()
 {
 	auto b = theList->begin();
 	auto e = theList->end();
-
-	while(b!=e && b!=--e) // decrementing the end iterator
+	while(b!=e)	// while b and e not meet eachother.
 	{
-		std::iter_swap(b,e);	//swapping end with begin
-		++b;			// incrementing begin iterator
+		std::iter_swap(b++,--e);
 	}
 }
 
@@ -98,6 +102,7 @@ template<typename T>
 void ListManipulator<T>::saveToFile() const
 {
 	std::ofstream os("list.dat");
+	os << std::setprecision(50); // try to avoid to much truncation.
 	if(os)
 	{
 		os << typeid(T).name() << std::endl;
@@ -115,11 +120,11 @@ void ListManipulator<T>::readFromFile()
 	std::ifstream is("list.dat");
 	if(is)
 	{
-		clearList();
+		clearList();	// in case something already is in list.
+		if (is.get()!= *typeid(T).name())
+			throw std::runtime_error("wrong type");
 		std::istream_iterator<T> eos;
 		std::istream_iterator<T> iit(is);
-		std::string devNull;	// emulating dev/null from linux
-		getline(is,devNull); // passing into temp string to move
 		std::copy(iit,eos,std::back_inserter(*theList));
 	}
 	is.close();

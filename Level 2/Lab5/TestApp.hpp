@@ -1,19 +1,18 @@
 #ifndef TESTAPPH
 #define TESTAPPH
 
-#include "IApp.hpp"
-
 #include "Menu.hpp"
 #include "ListManipulator.hpp"
 #include <memory>
 
 template<typename T>
-class TestApp : public IApp
+class TestApp
 {
 public:
 	TestApp();
 	~TestApp();
-	virtual void run() override;
+	void run();
+	TestApp<T> &loadFromFile();	
 private:
 	std::unique_ptr<ListManipulator<T>> theList;
 	
@@ -32,7 +31,7 @@ private:
 	void sortList();
 	void clearList();
 	void writeToFile() const;
-	void loadFromFile();
+	//loadFromFile()
 	void printNumbers() const;
 	//quit
 };
