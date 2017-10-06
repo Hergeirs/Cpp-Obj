@@ -37,7 +37,7 @@ TestApp<T>::TestApp()
 template<typename T>
 TestApp<T>::~TestApp()
 {
-	//
+	// nothing to do
 }
 
 
@@ -52,11 +52,11 @@ void TestApp<T>::run()
 template<typename T>
 const bool TestApp<T>::doMenuChoice(const int choice)
 {
-	switch (choice)
+	switch (choice)	//menu entries
 	{
 	case 1:
-		menu.enableAll();
-		fillList();
+		fillList();	
+		menu.enableAll();	
 		break;
 	case 2:
 		getSum();
