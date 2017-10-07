@@ -62,10 +62,10 @@ void Interface::run()
 	{
 		switch(menu.getMenuChoice())
 		{
-			case 1:
+			case 1:                 //user chooses int
 				runMain<int>();
 				break;
-			case 2:
+			case 2:                 //user chooses double
 				runMain<double>();	
 				break;
             case 3:

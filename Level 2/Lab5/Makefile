@@ -12,4 +12,4 @@ memoryCheck:
 	valgrind -v --track-origins=yes --leak-check=full --show-leak-kinds=all ./${OUTFILE};
 
 clean:
-	rm *.knt main;
+	rm -f main;

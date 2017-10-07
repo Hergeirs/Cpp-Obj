@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+
+%Gummi|065|=)
+\title{\textbf{Lab rapport in C++ OOP}}
+\author{Hergeir Winther Lognberg \\
+Hewi1600}
+\date{}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{textcomp}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+backgroundcolor=\color{lbcolor},
+	tabsize=4,    
+%   rulecolor=,
+	language=[GNU]C++,
+		basicstyle=\scriptsize,
+		upquote=true,
+		aboveskip={1.5\baselineskip},
+		columns=fixed,
+		showstringspaces=false,
+		extendedchars=false,
+		breaklines=true,
+		prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+		frame=single,
+		numbers=left,
+		showtabs=false,
+		showspaces=false,
+		showstringspaces=false,
+		identifierstyle=\ttfamily,
+		keywordstyle=\color[rgb]{0,0,1},
+		commentstyle=\color[rgb]{0.026,0.112,0.095},
+		stringstyle=\color[rgb]{0.627,0.126,0.941},
+		numberstyle=\color[rgb]{0.205, 0.142, 0.73},
+%        \lstdefinestyle{C++}{language=C++,style=numbers}’.
+}
+\lstset{
+	backgroundcolor=\color{lbcolor},
+	tabsize=4,
+  language=C++,
+  captionpos=b,
+  tabsize=3,
+  frame=lines,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  breaklines=true,
+  showstringspaces=false,
+  basicstyle=\footnotesize,
+%  identifierstyle=\color{magenta},
+  keywordstyle=\color[rgb]{0,0,1},
+  commentstyle=\color{purple},
+  stringstyle=\color{red}
+  }
+
+
+\begin{document}
+
+\maketitle
+
+\section{Preamble}
+
+Assignment was to create a list object with the ability to handle and manipulate 20 items of the type int and float. I am supposed to use the standard library functionality everywhere it's practical to do so.
+\section{The Code}
+\subsection{placement}
+I've decided to keep all files associated with the lab in the root of the project folder.
+\subsection{Template memberfunction definitions}
+Also relevant is it that I have actually defined all template class functions in a cpp file and instantialized with double there. So that the compiler actually would know which template to compile. (hope i'm being clear enough)
+
+\begin{lstlisting}
+	//bottom of DataFileReader.cpp
+	template class DataFileReader<double>; //instantiating template with type double
+\end{lstlisting}
+
+\subsection{namespace}
+I chose to remove
+\begin{lstlisting}
+using namespace std;
+\end{lstlisting}
+from all files it was previously used in. I find that this improves readability and clearly seperates std functions from self-made ones.
+
+
+Still I have not had the need (nor want) for a shared pointer. 
+
+\subsection{classes}
+
+In this lab i've constructed 3 classes of significanse to the lab. These are
+\begin{itemize}
+	\item ListManipulator
+	\begin{itemize}
+		\item class handles all interaction with list object
+	\end{itemize}
+	\item TestApp
+	\begin{itemize}
+		\item class handles all interaction between user and ListManipulator after datatype has been chosen
+	\end{itemize}
+	\item Interface
+	\begin{itemize}
+		\item handles running correct version of TestApp. User chooses datatype here.
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{ListManipulator}
+This is a standard template class.
+
+I simply implemented all list aggregations, filling, clearing... etc, here. The results are returned up to Testapp implementations.
+Get's instantialized with same datatype as TestApp.
+
+\subsubsection{TestApp}
+This is also a template class.
+
+I use this class for giving user results from ListManipulator functions and so on.
+
+\subsubsection{Interface}
+Responsible for instantialising (and running) correct version of testapp. This is done using the following function:
+\newpage
+
+\begin{lstlisting}
+	template <typename T>
+	void runMain()
+	{
+		//run temporary instantialization of TestApp with user defined type 
+		TestApp<T>().run(); 
+	}	
+\end{lstlisting}
+
+and the menu switch looks like this:
+
+\begin{lstlisting}
+	void Interface::run()
+	{
+		//runing interface wrapper.
+		bool again=true;
+		while(again)
+		{
+			switch(menu.getMenuChoice())
+			{
+				case 1:                 //user chooses int
+					runMain<int>();
+					break;
+				case 2:                 //user chooses double
+					runMain<double>();	
+					break;
+				case 3:
+					loadFromFile();
+					break;
+				case 4:
+					again=false;
+				default:
+					break; //won't reach over menuSize anyway
+			}
+		}
+	}\end{lstlisting}
+
+I give user the ability to load before datatype is chosen. In this case the type get's determined by the first char in the "list.dat" file.
+
+\subsection{loading and saving}
+	in case of saving to file I always save the datatype in the first line using the following compiler dependant function.
+\begin{lstlisting}
+	typeid(T).name(); //outputs compiler dependent name for type
+\end{lstlisting}
+
+I used this, because as long as I save to file using the same binary as I read from file with. It will work as long as I use the same function to campare with when I read from file.
+
+Therefore the only drawback would be if I try to read a "list.dat" created by a binary compiled with different compiler than my own.
+
+I write the typename to file like this:
+
+\begin{lstlisting}
+	ofstream os("list.dat");
+	os << typename(T).name() << std::endl;
+\end{lstlisting}
+
+and deduce the datatype when loading like this:
+
+\begin{lstlisting}
+	// loading from file
+	void Interface::loadFromFile()
+	{
+		std::ifstream is("list.dat");
+		char type;
+		is >> type;
+		if (type==*typeid(int).name()) // check for filtype
+		{
+			loadRun<int>();     //run apropriate run function.
+		}
+		else if(type==*typeid(double).name())
+		{
+			loadRun<double>();
+		}
+		else
+		{
+			printPrompt("ERROR TYPE IN FILE","ERROR");
+		}
+	
+	}
+\end{lstlisting}
+ 
+and loadRun is implemented like this:
+
+\begin{lstlisting}
+
+	template <typename T>
+	void loadRun()
+	{	
+		// loading list into Testapp and running it
+		TestApp<T>().loadFromFile().run();  
+	}
+\end{lstlisting}
+
+This works as i made the load implementation public in the TestApp class.
+
+\subsubsection{loading after initialisation}
+If user tries to load a "list.dat" loaded with wrong datatype a runtime error 
+is thrown. Therefore I use a try and catch block within TestApp to handle the 
+error and give feedback to user. Nothing is added to list, and app continues to run.
+
+Relevant code:
+\begin{lstlisting}
+//TestApp.cpp:
+template<typename T>
+TestApp<T> &TestApp<T>::loadFromFile()
+{
+	try
+	{
+		theList->readFromFile();
+		menu.enableAll(); //enable all menuoption once list is loaded
+		printPrompt("elements from file loaded into list");
+	}
+	catch (std::runtime_error & error)
+	{
+		printPrompt("Elements in file are of wrong type","ERROR");
+	}
+	
+	return *this;
+}
+\end{lstlisting}
+
+\begin{lstlisting}
+//ListManipulator.cpp
+template<typename T>
+void ListManipulator<T>::readFromFile()
+{
+	std::ifstream is("list.dat");
+	if(is)
+	{
+		clearList();	// in case something already is in list.
+		if (is.get()!= *typeid(T).name())
+		{
+			throw std::runtime_error("wrong type");
+		}
+		std::istream_iterator<T> eos;
+		std::istream_iterator<T> iit(is);
+		std::copy(iit,eos,std::back_inserter(*theList));
+	}
+	is.close();
+}
+\end{lstlisting}
+
+
+
+\section{conclusion}
+I believe I found a good solution to the assignment. I could have used polymorphism but chose not to as I believed It wouldn't solve the problem of loading from file as elegantly as the current solution
+
+\section{Building/Compiling}
+Just run \emph{make} in the Lab directory.
+To run the program run \emph{make run} in same directory.
+
+\section{Enviroment}
+I'm programming on an Arch linux 64-bit system. \\ \\
+I've got the gcc compiler installed and compile using it's g++ alias which links necessary libraries automatically. \\ \\
+To compile I use the recommended flags: "-std=c++11 -Wall -pedantic". The flags let me choose to use c++11 standard and give me useful compiling warnings and errors. 
+For editing of code i currently use VS code with a makefile.
+
+\section{Backup}
+And if anything's missing you can find it on: \\
+github: \url{https://github.com/Hergeirs/Cpp-Obj/tree/master/Level%202/Lab5} \\
+\href{https://github.com/Hergeirs/Cpp-Obj/tree/master/Level%202/Lab5}{Cpp-obj/Lab2}
+
+\flushright{\today}
+\end{document}
