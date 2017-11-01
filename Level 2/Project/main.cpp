@@ -1,15 +1,25 @@
-#include "Simulation.hpp"
+#include "TrainsSimulation.hpp"
 #include <iostream>
 #include <queue>
 
+
+
 int main()
-{  
+{
+
+    std::unique_ptr<TrainsSimulation> sim = std::make_unique<TrainsSimulation>();
+    std::cout << "continuing..." << std::endl;
     try
     {
-        Simulation().run(); 
+        std::cout << "loading..." << std::endl; 
+        sim->load();
+        std::cout << "running..." << std::endl;
+        sim->run();
     }
     catch (...)
     {
-        return 0;
+        std::cout << "An unhandled error occurred!" << std::endl;
+        return 1;
     }
+    return 0;
 }

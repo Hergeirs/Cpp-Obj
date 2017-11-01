@@ -1,7 +1,6 @@
 #ifndef TIME
 #define TIME
 
-#include "Functions.hpp"
 #include <fstream> // write/read from files
 
 
@@ -17,6 +16,7 @@ class Time
 	Time();
 	Time(int pHours, int pMinutes, int pSeconds):hours(pHours),minutes(pMinutes),seconds(pSeconds){}
 	Time(int getTotalSeconds);
+	Time(std::string time);
 	~Time();
 	const int & getHours() const;
 	const int & getMinutes() const;
@@ -31,10 +31,18 @@ class Time
 	void setMinutes(int pMinutes);
 	void setSeconds(int pSeconds);
 
-	Time operator + (Time time) const;
+	Time operator + (const Time & time) const;
+	Time operator - (const Time & time) const;
+	void operator += (const Time & time);
 
 	const bool operator < (const Time & time) const;
+	const bool operator > (const Time & time) const;
 	const bool operator == (const Time & time) const;
+	const bool operator != (const Time & time) const;
+	const bool operator <= (const Time & time) const;
+	const bool operator >= (const Time & time) const;
+	
+	
 	const Time operator = (const Time & time);
 };
 

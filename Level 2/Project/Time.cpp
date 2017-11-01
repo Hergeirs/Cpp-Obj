@@ -1,4 +1,5 @@
 #include "Time.hpp"
+#include <sstream>
 
 //------------------------------------------------------------------------------
 // default time constructor.
@@ -20,6 +21,15 @@ Time::Time(int totalSeconds)
 	setTime(totalSeconds);
 }
 
+//------------------------------------------------------------------------------
+// implicit constructor takes string in format "hh:mm"
+//------------------------------------------------------------------------------
+
+Time::Time(std::string time)
+{
+	std::istringstream stream(time);
+	stream >> *this;
+} 
 
 Time::~Time()
 {
@@ -132,7 +142,7 @@ void Time::setTime(int _seconds)
 // overloading addition of two time object
 //------------------------------------------------------------------------------
 
-Time Time::operator + (Time time) const
+Time Time::operator + (const Time & time) const
 {
 	int newHours = hours+time.hours;
 	int newMinutes = minutes+time.minutes;
@@ -146,11 +156,47 @@ Time Time::operator + (Time time) const
 	if (newMinutes>60)
 	{
 		++newHours;
-		newMinutes-=60;
+		newMinutes-=60; 
 	}
-	Time result(newHours,newMinutes,newSeconds);
-	return result;
+	if (newHours>23)
+	{
+		newHours-=24;
+	}
+	return Time(newHours,newMinutes,newSeconds);
 }
+
+void Time::operator += (const Time & time)
+{
+	*this = *this+time;
+}
+
+//------------------------------------------------------------------------------
+// overloading subtraction of two time object
+//------------------------------------------------------------------------------
+
+Time Time::operator - (const Time & time) const
+{
+	int newHours = hours-time.hours;
+	int newMinutes = minutes-time.minutes;
+	int newSeconds = seconds-time.seconds; 
+
+	if (newSeconds<0)
+	{
+		--newMinutes;
+		newSeconds+=60;
+	}
+	if (newMinutes<0)
+	{
+		--newHours;
+		newMinutes+=60;
+	}
+	if (newHours<0)
+	{
+		newHours+=24;
+	}
+	return Time(newHours,newMinutes,newSeconds);
+}
+
 
 //------------------------------------------------------------------------------
 // overloading of equality operator between two time objects
@@ -163,6 +209,11 @@ const bool Time::operator == (const Time & time) const
 			if (seconds==time.seconds)
 				return true;
 	return false;
+}
+
+const bool Time::operator != (const Time & time) const
+{
+	return !(*this==time);
 }
 
 //------------------------------------------------------------------------------
@@ -188,6 +239,22 @@ const bool Time::operator < (const Time & time) const
 	return false;
 }
 
+const bool Time::operator <= (const Time & time) const
+{
+	return *this<time || *this == time;
+}
+
+const bool Time::operator > (const Time & time) const
+{
+	return !(*this<time) && *this!=time;
+}
+
+const bool Time::operator >= (const Time & time) const
+{
+	return *this > time || *this == time; 
+}
+
+
 //------------------------------------------------------------------------------
 // overloading assignment operator to assign a time object from another one
 //------------------------------------------------------------------------------
@@ -210,7 +277,7 @@ const Time Time::operator = (const Time & time )
 
 std::ostream & operator << (std::ostream & os,const Time & time)
 {
-	os << time.getTotalSeconds();
+	os << time.getHours() << ':' << time.getMinutes();
 	return os;
 }
 

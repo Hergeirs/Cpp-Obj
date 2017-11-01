@@ -1,4 +1,4 @@
-FILES= main.cpp Car.cpp TrainStation.cpp Train.cpp Simulation.cpp Time.cpp
+FILES= main.cpp Car.cpp TrainStation.cpp Train.cpp Simulation.cpp Time.cpp Event.cpp TrainsSimulation.cpp
 FLAGS= -O0 -g -std=c++14 -Wall -pedantic
 OUTFILE=main
 

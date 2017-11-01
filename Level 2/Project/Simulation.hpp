@@ -1,26 +1,25 @@
 #ifndef SIMULATIONH
 #define SIMULATIONH
 
-#include "TrainStation.hpp"
-#include <list>
+#include "Event.hpp"
+#include <queue>
+#include <memory>
+ 
+//forward declaring to save compilation time
 
 class Simulation
 {
 public:
-	Simulation()
-	:stations(new std::vector<std::unique_ptr<TrainStation>>()),trains(new std::vector<std::unique_ptr<Train>>()){}
+	Simulation(const Time startTime = Time(0));
 	~Simulation(){}
+	void scheduleEvent(std::unique_ptr<Event> &&newEvent);
+	const Time & getTime() const;
+	void advanceTime(const Time _time=Time("00:10"));
 	void run();
-private:
-	void round();
-	void loadStations();
-	void loadTrains();
-
-	void printStations() const;
 	
-	const bool findStation(std::vector<std::unique_ptr<TrainStation>>::iterator & i,const std::string & name) const;
-	std::unique_ptr<std::vector<std::unique_ptr<TrainStation>>> stations;
-	std::unique_ptr<std::vector<std::unique_ptr<Train>>> trains;
+private:
+	Time time;
+	std::priority_queue<std::unique_ptr<Event>,std::vector<std::unique_ptr<Event>>> events;
 };
 
 
